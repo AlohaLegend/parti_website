@@ -127,7 +127,13 @@ themeToggle?.addEventListener("click", () => {
 rows.forEach((row) => {
   row.addEventListener("mouseenter", () => activateProject(row.dataset.project));
   row.addEventListener("focus", () => activateProject(row.dataset.project));
-  row.addEventListener("click", () => activateProject(row.dataset.project));
+  row.addEventListener("click", (event) => {
+    if (!row.classList.contains("is-active")) {
+      event.preventDefault();
+    }
+
+    activateProject(row.dataset.project);
+  });
 });
 
 cards.forEach((card) => {
