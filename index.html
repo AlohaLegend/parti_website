@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARTI</title>
+  <meta
+    name="description"
+    content="PARTI is an experiential design and production studio creating bold live moments, campaigns, and cultural installations."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="splash-screen" id="splash-screen" aria-hidden="true">
+    <button class="skip-intro" id="skip-intro" type="button">Enter</button>
+    <div class="splash-logo">
+      <img
+        class="logo-image splash-logo-image"
+        id="splash-logo-image"
+        src="assets/parti-logo-main.png"
+        alt="PARTI"
+      >
+      <p>experiential design + production</p>
+    </div>
+  </div>
+
+  <div class="site-shell" data-theme="dark" id="site-shell">
+    <header class="site-header">
+      <button
+        class="menu-button"
+        id="menu-button"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-menu"
+        aria-label="Open menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a class="brand-link" href="#top" aria-label="PARTI home">
+        <img
+          class="logo-image header-logo-image"
+          id="header-logo-image"
+          src="assets/parti-logo-main.png"
+          alt="PARTI"
+        >
+      </a>
+
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">Mode</button>
+    </header>
+
+    <aside class="site-menu" id="site-menu">
+      <nav class="menu-panel" aria-label="Primary">
+        <a href="#works">Works</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </aside>
+
+    <main class="portfolio-layout" id="top">
+      <section class="image-field" aria-label="Featured work collage">
+        <a class="image-card tall first is-active" data-project="marshalls-cbs" href="project.html?slug=marshalls-cbs" aria-label="Open Marshalls CBS project">
+          <div class="image-fill">
+            <img class="image-fill-media" src="assets/marshalls-cbs-01.jpg" alt="Marshalls CBS project image">
+          </div>
+          <div class="image-overlay">
+            <span>marshalls cbs</span>
+          </div>
+        </a>
+
+        <a class="image-card landscape second" data-project="eos-bush-on-main" href="project.html?slug=eos-bush-on-main" aria-label="Open EOS Bush On Main project">
+          <div class="image-fill">
+            <img class="image-fill-media" src="assets/eos-bush-on-main-01.jpg" alt="EOS Bush On Main project image">
+          </div>
+          <div class="image-overlay">
+            <span>eos bush on main</span>
+          </div>
+        </a>
+
+        <a class="image-card landscape third" data-project="dairy-boy-holiday" href="project.html?slug=dairy-boy-holiday" aria-label="Open Dairy Boy Holiday Market project">
+          <div class="image-fill">
+            <img class="image-fill-media" src="assets/dairy-boy-holiday-01.jpg" alt="Dairy Boy holiday market project image">
+          </div>
+          <div class="image-overlay">
+            <span>dairy boy holiday</span>
+          </div>
+        </a>
+
+        <a
+          class="image-card square fourth"
+          data-project="sonsies-garden"
+          href="project.html?slug=sonsies-garden"
+          aria-label="Open Sonsie's Garden project"
+        >
+          <div class="image-fill">
+            <img class="image-fill-media" src="assets/sonsies-garden-01.jpg" alt="Sonsie's Garden project image">
+          </div>
+          <div class="image-overlay">
+            <span>sonsie's garden</span>
+          </div>
+        </a>
+
+        <a class="image-card landscape fifth" data-project="sadie-hawkins" href="project.html?slug=sadie-hawkins" aria-label="Open Sadie Hawkins Winter Formal project">
+          <div class="image-fill">
+            <img class="image-fill-media" src="assets/sadie-hawkins-01.jpg" alt="Sadie Hawkins Winter Formal project image">
+          </div>
+          <div class="image-overlay">
+            <span>sadie hawkins</span>
+          </div>
+        </a>
+
+        <a class="image-card portrait sixth" data-project="jcrew-miracle" href="project.html?slug=jcrew-miracle" aria-label="Open J.Crew Miracle in Manhattan project">
+          <div class="image-fill">
+            <img class="image-fill-media" src="assets/jcrew-miracle-01.jpg" alt="J.Crew Miracle in Manhattan project image">
+          </div>
+          <div class="image-overlay">
+            <span>j.crew miracle</span>
+          </div>
+        </a>
+      </section>
+
+      <section class="works-panel" id="works">
+        <div class="works-table">
+          <div class="works-head">
+            <span>recent manifests</span>
+          </div>
+
+          <a class="work-row is-active" href="project.html?slug=marshalls-cbs" data-project="marshalls-cbs">
+            <span>marshalls cbs</span>
+            <span>2026</span>
+          </a>
+          <a class="work-row" href="project.html?slug=eos-bush-on-main" data-project="eos-bush-on-main">
+            <span>eos bush on main</span>
+            <span>2026</span>
+          </a>
+          <a class="work-row" href="project.html?slug=eos-valentines" data-project="eos-valentines">
+            <span>eos valentine's</span>
+            <span>2026</span>
+          </a>
+          <a class="work-row" href="project.html?slug=dairy-boy-holiday" data-project="dairy-boy-holiday">
+            <span>dairy boy holiday</span>
+            <span>2026</span>
+          </a>
+          <a class="work-row" href="project.html?slug=alchemai-popup" data-project="alchemai-popup">
+            <span>alchemai pop-up</span>
+            <span>2026</span>
+          </a>
+          <a class="work-row" href="project.html?slug=sadie-hawkins" data-project="sadie-hawkins">
+            <span>sadie hawkins</span>
+            <span>2026</span>
+          </a>
+          <a class="work-row" href="project.html?slug=jcrew-miracle" data-project="jcrew-miracle">
+            <span>j.crew miracle</span>
+            <span>2026</span>
+          </a>
+          <a class="work-row" href="project.html?slug=zcon-summit" data-project="zcon-summit">
+            <span>zcon summit</span>
+            <span>2025</span>
+          </a>
+          <a class="work-row" href="project.html?slug=sonsies-garden" data-project="sonsies-garden">
+            <span>sonsie's garden</span>
+            <span>2025</span>
+          </a>
+          <a class="work-row" href="project.html?slug=graveyard-shift" data-project="graveyard-shift">
+            <span>graveyard shift</span>
+            <span>2025</span>
+          </a>
+          <a class="work-row" href="bytedance.html" data-project="bytedance">
+            <span>byte dance</span>
+            <span>2023</span>
+          </a>
+          <a class="work-row" href="hwood.html" data-project="hwood">
+            <span>the h.wood group</span>
+            <span>2023</span>
+          </a>
+          <a class="work-row" href="ciroc.html" data-project="ciroc">
+            <span>ciroc</span>
+            <span>2023</span>
+          </a>
+          <a class="work-row" href="club-renaissance.html" data-project="club-renaissance">
+            <span>club renaissance</span>
+            <span>2023</span>
+          </a>
+          <a class="work-row" href="artist-lounge.html" data-project="artist-lounge">
+            <span>artist lounge</span>
+            <span>2023</span>
+          </a>
+          <a class="work-row" href="houseplant.html" data-project="houseplant">
+            <span>houseplant</span>
+            <span>concept</span>
+          </a>
+        </div>
+
+        <article class="project-detail">
+          <p class="detail-kicker" id="project-kicker">current project</p>
+          <h2 id="project-title">Marshalls CBS Premier Event</h2>
+          <p class="detail-meta" id="project-meta">Client: Marshalls CBS | Date: March 9, 2026 | Co-design + fabrication</p>
+          <p class="detail-copy" id="project-copy">
+            A sculptural photo moment for a Marshalls CBS premier event, co-designed and fabricated by PARTI.
+          </p>
+          <p class="detail-copy" id="project-copy-secondary">
+            The installation leaned into theatrical form and guest interaction, creating a high-visibility statement piece for the event footprint.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <section class="info-strip" id="about">
+      <p>
+        AN EXPERIENTIAL STUDIO. Elevating brands through a celebration of design, production, and culture.
+      </p>
+      <p>
+        Creative: Experiential Design, Activations + Pop-Up, Content Curation, Product Launch.
+        Marketing: Guerrilla Marketing, Press Walls, Influencer Outreach, Campaign Strategy.
+        Experiential: Immersive Environments, Film / TV Premiere, Exhibition, A/V Design.
+      </p>
+    </section>
+
+    <footer class="site-footer" id="contact">
+      <a href="mailto:hello@letsparti.co">hello@letsparti.co</a>
+      <a href="https://www.instagram.com/letsparti.co/" target="_blank" rel="noreferrer">@letsparti.co</a>
+      <span>Established In Santa Monica California</span>
+    </footer>
+  </div>
+
+  <script src="project-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
