@@ -4,7 +4,6 @@
   --muted: rgba(255, 255, 255, 0.7);
   --line: rgba(255, 255, 255, 0.62);
   --surface: rgba(255, 255, 255, 0.04);
-  --overlay: rgba(0, 0, 0, 0.58);
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.26);
   --transition: 180ms ease;
 }
@@ -53,7 +52,6 @@ button {
   --muted: rgba(17, 17, 17, 0.72);
   --line: rgba(17, 17, 17, 0.56);
   --surface: rgba(0, 0, 0, 0.03);
-  --overlay: rgba(0, 0, 0, 0.5);
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
 }
 
@@ -199,7 +197,10 @@ button {
 
 .image-field {
   position: relative;
-  min-height: 1180px;
+  min-height: 1380px;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 28px 12px 24px;
 }
 
 .image-card {
@@ -210,6 +211,17 @@ button {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  left: var(--card-left, 0%);
+  top: var(--card-top, 0%);
+  z-index: var(--active-stack-order, var(--stack-order, 1));
+  transform: translate3d(0, 0, 0) rotate(var(--card-rotate, 0deg));
+  transform-origin: center center;
+  transition:
+    transform 460ms cubic-bezier(0.19, 1, 0.22, 1),
+    box-shadow 420ms ease;
+  border: 1px solid var(--line);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .image-card.tall {
@@ -232,15 +244,7 @@ button {
   height: clamp(280px, 34vw, 410px);
 }
 
-.first { top: 56px; left: 62px; }
-.second { top: 34px; left: 410px; }
-.third { top: 470px; left: 130px; }
-.fourth { top: 382px; left: 520px; }
-.fifth { top: 840px; left: 62px; }
-.sixth { top: 740px; left: 494px; }
-
-.image-fill,
-.image-overlay {
+.image-fill {
   position: absolute;
   inset: 0;
 }
@@ -250,33 +254,19 @@ button {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 320ms ease, filter 220ms ease;
-}
-
-.image-overlay {
-  display: grid;
-  place-items: center;
-  background: transparent;
-  color: #ffffff;
-  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
-  opacity: 0;
-  transition: opacity 220ms ease, background 220ms ease;
-  pointer-events: none;
-  text-transform: lowercase;
-  padding: 16px;
-  text-align: center;
+  transition: transform 460ms cubic-bezier(0.19, 1, 0.22, 1);
+  backface-visibility: hidden;
 }
 
 .image-card:hover .image-fill-media,
 .image-card.is-active .image-fill-media {
-  transform: scale(1.03);
-  filter: brightness(0.45);
+  transform: scale(1.015);
 }
 
-.image-card:hover .image-overlay,
-.image-card.is-active .image-overlay {
-  opacity: 1;
-  background: var(--overlay);
+.image-card:hover,
+.image-card.is-active {
+  transform: translate3d(0, -6px, 0) rotate(var(--card-rotate, 0deg)) scale(1.015);
+  box-shadow: 0 26px 64px rgba(0, 0, 0, 0.28);
 }
 
 .works-panel {
@@ -445,18 +435,39 @@ button {
 .project-visual {
   position: sticky;
   top: 92px;
+  align-self: start;
 }
 
 .project-hero-card {
   position: relative;
-  min-height: 72vh;
+  height: calc(100vh - 126px);
+  min-height: 640px;
   overflow: hidden;
   border: 1px solid var(--line);
   background: #111111;
   box-shadow: var(--shadow);
 }
 
-.project-hero-card img {
+.project-hero-slides {
+  position: absolute;
+  inset: 0;
+}
+
+.project-hero-slide {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 900ms ease, transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-hero-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.project-hero-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -466,15 +477,39 @@ button {
 .project-hero-overlay {
   position: absolute;
   inset: auto 0 0 0;
-  padding: 24px;
+  display: grid;
+  gap: 16px;
+  padding: 26px 24px 22px;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0));
   color: #ffffff;
+  z-index: 1;
 }
 
 .project-hero-overlay p {
   margin: 0;
   max-width: 36rem;
   line-height: 1.6;
+}
+
+.project-hero-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-hero-dot {
+  width: 34px;
+  height: 4px;
+  border: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.28);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.project-hero-dot.is-active {
+  background: #ffffff;
+  transform: scaleX(1.15);
 }
 
 .project-copy-grid {
@@ -604,15 +639,8 @@ button {
   }
 
   .image-field {
-    min-height: 980px;
+    min-height: 1160px;
   }
-
-  .first { top: 30px; left: 12px; }
-  .second { top: 8px; left: 320px; }
-  .third { top: 370px; left: 84px; }
-  .fourth { top: 314px; left: 430px; }
-  .fifth { top: 690px; left: 20px; }
-  .sixth { top: 640px; left: 420px; }
 
   .project-main {
     grid-template-columns: 1fr;
@@ -623,6 +651,7 @@ button {
   }
 
   .project-hero-card {
+    height: min(78vh, 680px);
     min-height: 480px;
   }
 }
@@ -654,6 +683,8 @@ button {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
+    padding: 0;
+    overflow: visible;
   }
 
   .image-card,
@@ -665,6 +696,14 @@ button {
     inset: auto;
     width: 100%;
     height: 240px;
+    left: auto;
+    top: auto;
+    transform: none;
+  }
+
+  .image-card:hover,
+  .image-card.is-active {
+    transform: translateY(-3px) scale(1.008);
   }
 
   .works-head,
@@ -697,11 +736,16 @@ button {
   }
 
   .project-hero-card {
+    height: 54vh;
     min-height: 320px;
   }
 
   .project-hero-overlay {
     padding: 16px;
+  }
+
+  .project-hero-dot {
+    width: 26px;
   }
 
   .project-actions {

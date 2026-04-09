@@ -4,16 +4,35 @@ const menuButton = document.querySelector("#menu-button");
 const siteMenu = document.querySelector("#site-menu");
 const themeToggle = document.querySelector("#theme-toggle");
 const siteShell = document.querySelector("#site-shell");
+const imageField = document.querySelector("#image-field");
 const splashLogoImage = document.querySelector("#splash-logo-image");
 const headerLogoImage = document.querySelector("#header-logo-image");
 const rows = Array.from(document.querySelectorAll(".work-row"));
-const cards = Array.from(document.querySelectorAll(".image-card"));
 
 const projectContent = window.PARTI_PROJECTS || {};
 const DEFAULT_PROJECT = "marshalls-cbs";
 const rowEntries = new Map();
 const HOVER_INTENT_DELAY = 120;
+const COLLAGE_BLUEPRINTS = [
+  { x: 4, y: 4, rotate: -5, shape: "portrait" },
+  { x: 34, y: 2, rotate: 3, shape: "landscape" },
+  { x: 61, y: 6, rotate: -3, shape: "square" },
+  { x: 16, y: 18, rotate: 4, shape: "landscape" },
+  { x: 49, y: 20, rotate: -4, shape: "portrait" },
+  { x: 72, y: 22, rotate: 3, shape: "landscape" },
+  { x: 5, y: 38, rotate: 2, shape: "square" },
+  { x: 28, y: 42, rotate: -3, shape: "portrait" },
+  { x: 57, y: 42, rotate: 5, shape: "landscape" },
+  { x: 76, y: 44, rotate: -2, shape: "portrait" },
+  { x: 10, y: 61, rotate: -4, shape: "landscape" },
+  { x: 39, y: 62, rotate: 3, shape: "square" },
+  { x: 66, y: 66, rotate: -5, shape: "portrait" },
+  { x: 22, y: 79, rotate: 2, shape: "landscape" },
+  { x: 52, y: 82, rotate: -2, shape: "landscape" },
+  { x: 75, y: 80, rotate: 4, shape: "square" }
+];
 let hoverIntentTimer = null;
+let cards = [];
 
 function createDropdown(project) {
   const dropdown = document.createElement("div");
@@ -47,6 +66,52 @@ function createDropdown(project) {
   dropdown.appendChild(inner);
   return dropdown;
 }
+
+function createImageCard(projectId, index) {
+  const project = projectContent[projectId];
+
+  if (!project) {
+    return null;
+  }
+
+  const blueprint = COLLAGE_BLUEPRINTS[index % COLLAGE_BLUEPRINTS.length];
+  const card = document.createElement("a");
+  card.className = `image-card ${blueprint.shape}`;
+  card.dataset.project = projectId;
+  card.href = project.pageUrl;
+  card.setAttribute("aria-label", `Open ${project.title} project`);
+  card.style.setProperty("--card-left", `${blueprint.x}%`);
+  card.style.setProperty("--card-top", `${blueprint.y}%`);
+  card.style.setProperty("--card-rotate", `${blueprint.rotate}deg`);
+  card.style.setProperty("--stack-order", String(index + 1));
+
+  const fill = document.createElement("div");
+  fill.className = "image-fill";
+
+  const image = document.createElement("img");
+  image.className = "image-fill-media";
+  image.src = project.image;
+  image.alt = project.imageAlt || `${project.title} project image`;
+  fill.appendChild(image);
+
+  card.appendChild(fill);
+
+  return card;
+}
+
+const orderedProjectIds = rows.map((row) => row.dataset.project);
+
+orderedProjectIds.forEach((projectId, index) => {
+  const card = createImageCard(projectId, index);
+
+  if (!card || !imageField) {
+    return;
+  }
+
+  imageField.appendChild(card);
+});
+
+cards = Array.from(document.querySelectorAll(".image-card"));
 
 rows.forEach((row) => {
   const project = projectContent[row.dataset.project];
@@ -104,7 +169,15 @@ function activateProject(projectId) {
   });
 
   cards.forEach((card) => {
-    card.classList.toggle("is-active", card.dataset.project === activeId);
+    const isActive = card.dataset.project === activeId;
+
+    card.classList.toggle("is-active", isActive);
+
+    if (isActive) {
+      card.style.setProperty("--active-stack-order", "99");
+    } else {
+      card.style.removeProperty("--active-stack-order");
+    }
   });
 }
 

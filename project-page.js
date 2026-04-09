@@ -10,7 +10,8 @@ const projectMetaNode = document.querySelector("#project-page-meta");
 const projectLeadNode = document.querySelector("#project-page-lead");
 const projectBodyNode = document.querySelector("#project-page-body");
 const projectSupportNode = document.querySelector("#project-page-support");
-const projectHeroImage = document.querySelector("#project-hero-image");
+const projectHeroSlides = document.querySelector("#project-hero-slides");
+const projectHeroDots = document.querySelector("#project-hero-dots");
 const projectHeroCopy = document.querySelector("#project-hero-copy");
 const projectLiveLink = document.querySelector("#project-live-link");
 const projectList = document.querySelector("#project-list");
@@ -22,6 +23,11 @@ const currentProjectId =
   document.body.dataset.project;
 const fallbackProjectId = "marshalls-cbs";
 const currentProject = projectLibrary[currentProjectId] || projectLibrary[fallbackProjectId];
+const HERO_SLIDESHOW_DELAY = 3600;
+let heroSlideTimer = null;
+let heroSlides = [];
+let heroDots = [];
+let currentHeroSlideIndex = 0;
 
 function toggleProjectMenu(forceOpen) {
   const shouldOpen =
@@ -41,6 +47,98 @@ function setProjectTheme(theme) {
   if (projectHeaderLogoImage) {
     projectHeaderLogoImage.src = theme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
   }
+}
+
+function stopHeroSlideshow() {
+  if (heroSlideTimer) {
+    window.clearInterval(heroSlideTimer);
+    heroSlideTimer = null;
+  }
+}
+
+function setActiveHeroSlide(index) {
+  if (!heroSlides.length) {
+    return;
+  }
+
+  currentHeroSlideIndex = index;
+
+  heroSlides.forEach((slide, slideIndex) => {
+    slide.classList.toggle("is-active", slideIndex === currentHeroSlideIndex);
+  });
+
+  heroDots.forEach((dot, dotIndex) => {
+    const isActive = dotIndex === currentHeroSlideIndex;
+    dot.classList.toggle("is-active", isActive);
+    dot.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function startHeroSlideshow() {
+  stopHeroSlideshow();
+
+  if (heroSlides.length < 2) {
+    return;
+  }
+
+  heroSlideTimer = window.setInterval(() => {
+    const nextIndex = (currentHeroSlideIndex + 1) % heroSlides.length;
+    setActiveHeroSlide(nextIndex);
+  }, HERO_SLIDESHOW_DELAY);
+}
+
+function renderHeroSlideshow(project) {
+  if (!projectHeroSlides || !projectHeroDots) {
+    return;
+  }
+
+  stopHeroSlideshow();
+
+  const slides = project.gallery?.length
+    ? project.gallery
+    : [{ src: project.image, alt: project.imageAlt || project.title }];
+
+  projectHeroSlides.innerHTML = slides
+    .map((item, index) => {
+      const activeClass = index === 0 ? " is-active" : "";
+      return `
+        <figure class="project-hero-slide${activeClass}">
+          <img src="${item.src}" alt="${item.alt}">
+        </figure>
+      `;
+    })
+    .join("");
+
+  projectHeroDots.innerHTML = slides
+    .map((item, index) => {
+      const activeClass = index === 0 ? " is-active" : "";
+      const pressed = index === 0 ? "true" : "false";
+      return `
+        <button
+          class="project-hero-dot${activeClass}"
+          type="button"
+          aria-label="View slide ${index + 1}"
+          aria-pressed="${pressed}"
+          data-slide-index="${index}"
+        ></button>
+      `;
+    })
+    .join("");
+
+  heroSlides = Array.from(projectHeroSlides.querySelectorAll(".project-hero-slide"));
+  heroDots = Array.from(projectHeroDots.querySelectorAll(".project-hero-dot"));
+  currentHeroSlideIndex = 0;
+
+  heroDots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const nextIndex = Number(dot.dataset.slideIndex || "0");
+      setActiveHeroSlide(nextIndex);
+      startHeroSlideshow();
+    });
+  });
+
+  setActiveHeroSlide(0);
+  startHeroSlideshow();
 }
 
 function renderProject(project) {
@@ -74,14 +172,11 @@ function renderProject(project) {
     projectSupportNode.textContent = project.detailSupport;
   }
 
-  if (projectHeroImage) {
-    projectHeroImage.src = project.image;
-    projectHeroImage.alt = project.imageAlt;
-  }
-
   if (projectHeroCopy) {
     projectHeroCopy.textContent = project.copy;
   }
+
+  renderHeroSlideshow(project);
 
   if (projectLiveLink) {
     projectLiveLink.href = project.liveUrl;
@@ -138,6 +233,8 @@ document.addEventListener("keydown", (event) => {
     toggleProjectMenu(false);
   }
 });
+
+window.addEventListener("beforeunload", stopHeroSlideshow);
 
 renderProject(currentProject);
 setProjectTheme(projectPageShell?.getAttribute("data-theme") || "dark");
