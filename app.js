@@ -9,15 +9,59 @@ const headerLogoImage = document.querySelector("#header-logo-image");
 const rows = Array.from(document.querySelectorAll(".work-row"));
 const cards = Array.from(document.querySelectorAll(".image-card"));
 
-const projectKicker = document.querySelector("#project-kicker");
-const projectTitle = document.querySelector("#project-title");
-const projectMeta = document.querySelector("#project-meta");
-const projectCopy = document.querySelector("#project-copy");
-const projectCopySecondary = document.querySelector("#project-copy-secondary");
-
 const projectContent = window.PARTI_PROJECTS || {};
-
 const DEFAULT_PROJECT = "marshalls-cbs";
+const rowEntries = new Map();
+
+function createDropdown(project) {
+  const dropdown = document.createElement("div");
+  dropdown.className = "work-dropdown";
+
+  const inner = document.createElement("div");
+  inner.className = "work-dropdown-inner";
+
+  const kicker = document.createElement("p");
+  kicker.className = "detail-kicker";
+  kicker.textContent = project.kicker;
+  inner.appendChild(kicker);
+
+  const meta = document.createElement("p");
+  meta.className = "detail-meta";
+  meta.textContent = project.meta;
+  inner.appendChild(meta);
+
+  const copy = document.createElement("p");
+  copy.className = "detail-copy";
+  copy.textContent = project.copy;
+  inner.appendChild(copy);
+
+  if (project.secondary) {
+    const secondary = document.createElement("p");
+    secondary.className = "detail-copy";
+    secondary.textContent = project.secondary;
+    inner.appendChild(secondary);
+  }
+
+  dropdown.appendChild(inner);
+  return dropdown;
+}
+
+rows.forEach((row) => {
+  const project = projectContent[row.dataset.project];
+
+  if (!project || !row.parentElement) {
+    return;
+  }
+
+  const entry = document.createElement("div");
+  entry.className = "work-entry";
+
+  row.parentElement.insertBefore(entry, row);
+  entry.appendChild(row);
+  entry.appendChild(createDropdown(project));
+
+  rowEntries.set(row.dataset.project, entry);
+});
 
 function dismissSplash() {
   splashScreen?.classList.add("is-hidden");
@@ -47,36 +91,19 @@ function setTheme(theme) {
 }
 
 function activateProject(projectId) {
-  const nextProject = projectContent[projectId] || projectContent[DEFAULT_PROJECT];
   const activeId = projectContent[projectId] ? projectId : DEFAULT_PROJECT;
 
   rows.forEach((row) => {
     row.classList.toggle("is-active", row.dataset.project === activeId);
   });
 
+  rowEntries.forEach((entry, entryProjectId) => {
+    entry.classList.toggle("is-open", entryProjectId === activeId);
+  });
+
   cards.forEach((card) => {
     card.classList.toggle("is-active", card.dataset.project === activeId);
   });
-
-  if (projectKicker) {
-    projectKicker.textContent = nextProject.kicker;
-  }
-
-  if (projectTitle) {
-    projectTitle.textContent = nextProject.title;
-  }
-
-  if (projectMeta) {
-    projectMeta.textContent = nextProject.meta;
-  }
-
-  if (projectCopy) {
-    projectCopy.textContent = nextProject.copy;
-  }
-
-  if (projectCopySecondary) {
-    projectCopySecondary.textContent = nextProject.secondary;
-  }
 }
 
 skipIntroButton?.addEventListener("click", dismissSplash);
