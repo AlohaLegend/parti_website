@@ -12,6 +12,8 @@ const cards = Array.from(document.querySelectorAll(".image-card"));
 const projectContent = window.PARTI_PROJECTS || {};
 const DEFAULT_PROJECT = "marshalls-cbs";
 const rowEntries = new Map();
+const HOVER_INTENT_DELAY = 120;
+let hoverIntentTimer = null;
 
 function createDropdown(project) {
   const dropdown = document.createElement("div");
@@ -106,6 +108,21 @@ function activateProject(projectId) {
   });
 }
 
+function clearHoverIntent() {
+  if (hoverIntentTimer) {
+    window.clearTimeout(hoverIntentTimer);
+    hoverIntentTimer = null;
+  }
+}
+
+function scheduleProjectActivation(projectId) {
+  clearHoverIntent();
+  hoverIntentTimer = window.setTimeout(() => {
+    activateProject(projectId);
+    hoverIntentTimer = null;
+  }, HOVER_INTENT_DELAY);
+}
+
 skipIntroButton?.addEventListener("click", dismissSplash);
 window.setTimeout(dismissSplash, 1800);
 
@@ -125,9 +142,15 @@ themeToggle?.addEventListener("click", () => {
 });
 
 rows.forEach((row) => {
-  row.addEventListener("mouseenter", () => activateProject(row.dataset.project));
-  row.addEventListener("focus", () => activateProject(row.dataset.project));
+  row.addEventListener("mouseenter", () => scheduleProjectActivation(row.dataset.project));
+  row.addEventListener("mouseleave", clearHoverIntent);
+  row.addEventListener("focus", () => {
+    clearHoverIntent();
+    activateProject(row.dataset.project);
+  });
   row.addEventListener("click", (event) => {
+    clearHoverIntent();
+
     if (!row.classList.contains("is-active")) {
       event.preventDefault();
     }
@@ -137,8 +160,12 @@ rows.forEach((row) => {
 });
 
 cards.forEach((card) => {
-  card.addEventListener("mouseenter", () => activateProject(card.dataset.project));
-  card.addEventListener("focus", () => activateProject(card.dataset.project));
+  card.addEventListener("mouseenter", () => scheduleProjectActivation(card.dataset.project));
+  card.addEventListener("mouseleave", clearHoverIntent);
+  card.addEventListener("focus", () => {
+    clearHoverIntent();
+    activateProject(card.dataset.project);
+  });
 });
 
 document.addEventListener("keydown", (event) => {
