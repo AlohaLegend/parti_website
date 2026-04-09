@@ -4,7 +4,7 @@ window.PARTI_PROJECTS = {
     title: "Marshalls CBS Premier Event",
     navLabel: "marshalls cbs",
     yearLabel: "2026",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "Marshalls CBS",
     meta: "Client: Marshalls CBS | Date: March 9, 2026 | Co-design + fabrication",
     copy:
@@ -33,7 +33,7 @@ window.PARTI_PROJECTS = {
     title: "EOS Bush On Main",
     navLabel: "eos bush on main",
     yearLabel: "2026",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "eos products / United Talent",
     meta: "Client: eos products | NYC | Design, production, fabrication, run of show",
     copy:
@@ -62,7 +62,7 @@ window.PARTI_PROJECTS = {
     title: "EOS Valentine's Event",
     navLabel: "eos valentine's",
     yearLabel: "2026",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "eos products",
     meta: "Client: eos products | Date: February 14, 2026 | Produced by PARTI",
     copy:
@@ -91,7 +91,7 @@ window.PARTI_PROJECTS = {
     title: "Dairy Boy Holiday Market",
     navLabel: "dairy boy holiday",
     yearLabel: "2026",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "Dairy Boy",
     meta: "Client: Dairy Boy | Date: February 23, 2026 | Holiday market experience",
     copy:
@@ -120,7 +120,7 @@ window.PARTI_PROJECTS = {
     title: "Alchemai Pop-Up",
     navLabel: "alchemai pop-up",
     yearLabel: "2026",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "Alchemai",
     meta: "Client: Alchemai | Shopify NY space | Public recap post",
     copy:
@@ -147,7 +147,7 @@ window.PARTI_PROJECTS = {
     title: "Sadie Hawkins Winter Formal",
     navLabel: "sadie hawkins",
     yearLabel: "2026",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "Born x Raised / Vans",
     meta: "Client: Born x Raised | Union Station | Design, fabrication, production, run of show",
     copy:
@@ -176,7 +176,7 @@ window.PARTI_PROJECTS = {
     title: "J.Crew Miracle In Manhattan",
     navLabel: "j.crew miracle",
     yearLabel: "2026",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "J.Crew",
     meta: "Client: J.Crew | Manhattan | Fabrication + experiential holiday build",
     copy:
@@ -205,7 +205,7 @@ window.PARTI_PROJECTS = {
     title: "ZCON Gen Z Summit",
     navLabel: "zcon summit",
     yearLabel: "2025",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "ZCON / UTA NextGen / ZSTARS",
     meta: "Client: ZCON + UTA NextGen | Design, creative direction, production, fabrication, run of show",
     copy:
@@ -235,7 +235,7 @@ window.PARTI_PROJECTS = {
     title: "Sonsie's Garden",
     navLabel: "sonsie's garden",
     yearLabel: "2025",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "Sonsie Skin",
     meta: "Client: Sonsie Skin | Shopify NYC | Design, production, fabrication, set dressing, run of show",
     copy:
@@ -265,7 +265,7 @@ window.PARTI_PROJECTS = {
     title: "Graveyard Shift",
     navLabel: "graveyard shift",
     yearLabel: "2025",
-    kicker: "recent project",
+    kicker: "completed project",
     client: "Nova / adidas Originals / collaborators",
     meta: "Client: Multi-brand Halloween event | Design, fabrication, production, set dressing, run of show",
     copy:
@@ -294,7 +294,7 @@ window.PARTI_PROJECTS = {
     title: "Byte Dance",
     navLabel: "byte dance",
     yearLabel: "2023",
-    kicker: "current project",
+    kicker: "completed project",
     client: "Byte Dance",
     meta: "Client: Byte Dance | Materials: MDF, Acrylic, Faux Plants",
     copy:
@@ -324,7 +324,7 @@ window.PARTI_PROJECTS = {
     title: "The h.wood Group",
     navLabel: "the h.wood group",
     yearLabel: "2023",
-    kicker: "current project",
+    kicker: "completed project",
     client: "The h.wood Group",
     meta: "Client: The h.wood Group | Location: Revolve House",
     copy:
@@ -354,7 +354,7 @@ window.PARTI_PROJECTS = {
     title: "Ciroc",
     navLabel: "ciroc",
     yearLabel: "2023",
-    kicker: "current project",
+    kicker: "completed project",
     client: "NVE for Ciroc",
     meta: "Client: NVE for Ciroc | Timeline: Three Weeks",
     copy:
@@ -384,7 +384,7 @@ window.PARTI_PROJECTS = {
     title: "Club Renaissance",
     navLabel: "club renaissance",
     yearLabel: "2023",
-    kicker: "current project",
+    kicker: "completed project",
     client: "Parkwood Productions, Amazon Music, Eyesight Group",
     meta: "Client: Parkwood Productions, Amazon Music, Eyesight Group | Timeline: 8 Days",
     copy:
@@ -414,7 +414,7 @@ window.PARTI_PROJECTS = {
     title: "Artist Lounge",
     navLabel: "artist lounge",
     yearLabel: "2023",
-    kicker: "current project",
+    kicker: "completed project",
     client: "YouTube / MAS",
     meta: "Client: YouTube / MAS | Timeline: Six Weeks + 5 Day Install x 2 Weekend ROS",
     copy:
