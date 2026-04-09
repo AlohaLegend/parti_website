@@ -303,26 +303,71 @@ button {
   align-items: center;
   padding: 16px 16px;
   text-decoration: none;
-  border-bottom: 1px solid var(--line);
 }
 
 .works-head {
   grid-template-columns: 1fr;
   font-size: 0.98rem;
   text-transform: lowercase;
+  border-bottom: 1px solid var(--line);
 }
 
 .work-row {
   transition: background var(--transition), color var(--transition);
+  border-bottom: 0;
 }
 
-.work-row:last-child {
+.work-entry:last-child {
   border-bottom: 0;
 }
 
 .work-row:hover,
 .work-row.is-active {
   background: var(--surface);
+}
+
+.work-entry {
+  border-bottom: 1px solid var(--line);
+}
+
+.work-entry.is-open .work-row {
+  background: var(--surface);
+}
+
+.work-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease, padding 220ms ease, opacity 220ms ease;
+  opacity: 0;
+  padding: 0 16px;
+  background: var(--surface);
+}
+
+.work-entry.is-open .work-dropdown {
+  max-height: 420px;
+  opacity: 1;
+  padding: 0 16px 18px;
+}
+
+.work-dropdown-inner {
+  display: grid;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.work-dropdown .detail-kicker {
+  margin-bottom: 0;
+}
+
+.work-dropdown .detail-meta {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.work-dropdown .detail-copy {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
 }
 
 .detail-kicker {
@@ -621,6 +666,14 @@ button {
     grid-template-columns: 1fr 58px;
     padding: 14px 12px;
     font-size: 0.92rem;
+  }
+
+  .work-dropdown {
+    padding-inline: 12px;
+  }
+
+  .work-entry.is-open .work-dropdown {
+    padding: 0 12px 14px;
   }
 
   .info-strip,
