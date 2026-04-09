@@ -317,7 +317,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/bytedance-04.jpg", alt: "Byte Dance wide experiential setup" }
     ],
     liveUrl: "https://www.letsparti.co/bytedance",
-    pageUrl: "bytedance.html"
+    pageUrl: "project.html?slug=bytedance"
   },
   hwood: {
     slug: "hwood",
@@ -347,7 +347,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/hwood-04.jpeg", alt: "The h.wood Group guest-facing photo moment" }
     ],
     liveUrl: "https://www.letsparti.co/hwood",
-    pageUrl: "hwood.html"
+    pageUrl: "project.html?slug=hwood"
   },
   ciroc: {
     slug: "ciroc",
@@ -377,7 +377,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/ciroc-04.jpg", alt: "Ciroc bar activation detail" }
     ],
     liveUrl: "https://www.letsparti.co/ciroc",
-    pageUrl: "ciroc.html"
+    pageUrl: "project.html?slug=ciroc"
   },
   "club-renaissance": {
     slug: "club-renaissance",
@@ -407,7 +407,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/club-renaissance-04.jpg", alt: "Club Renaissance installation detail" }
     ],
     liveUrl: "https://www.letsparti.co/club-renaissance",
-    pageUrl: "club-renaissance.html"
+    pageUrl: "project.html?slug=club-renaissance"
   },
   "artist-lounge": {
     slug: "artist-lounge",
@@ -437,7 +437,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/artist-lounge-04.jpeg", alt: "Artist Lounge design detail" }
     ],
     liveUrl: "https://www.letsparti.co/artist-lounge",
-    pageUrl: "artist-lounge.html"
+    pageUrl: "project.html?slug=artist-lounge"
   },
   houseplant: {
     slug: "houseplant",
@@ -467,6 +467,6 @@ window.PARTI_PROJECTS = {
       { src: "assets/houseplant-04.png", alt: "Houseplant lounge wide concept view" }
     ],
     liveUrl: "https://www.letsparti.co/houseplant",
-    pageUrl: "houseplant.html"
+    pageUrl: "project.html?slug=houseplant"
   }
 };
