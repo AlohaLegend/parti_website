@@ -872,6 +872,11 @@ button {
   padding: 14px 16px;
   border-bottom: 1px solid var(--line);
   cursor: pointer;
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    transform 120ms ease;
 }
 
 .admin-project-item:last-child {
@@ -881,6 +886,18 @@ button {
 .admin-project-item:hover,
 .admin-project-item.is-active {
   background: var(--surface);
+}
+
+.admin-project-item:hover {
+  transform: translateX(2px);
+}
+
+.admin-project-item.is-active {
+  box-shadow: inset 3px 0 0 currentColor;
+}
+
+.admin-project-item.is-active span:first-child {
+  font-weight: 600;
 }
 
 .admin-project-item-local span:first-child::after {
@@ -899,6 +916,10 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.72rem;
+}
+
+.admin-project-flag-active {
+  color: inherit;
 }
 
 .admin-form {
