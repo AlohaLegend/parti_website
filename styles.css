@@ -201,7 +201,7 @@ button {
   top: 92px;
   display: grid;
   grid-template-columns: repeat(2, minmax(210px, 330px));
-  grid-auto-rows: 74px;
+  grid-auto-rows: 62px;
   justify-content: start;
   gap: 38px 58px;
   height: calc(100vh - 126px);
@@ -241,18 +241,13 @@ button {
 }
 
 .image-card.landscape {
-  grid-row: span 4;
-  min-height: 250px;
+  grid-row: span 3;
+  min-height: 186px;
 }
 
 .image-card.square {
-  grid-row: span 5;
-  min-height: 310px;
-}
-
-.image-card.portrait {
-  grid-row: span 7;
-  min-height: 500px;
+  grid-row: span 4;
+  min-height: 248px;
 }
 
 .image-card:nth-child(odd) {
