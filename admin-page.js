@@ -15,6 +15,8 @@ const adminRevertProjectButton = document.querySelector("#admin-revert-project")
 const adminDeleteProjectButton = document.querySelector("#admin-delete-project");
 const adminGalleryList = document.querySelector("#admin-gallery-list");
 const adminGalleryUploadInput = document.querySelector("#admin-gallery-upload");
+const adminLeadPreview = document.querySelector("#admin-lead-preview");
+const adminLeadPreviewMedia = document.querySelector("#admin-lead-preview-media");
 const adminAuthForm = document.querySelector("#admin-auth-form");
 const adminLoginButton = document.querySelector("#admin-login");
 const adminLogoutButton = document.querySelector("#admin-logout");
@@ -43,8 +45,6 @@ const adminFields = {
   kicker: document.querySelector("#admin-kicker"),
   client: document.querySelector("#admin-client"),
   meta: document.querySelector("#admin-meta"),
-  image: document.querySelector("#admin-image"),
-  imageAlt: document.querySelector("#admin-image-alt"),
   liveUrl: document.querySelector("#admin-live-url"),
   showInCollage: document.querySelector("#admin-show-in-collage"),
   isHidden: document.querySelector("#admin-is-hidden"),
@@ -252,13 +252,21 @@ function getImageLabel(src = "", index = 0) {
 function syncLeadImageFromGallery() {
   const firstImage = currentGalleryItems.find((item) => item.src);
 
-  if (!adminFields.image.value.trim() || !currentGalleryItems.some((item) => item.src === adminFields.image.value.trim())) {
-    adminFields.image.value = firstImage?.src || "";
+  if (!adminLeadPreview || !adminLeadPreviewMedia) {
+    return;
   }
 
-  if (!adminFields.imageAlt.value.trim() || adminFields.imageAlt.value.trim() === adminFields.image.value.trim()) {
-    adminFields.imageAlt.value = firstImage?.alt || adminFields.image.value.trim();
+  adminLeadPreview.classList.toggle("is-empty", !firstImage);
+
+  if (!firstImage) {
+    adminLeadPreviewMedia.innerHTML = `<div class="admin-gallery-placeholder">No Lead Image Yet</div>`;
+    return;
   }
+
+  adminLeadPreviewMedia.innerHTML = `
+    <img src="${firstImage.src}" alt="${firstImage.alt || "Lead image"}">
+    <span class="admin-lead-preview-badge">Lead</span>
+  `;
 }
 
 function readFilesAsGalleryItems(files) {
@@ -333,6 +341,7 @@ function renderGalleryEditor() {
           <div class="admin-gallery-preview">
             ${previewMarkup}
             <button class="admin-gallery-delete" type="button" aria-label="Delete image ${index + 1}">×</button>
+            ${index === 0 ? '<span class="admin-gallery-lead-badge">Lead</span>' : ""}
             <div class="admin-gallery-overlay">
               <p class="admin-gallery-label">${getImageLabel(item.src, index)}</p>
               <label class="admin-gallery-alt-label">
@@ -518,11 +527,21 @@ function populateForm(project) {
   adminFields.title.value = nextProject.title || "";
   adminFields.navLabel.value = nextProject.navLabel || "";
   adminFields.yearLabel.value = nextProject.yearLabel || "";
-  adminFields.kicker.value = nextProject.kicker || "";
+  if (adminFields.kicker) {
+    const nextKicker = nextProject.kicker || "completed project";
+    const hasOption = Array.from(adminFields.kicker.options).some((option) => option.value === nextKicker);
+
+    if (!hasOption) {
+      const customOption = document.createElement("option");
+      customOption.value = nextKicker;
+      customOption.textContent = nextKicker;
+      adminFields.kicker.appendChild(customOption);
+    }
+
+    adminFields.kicker.value = nextKicker;
+  }
   adminFields.client.value = nextProject.client || "";
   adminFields.meta.value = nextProject.meta || "";
-  adminFields.image.value = nextProject.image || "";
-  adminFields.imageAlt.value = nextProject.imageAlt || "";
   adminFields.liveUrl.value = nextProject.liveUrl || "";
   adminFields.showInCollage.checked = nextProject.showInCollage !== false;
   adminFields.isHidden.checked = nextProject.isHidden === true;
@@ -546,13 +565,13 @@ function selectProject(slug) {
 
 function collectFormProject() {
   const slug = adminFields.slug.value.trim();
-  const image = adminFields.image.value.trim();
   const gallery = currentGalleryItems
     .map((item) => ({
       src: (item.src || "").trim(),
       alt: (item.alt || item.src || "").trim()
     }))
     .filter((item) => item.src);
+  const leadImage = gallery[0] || null;
 
   return {
     slug,
@@ -562,8 +581,8 @@ function collectFormProject() {
     kicker: adminFields.kicker.value.trim(),
     client: adminFields.client.value.trim(),
     meta: adminFields.meta.value.trim(),
-    image,
-    imageAlt: adminFields.imageAlt.value.trim(),
+    image: leadImage?.src || "",
+    imageAlt: leadImage?.alt || "",
     liveUrl: adminFields.liveUrl.value.trim(),
     showInCollage: adminFields.showInCollage.checked,
     isHidden: adminFields.isHidden.checked,
@@ -573,7 +592,7 @@ function collectFormProject() {
     detailLead: adminFields.detailLead.value.trim(),
     detailBody: adminFields.detailBody.value.trim(),
     detailSupport: adminFields.detailSupport.value.trim(),
-    gallery: gallery.length ? gallery : (image ? [{ src: image, alt: adminFields.imageAlt.value.trim() || image }] : []),
+    gallery,
     pageUrl: slug ? `project.html?slug=${slug}` : ""
   };
 }

@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260410i">
+  <link rel="stylesheet" href="styles.css?v=20260410k">
 </head>
 <body>
   <div class="project-page-shell" data-theme="dark" id="admin-page-shell">
@@ -69,8 +69,11 @@
 
       <section class="admin-editor">
         <article class="project-block admin-panel">
-          <h2>Project Fields</h2>
+          <h2>Project Editor</h2>
           <form class="admin-form" id="admin-form">
+            <div class="admin-form-section admin-field-wide">
+              <p class="detail-kicker">Project Basics</p>
+            </div>
             <label class="admin-field">
               <span>Slug</span>
               <input id="admin-slug" name="slug" type="text" required>
@@ -89,7 +92,10 @@
             </label>
             <label class="admin-field">
               <span>Kicker</span>
-              <input id="admin-kicker" name="kicker" type="text">
+              <select id="admin-kicker" name="kicker">
+                <option value="completed project">Completed Project</option>
+                <option value="current project">Current Project</option>
+              </select>
             </label>
             <label class="admin-field">
               <span>Client</span>
@@ -98,14 +104,6 @@
             <label class="admin-field admin-field-wide">
               <span>Meta</span>
               <input id="admin-meta" name="meta" type="text">
-            </label>
-            <label class="admin-field admin-field-wide">
-              <span>Lead Image</span>
-              <input id="admin-image" name="image" type="text" placeholder="assets/project-image-01.jpg">
-            </label>
-            <label class="admin-field admin-field-wide">
-              <span>Image Alt</span>
-              <input id="admin-image-alt" name="imageAlt" type="text">
             </label>
             <label class="admin-field admin-field-wide">
               <span>Live URL</span>
@@ -119,6 +117,9 @@
               <input id="admin-is-hidden" name="isHidden" type="checkbox">
               <span>Hide from public site lists</span>
             </label>
+            <div class="admin-form-section admin-field-wide">
+              <p class="detail-kicker">Homepage + Project Copy</p>
+            </div>
             <label class="admin-field admin-field-wide">
               <span>Homepage Copy</span>
               <textarea id="admin-copy" name="copy" rows="3"></textarea>
@@ -143,8 +144,17 @@
               <span>Detail Support</span>
               <textarea id="admin-detail-support" name="detailSupport" rows="4"></textarea>
             </label>
+            <div class="admin-form-section admin-field-wide">
+              <p class="detail-kicker">Gallery</p>
+            </div>
             <div class="admin-field admin-field-wide">
-              <span>Gallery</span>
+              <div class="admin-lead-preview" id="admin-lead-preview">
+                <div class="admin-lead-preview-media" id="admin-lead-preview-media"></div>
+                <div class="admin-lead-preview-copy">
+                  <p class="admin-lead-preview-kicker">Lead Image</p>
+                  <p class="detail-copy">The first image in the gallery becomes the homepage and project lead image.</p>
+                </div>
+              </div>
               <div class="admin-gallery-editor">
                 <div class="admin-gallery-list" id="admin-gallery-list"></div>
                 <input id="admin-gallery-upload" type="file" accept="image/*" multiple hidden>
@@ -167,6 +177,6 @@
   <script src="supabase-client.js?v=20260410i"></script>
   <script src="project-data.js?v=20260410i"></script>
   <script src="project-store.js?v=20260410i"></script>
-  <script src="admin-page.js?v=20260410j"></script>
+  <script src="admin-page.js?v=20260410k"></script>
 </body>
 </html>
