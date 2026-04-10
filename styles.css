@@ -894,10 +894,19 @@ button {
 
 .admin-project-item.is-active {
   box-shadow: inset 3px 0 0 currentColor;
+  background: currentColor;
+  color: var(--bg);
+  border-color: currentColor;
 }
 
 .admin-project-item.is-active span:first-child {
   font-weight: 600;
+}
+
+.admin-project-item.is-active .admin-project-flag,
+.admin-project-item.is-active .admin-project-item-local span:first-child::after,
+.admin-project-item.is-active .admin-project-flag-active {
+  color: color-mix(in srgb, var(--bg) 72%, transparent);
 }
 
 .admin-project-item-local span:first-child::after {
