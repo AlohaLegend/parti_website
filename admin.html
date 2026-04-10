@@ -155,6 +155,20 @@
                   <p class="detail-copy">The first image in the gallery becomes the homepage and project lead image.</p>
                 </div>
               </div>
+              <label class="admin-field admin-field-wide">
+                <span>Lead Crop</span>
+                <select id="admin-lead-crop" name="leadCrop">
+                  <option value="center center">Center</option>
+                  <option value="center top">Top</option>
+                  <option value="center bottom">Bottom</option>
+                  <option value="left center">Left</option>
+                  <option value="right center">Right</option>
+                  <option value="left top">Top Left</option>
+                  <option value="right top">Top Right</option>
+                  <option value="left bottom">Bottom Left</option>
+                  <option value="right bottom">Bottom Right</option>
+                </select>
+              </label>
               <div class="admin-gallery-editor">
                 <div class="admin-gallery-list" id="admin-gallery-list"></div>
                 <input id="admin-gallery-upload" type="file" accept="image/*" multiple hidden>

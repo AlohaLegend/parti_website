@@ -47,6 +47,7 @@ const adminFields = {
   client: document.querySelector("#admin-client"),
   meta: document.querySelector("#admin-meta"),
   liveUrl: document.querySelector("#admin-live-url"),
+  leadCrop: document.querySelector("#admin-lead-crop"),
   showInCollage: document.querySelector("#admin-show-in-collage"),
   isHidden: document.querySelector("#admin-is-hidden"),
   copy: document.querySelector("#admin-copy"),
@@ -252,6 +253,7 @@ function getImageLabel(src = "", index = 0) {
 
 function syncLeadImageFromGallery() {
   const firstImage = currentGalleryItems.find((item) => item.src);
+  const leadCrop = adminFields.leadCrop?.value || "center center";
 
   if (!adminLeadPreview || !adminLeadPreviewMedia) {
     return;
@@ -265,7 +267,7 @@ function syncLeadImageFromGallery() {
   }
 
   adminLeadPreviewMedia.innerHTML = `
-    <img src="${firstImage.src}" alt="${firstImage.alt || "Lead image"}">
+    <img src="${firstImage.src}" alt="${firstImage.alt || "Lead image"}" style="object-position: ${leadCrop};">
     <span class="admin-lead-preview-badge">Lead</span>
   `;
 }
@@ -481,6 +483,7 @@ function createBlankProject() {
     image: "",
     imageAlt: "",
     liveUrl: "",
+    leadCrop: "center center",
     gallery: [],
     showInCollage: true,
     isHidden: false,
@@ -589,6 +592,7 @@ function populateForm(project) {
   adminFields.client.value = nextProject.client || "";
   adminFields.meta.value = nextProject.meta || "";
   adminFields.liveUrl.value = nextProject.liveUrl || "";
+  adminFields.leadCrop.value = nextProject.leadCrop || "center center";
   adminFields.showInCollage.checked = nextProject.showInCollage !== false;
   adminFields.isHidden.checked = nextProject.isHidden === true;
   adminFields.copy.value = nextProject.copy || "";
@@ -630,6 +634,7 @@ function collectFormProject() {
     image: leadImage?.src || "",
     imageAlt: leadImage?.alt || "",
     liveUrl: adminFields.liveUrl.value.trim(),
+    leadCrop: adminFields.leadCrop.value,
     showInCollage: adminFields.showInCollage.checked,
     isHidden: adminFields.isHidden.checked,
     copy: adminFields.copy.value.trim(),
@@ -752,6 +757,11 @@ adminExportProjectsButton?.addEventListener("click", () => {
 adminGalleryUploadInput?.addEventListener("change", async () => {
   await addGalleryFiles(adminGalleryUploadInput.files);
   adminGalleryUploadInput.value = "";
+});
+
+adminFields.leadCrop?.addEventListener("change", () => {
+  syncLeadImageFromGallery();
+  renderStatus("Updated the lead image crop for the homepage collage.");
 });
 
 adminResetProjectsButton?.addEventListener("click", () => {
