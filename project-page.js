@@ -17,6 +17,7 @@ const projectLiveLink = document.querySelector("#project-live-link");
 const projectList = document.querySelector("#project-list");
 const projectGallery = document.querySelector("#project-gallery");
 
+const THEME_STORAGE_KEY = "parti-theme";
 const projectLibrary = window.PARTI_PROJECTS || {};
 const currentProjectId =
   new URLSearchParams(window.location.search).get("slug") ||
@@ -39,14 +40,23 @@ function toggleProjectMenu(forceOpen) {
 }
 
 function setProjectTheme(theme) {
-  projectPageShell?.setAttribute("data-theme", theme);
+  const nextTheme = theme === "light" ? "light" : "dark";
+
+  projectPageShell?.setAttribute("data-theme", nextTheme);
   if (projectThemeToggle) {
-    projectThemeToggle.textContent = theme === "dark" ? "Light" : "Dark";
+    projectThemeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";
   }
 
   if (projectHeaderLogoImage) {
-    projectHeaderLogoImage.src = theme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
+    projectHeaderLogoImage.src = nextTheme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
   }
+
+  window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+}
+
+function getPreferredTheme(defaultTheme = "dark") {
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return storedTheme === "light" || storedTheme === "dark" ? storedTheme : defaultTheme;
 }
 
 function stopHeroSlideshow() {
@@ -237,4 +247,4 @@ document.addEventListener("keydown", (event) => {
 window.addEventListener("beforeunload", stopHeroSlideshow);
 
 renderProject(currentProject);
-setProjectTheme(projectPageShell?.getAttribute("data-theme") || "dark");
+setProjectTheme(getPreferredTheme(projectPageShell?.getAttribute("data-theme") || "dark"));

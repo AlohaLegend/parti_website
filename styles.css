@@ -46,7 +46,8 @@ button {
   transition: background var(--transition), color var(--transition);
 }
 
-.site-shell[data-theme="light"] {
+.site-shell[data-theme="light"],
+.project-page-shell[data-theme="light"] {
   --bg: #f7f7f5;
   --fg: #111111;
   --muted: rgba(17, 17, 17, 0.72);
@@ -304,6 +305,7 @@ button {
 .works-panel {
   position: sticky;
   top: 92px;
+  scroll-margin-top: 110px;
 }
 
 .works-table,
@@ -737,6 +739,41 @@ button {
   line-height: 1.6;
 }
 
+.contact-main {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1.08fr);
+  gap: 42px;
+  align-items: start;
+}
+
+.contact-intro,
+.contact-content {
+  display: grid;
+  gap: 20px;
+}
+
+.contact-hero h1 {
+  margin-bottom: 16px;
+  font-size: clamp(2.5rem, 4.6vw, 5rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.contact-primary-link {
+  min-width: 220px;
+}
+
+.contact-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 @media (max-width: 1240px) {
   .portfolio-layout {
     grid-template-columns: 1fr;
@@ -763,7 +800,15 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .contact-main {
+    grid-template-columns: 1fr;
+  }
+
   .about-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-columns {
     grid-template-columns: 1fr;
   }
 
