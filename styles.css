@@ -455,6 +455,19 @@ button {
   text-decoration: none;
 }
 
+.admin-footer-link {
+  justify-self: end;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.58;
+}
+
+.admin-footer-link:hover,
+.admin-footer-link:focus-visible {
+  opacity: 1;
+}
+
 .project-page-shell {
   min-height: 100vh;
   padding: 26px 20px 28px;
@@ -783,6 +796,16 @@ button {
   grid-template-columns: minmax(280px, 0.52fr) minmax(0, 1fr);
   gap: 28px;
   align-items: start;
+}
+
+.admin-login-main {
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 160px);
+}
+
+.admin-login-card {
+  width: min(720px, 100%);
 }
 
 .admin-sidebar,
