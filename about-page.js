@@ -3,6 +3,7 @@ const aboutMenuButton = document.querySelector("#menu-button");
 const aboutSiteMenu = document.querySelector("#site-menu");
 const aboutThemeToggle = document.querySelector("#theme-toggle");
 const aboutHeaderLogoImage = document.querySelector("#header-logo-image");
+const THEME_STORAGE_KEY = "parti-theme";
 
 function toggleAboutMenu(forceOpen) {
   const shouldOpen =
@@ -14,15 +15,24 @@ function toggleAboutMenu(forceOpen) {
 }
 
 function setAboutTheme(theme) {
-  aboutPageShell?.setAttribute("data-theme", theme);
+  const nextTheme = theme === "light" ? "light" : "dark";
+
+  aboutPageShell?.setAttribute("data-theme", nextTheme);
 
   if (aboutThemeToggle) {
-    aboutThemeToggle.textContent = theme === "dark" ? "Light" : "Dark";
+    aboutThemeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";
   }
 
   if (aboutHeaderLogoImage) {
-    aboutHeaderLogoImage.src = theme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
+    aboutHeaderLogoImage.src = nextTheme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
   }
+
+  window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+}
+
+function getPreferredTheme(defaultTheme = "dark") {
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return storedTheme === "light" || storedTheme === "dark" ? storedTheme : defaultTheme;
 }
 
 aboutMenuButton?.addEventListener("click", () => {
@@ -46,4 +56,4 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-setAboutTheme(aboutPageShell?.getAttribute("data-theme") || "dark");
+setAboutTheme(getPreferredTheme(aboutPageShell?.getAttribute("data-theme") || "dark"));

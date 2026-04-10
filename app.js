@@ -5,10 +5,12 @@ const siteMenu = document.querySelector("#site-menu");
 const themeToggle = document.querySelector("#theme-toggle");
 const siteShell = document.querySelector("#site-shell");
 const imageField = document.querySelector("#image-field");
+const worksPanel = document.querySelector(".works-panel");
 const splashLogoImage = document.querySelector("#splash-logo-image");
 const headerLogoImage = document.querySelector("#header-logo-image");
 const rows = Array.from(document.querySelectorAll(".work-row"));
 
+const THEME_STORAGE_KEY = "parti-theme";
 const projectContent = window.PARTI_PROJECTS || {};
 const DEFAULT_PROJECT = "marshalls-cbs";
 const rowEntries = new Map();
@@ -138,10 +140,14 @@ function toggleMenu(forceOpen) {
 }
 
 function setTheme(theme) {
-  siteShell?.setAttribute("data-theme", theme);
-  themeToggle.textContent = theme === "dark" ? "Light" : "Dark";
+  const nextTheme = theme === "light" ? "light" : "dark";
 
-  const logoSource = theme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
+  siteShell?.setAttribute("data-theme", nextTheme);
+  if (themeToggle) {
+    themeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";
+  }
+
+  const logoSource = nextTheme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
 
   if (splashLogoImage) {
     splashLogoImage.src = logoSource;
@@ -150,6 +156,13 @@ function setTheme(theme) {
   if (headerLogoImage) {
     headerLogoImage.src = logoSource;
   }
+
+  window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+}
+
+function getPreferredTheme(defaultTheme = "dark") {
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return storedTheme === "light" || storedTheme === "dark" ? storedTheme : defaultTheme;
 }
 
 function clearCardScrollAnimation() {
@@ -223,32 +236,65 @@ function scheduleCardScroll(card) {
   }, CARD_SCROLL_DELAY);
 }
 
-function activateProject(projectId) {
-  const activeId = projectContent[projectId] ? projectId : DEFAULT_PROJECT;
-
-  if (activeId === activeProjectId) {
+function scrollWorkEntryIntoView(entry) {
+  if (!entry) {
     return;
   }
 
-  activeProjectId = activeId;
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const entryRect = entry.getBoundingClientRect();
+  const topThreshold = 120;
+  const bottomThreshold = viewportHeight - 120;
+  const isVisible = entryRect.top >= topThreshold && entryRect.bottom <= bottomThreshold;
 
-  rows.forEach((row) => {
-    row.classList.toggle("is-active", row.dataset.project === activeId);
+  if (isVisible) {
+    return;
+  }
+
+  const absoluteTop = window.scrollY + entryRect.top;
+  const targetTop = absoluteTop - (viewportHeight / 2) + (entryRect.height / 2);
+
+  window.scrollTo({
+    top: Math.max(0, targetTop),
+    behavior: "smooth",
   });
+}
 
-  rowEntries.forEach((entry, entryProjectId) => {
-    entry.classList.toggle("is-open", entryProjectId === activeId);
-  });
+function activateProject(projectId, source = "right") {
+  const activeId = projectContent[projectId] ? projectId : DEFAULT_PROJECT;
+  const hasChanged = activeId !== activeProjectId;
 
-  cards.forEach((card) => {
-    const isActive = card.dataset.project === activeId;
+  if (hasChanged) {
+    activeProjectId = activeId;
 
-    card.classList.toggle("is-active", isActive);
+    rows.forEach((row) => {
+      row.classList.toggle("is-active", row.dataset.project === activeId);
+    });
 
-    if (isActive) {
-      scheduleCardScroll(card);
+    rowEntries.forEach((entry, entryProjectId) => {
+      entry.classList.toggle("is-open", entryProjectId === activeId);
+    });
+
+    cards.forEach((card) => {
+      card.classList.toggle("is-active", card.dataset.project === activeId);
+    });
+  }
+
+  const activeCard = cards.find((card) => card.dataset.project === activeId);
+  const activeEntry = rowEntries.get(activeId);
+
+  if (source === "right") {
+    if (activeCard) {
+      scheduleCardScroll(activeCard);
     }
-  });
+    return;
+  }
+
+  clearCardScrollIntent();
+
+  if (activeEntry) {
+    scrollWorkEntryIntoView(activeEntry);
+  }
 }
 
 function clearHoverIntent() {
@@ -258,10 +304,10 @@ function clearHoverIntent() {
   }
 }
 
-function scheduleProjectActivation(projectId) {
+function scheduleProjectActivation(projectId, source = "right") {
   clearHoverIntent();
   hoverIntentTimer = window.setTimeout(() => {
-    activateProject(projectId);
+    activateProject(projectId, source);
     hoverIntentTimer = null;
   }, HOVER_INTENT_DELAY);
 }
@@ -285,11 +331,11 @@ themeToggle?.addEventListener("click", () => {
 });
 
 rows.forEach((row) => {
-  row.addEventListener("mouseenter", () => scheduleProjectActivation(row.dataset.project));
+  row.addEventListener("mouseenter", () => scheduleProjectActivation(row.dataset.project, "right"));
   row.addEventListener("mouseleave", clearHoverIntent);
   row.addEventListener("focus", () => {
     clearHoverIntent();
-    activateProject(row.dataset.project);
+    activateProject(row.dataset.project, "right");
   });
   row.addEventListener("click", (event) => {
     clearHoverIntent();
@@ -298,16 +344,16 @@ rows.forEach((row) => {
       event.preventDefault();
     }
 
-    activateProject(row.dataset.project);
+    activateProject(row.dataset.project, "right");
   });
 });
 
 cards.forEach((card) => {
-  card.addEventListener("mouseenter", () => scheduleProjectActivation(card.dataset.project));
+  card.addEventListener("mouseenter", () => scheduleProjectActivation(card.dataset.project, "left"));
   card.addEventListener("mouseleave", clearHoverIntent);
   card.addEventListener("focus", () => {
     clearHoverIntent();
-    activateProject(card.dataset.project);
+    activateProject(card.dataset.project, "left");
   });
 });
 
@@ -318,5 +364,5 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-activateProject(DEFAULT_PROJECT);
-setTheme(siteShell?.getAttribute("data-theme") || "dark");
+activateProject(DEFAULT_PROJECT, "right");
+setTheme(getPreferredTheme(siteShell?.getAttribute("data-theme") || "dark"));
