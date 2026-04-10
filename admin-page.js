@@ -543,9 +543,10 @@ function renderProjectList() {
       const isActive = project.slug === selectedProjectSlug ? "is-active" : "";
       const isLocal = !baseProjects[project.slug] ? "admin-project-item-local" : "";
       const hiddenLabel = project.isHidden ? '<small class="admin-project-flag">hidden</small>' : "";
+      const activeLabel = project.slug === selectedProjectSlug ? '<small class="admin-project-flag admin-project-flag-active">editing</small>' : "";
       return `
         <button class="admin-project-item ${isActive} ${isLocal}" type="button" data-project-slug="${project.slug}">
-          <span>${project.navLabel || project.title || project.slug}${hiddenLabel}</span>
+          <span>${project.navLabel || project.title || project.slug}${hiddenLabel}${activeLabel}</span>
           <span>${project.yearLabel || "draft"}</span>
         </button>
       `;
