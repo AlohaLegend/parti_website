@@ -11,6 +11,7 @@ const adminExportProjectsButton = document.querySelector("#admin-export-projects
 const adminResetProjectsButton = document.querySelector("#admin-reset-projects");
 const adminPreviewProjectButton = document.querySelector("#admin-preview-project");
 const adminRevertProjectButton = document.querySelector("#admin-revert-project");
+const adminDeleteProjectButton = document.querySelector("#admin-delete-project");
 const adminGalleryList = document.querySelector("#admin-gallery-list");
 const adminGalleryUploadInput = document.querySelector("#admin-gallery-upload");
 const adminAuthForm = document.querySelector("#admin-auth-form");
@@ -45,6 +46,7 @@ const adminFields = {
   imageAlt: document.querySelector("#admin-image-alt"),
   liveUrl: document.querySelector("#admin-live-url"),
   showInCollage: document.querySelector("#admin-show-in-collage"),
+  isHidden: document.querySelector("#admin-is-hidden"),
   copy: document.querySelector("#admin-copy"),
   secondary: document.querySelector("#admin-secondary"),
   detailTitle: document.querySelector("#admin-detail-title"),
@@ -100,6 +102,7 @@ function syncEditorAccess() {
     adminResetProjectsButton,
     adminPreviewProjectButton,
     adminRevertProjectButton,
+    adminDeleteProjectButton,
   ];
 
   controlledButtons.forEach((button) => {
@@ -110,7 +113,11 @@ function syncEditorAccess() {
 
   adminForm?.classList.toggle("is-disabled", !canEdit);
   adminForm?.querySelectorAll("input, textarea, button").forEach((field) => {
-    if (field === adminPreviewProjectButton || field === adminRevertProjectButton) {
+    if (
+      field === adminPreviewProjectButton ||
+      field === adminRevertProjectButton ||
+      field === adminDeleteProjectButton
+    ) {
       field.disabled = !canEdit;
       return;
     }
@@ -456,6 +463,7 @@ function createBlankProject() {
     liveUrl: "",
     gallery: [],
     showInCollage: true,
+    isHidden: false,
     pageUrl: ""
   };
 }
@@ -476,9 +484,10 @@ function renderProjectList() {
     .map((project) => {
       const isActive = project.slug === selectedProjectSlug ? "is-active" : "";
       const isLocal = !baseProjects[project.slug] ? "admin-project-item-local" : "";
+      const hiddenLabel = project.isHidden ? '<small class="admin-project-flag">hidden</small>' : "";
       return `
         <button class="admin-project-item ${isActive} ${isLocal}" type="button" data-project-slug="${project.slug}">
-          <span>${project.navLabel || project.title || project.slug}</span>
+          <span>${project.navLabel || project.title || project.slug}${hiddenLabel}</span>
           <span>${project.yearLabel || "draft"}</span>
         </button>
       `;
@@ -506,6 +515,7 @@ function populateForm(project) {
   adminFields.imageAlt.value = nextProject.imageAlt || "";
   adminFields.liveUrl.value = nextProject.liveUrl || "";
   adminFields.showInCollage.checked = nextProject.showInCollage !== false;
+  adminFields.isHidden.checked = nextProject.isHidden === true;
   adminFields.copy.value = nextProject.copy || "";
   adminFields.secondary.value = nextProject.secondary || "";
   adminFields.detailTitle.value = nextProject.detailTitle || "";
@@ -546,6 +556,7 @@ function collectFormProject() {
     imageAlt: adminFields.imageAlt.value.trim(),
     liveUrl: adminFields.liveUrl.value.trim(),
     showInCollage: adminFields.showInCollage.checked,
+    isHidden: adminFields.isHidden.checked,
     copy: adminFields.copy.value.trim(),
     secondary: adminFields.secondary.value.trim(),
     detailTitle: adminFields.detailTitle.value.trim(),
@@ -571,6 +582,32 @@ async function saveProject(project) {
   }
 
   return normalizedProject;
+}
+
+async function deleteProject(slug) {
+  if (!slug) {
+    renderStatus("Select a project before deleting it.");
+    return;
+  }
+
+  projectStore?.removeProject?.(slug);
+
+  try {
+    await pushWorkingProjectsToSupabase();
+  } catch (error) {
+    console.warn("Unable to delete project from Supabase.", error);
+    renderStatus(`Deleted locally, but the shared content update failed: ${error.message}`);
+  }
+
+  workingProjects = projectStore?.getMergedProjects() || {};
+
+  const remainingSlugs = Object.keys(workingProjects);
+  const nextSlug = remainingSlugs.find((projectSlug) => projectSlug !== slug) || remainingSlugs[0] || "";
+
+  selectedProjectSlug = nextSlug;
+  populateForm(nextSlug ? workingProjects[nextSlug] : createBlankProject());
+  renderProjectList();
+  renderStatus(`Deleted ${slug} from the project library.`);
 }
 
 function revertProject(slug) {
@@ -675,6 +712,17 @@ adminRevertProjectButton?.addEventListener("click", () => {
   }
 
   revertProject(slug);
+});
+
+adminDeleteProjectButton?.addEventListener("click", async () => {
+  const slug = adminFields.slug.value.trim();
+
+  if (!slug) {
+    renderStatus("No project selected to delete.");
+    return;
+  }
+
+  await deleteProject(slug);
 });
 
 adminForm?.addEventListener("submit", async (event) => {

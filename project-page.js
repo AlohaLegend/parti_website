@@ -207,6 +207,7 @@ function renderProject(project) {
 
   if (projectList) {
     const items = Object.values(projectLibrary)
+      .filter((entry) => entry.slug === project.slug || entry.isHidden !== true)
       .map((entry) => {
         const activeClass = entry.slug === project.slug ? "is-active" : "";
         return `

@@ -875,6 +875,15 @@ button {
   margin-left: 8px;
 }
 
+.admin-project-flag {
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+}
+
 .admin-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
