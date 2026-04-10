@@ -12,27 +12,24 @@ const rows = Array.from(document.querySelectorAll(".work-row"));
 const projectContent = window.PARTI_PROJECTS || {};
 const DEFAULT_PROJECT = "marshalls-cbs";
 const rowEntries = new Map();
-const HOVER_INTENT_DELAY = 120;
+const HOVER_INTENT_DELAY = 210;
+const CARD_SCROLL_DELAY = 180;
+const CARD_SCROLL_DURATION = 680;
 const COLLAGE_BLUEPRINTS = [
-  { x: 4, y: 4, rotate: -5, shape: "portrait" },
-  { x: 34, y: 2, rotate: 3, shape: "landscape" },
-  { x: 61, y: 6, rotate: -3, shape: "square" },
-  { x: 16, y: 18, rotate: 4, shape: "landscape" },
-  { x: 49, y: 20, rotate: -4, shape: "portrait" },
-  { x: 72, y: 22, rotate: 3, shape: "landscape" },
-  { x: 5, y: 38, rotate: 2, shape: "square" },
-  { x: 28, y: 42, rotate: -3, shape: "portrait" },
-  { x: 57, y: 42, rotate: 5, shape: "landscape" },
-  { x: 76, y: 44, rotate: -2, shape: "portrait" },
-  { x: 10, y: 61, rotate: -4, shape: "landscape" },
-  { x: 39, y: 62, rotate: 3, shape: "square" },
-  { x: 66, y: 66, rotate: -5, shape: "portrait" },
-  { x: 22, y: 79, rotate: 2, shape: "landscape" },
-  { x: 52, y: 82, rotate: -2, shape: "landscape" },
-  { x: 75, y: 80, rotate: 4, shape: "square" }
+  { shape: "tall" },
+  { shape: "landscape" },
+  { shape: "square" },
+  { shape: "landscape" },
+  { shape: "square" },
+  { shape: "portrait" },
+  { shape: "landscape" },
+  { shape: "square" }
 ];
 let hoverIntentTimer = null;
+let cardScrollTimer = null;
+let cardScrollAnimationFrame = null;
 let cards = [];
+let activeProjectId = null;
 
 function createDropdown(project) {
   const dropdown = document.createElement("div");
@@ -80,10 +77,6 @@ function createImageCard(projectId, index) {
   card.dataset.project = projectId;
   card.href = project.pageUrl;
   card.setAttribute("aria-label", `Open ${project.title} project`);
-  card.style.setProperty("--card-left", `${blueprint.x}%`);
-  card.style.setProperty("--card-top", `${blueprint.y}%`);
-  card.style.setProperty("--card-rotate", `${blueprint.rotate}deg`);
-  card.style.setProperty("--stack-order", String(index + 1));
 
   const fill = document.createElement("div");
   fill.className = "image-fill";
@@ -99,7 +92,9 @@ function createImageCard(projectId, index) {
   return card;
 }
 
-const orderedProjectIds = rows.map((row) => row.dataset.project);
+const orderedProjectIds = rows
+  .map((row) => row.dataset.project)
+  .filter((projectId) => projectContent[projectId]?.showInCollage !== false);
 
 orderedProjectIds.forEach((projectId, index) => {
   const card = createImageCard(projectId, index);
@@ -157,8 +152,85 @@ function setTheme(theme) {
   }
 }
 
+function clearCardScrollAnimation() {
+  if (cardScrollAnimationFrame) {
+    window.cancelAnimationFrame(cardScrollAnimationFrame);
+    cardScrollAnimationFrame = null;
+  }
+}
+
+function easeInOutCubic(progress) {
+  return progress < 0.5
+    ? 4 * progress * progress * progress
+    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+}
+
+function scrollCardIntoView(card) {
+  if (!card || !imageField) {
+    return;
+  }
+
+  const fieldRect = imageField.getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
+  const currentTop = imageField.scrollTop;
+  const visibleHeight = imageField.clientHeight;
+  const cardOffsetTop = cardRect.top - fieldRect.top + currentTop;
+  const centeredTop = cardOffsetTop - (visibleHeight / 2) + (cardRect.height / 2);
+  const maxScrollTop = Math.max(0, imageField.scrollHeight - visibleHeight);
+  const targetTop = Math.min(Math.max(0, centeredTop), maxScrollTop);
+
+  if (Math.abs(targetTop - currentTop) < 6) {
+    return;
+  }
+
+  clearCardScrollAnimation();
+
+  const startTop = currentTop;
+  const startTime = performance.now();
+
+  const animate = (timestamp) => {
+    const elapsed = timestamp - startTime;
+    const progress = Math.min(elapsed / CARD_SCROLL_DURATION, 1);
+    const easedProgress = easeInOutCubic(progress);
+    const nextTop = startTop + (targetTop - startTop) * easedProgress;
+
+    imageField.scrollTop = nextTop;
+
+    if (progress < 1) {
+      cardScrollAnimationFrame = window.requestAnimationFrame(animate);
+    } else {
+      cardScrollAnimationFrame = null;
+    }
+  };
+
+  cardScrollAnimationFrame = window.requestAnimationFrame(animate);
+}
+
+function clearCardScrollIntent() {
+  if (cardScrollTimer) {
+    window.clearTimeout(cardScrollTimer);
+    cardScrollTimer = null;
+  }
+
+  clearCardScrollAnimation();
+}
+
+function scheduleCardScroll(card) {
+  clearCardScrollIntent();
+  cardScrollTimer = window.setTimeout(() => {
+    scrollCardIntoView(card);
+    cardScrollTimer = null;
+  }, CARD_SCROLL_DELAY);
+}
+
 function activateProject(projectId) {
   const activeId = projectContent[projectId] ? projectId : DEFAULT_PROJECT;
+
+  if (activeId === activeProjectId) {
+    return;
+  }
+
+  activeProjectId = activeId;
 
   rows.forEach((row) => {
     row.classList.toggle("is-active", row.dataset.project === activeId);
@@ -174,9 +246,7 @@ function activateProject(projectId) {
     card.classList.toggle("is-active", isActive);
 
     if (isActive) {
-      card.style.setProperty("--active-stack-order", "99");
-    } else {
-      card.style.removeProperty("--active-stack-order");
+      scheduleCardScroll(card);
     }
   });
 }

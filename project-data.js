@@ -470,3 +470,329 @@ window.PARTI_PROJECTS = {
     pageUrl: "project.html?slug=houseplant"
   }
 };
+
+function createArchiveProject(config) {
+  return {
+    slug: config.slug,
+    title: config.title,
+    navLabel: config.navLabel,
+    yearLabel: config.yearLabel,
+    kicker: config.kicker || "completed project",
+    client: config.client,
+    meta: config.meta || `Client: ${config.client} | Date: ${config.date} | Instagram archive project`,
+    copy: config.copy,
+    secondary:
+      config.secondary ||
+      "Added from PARTI's Instagram archive as an individual project entry while the portfolio continues expanding with more documentation and credits.",
+    detailTitle: config.detailTitle || config.title,
+    detailLead: config.detailLead || config.copy,
+    detailBody:
+      config.detailBody ||
+      "This project page is sourced from PARTI's public Instagram post and currently highlights the core concept, collaborators, and a lead archive image.",
+    detailSupport:
+      config.detailSupport ||
+      "The archive pass prioritizes making each published project discoverable as its own case-study entry before a fuller asset and copy expansion.",
+    image: config.image,
+    imageAlt: config.imageAlt || `${config.title} Instagram archive preview`,
+    gallery: config.gallery || [{ src: config.image, alt: config.imageAlt || `${config.title} archive image` }],
+    liveUrl: config.liveUrl,
+    pageUrl: `project.html?slug=${config.slug}`,
+    showInCollage: config.showInCollage ?? false
+  };
+}
+
+function buildInstagramAssetGallery(slug, count, title) {
+  return Array.from({ length: count }, (_, index) => ({
+    src: `assets/${slug}-${String(index + 1).padStart(2, "0")}.jpg`,
+    alt: `${title} archive image ${index + 1}`
+  }));
+}
+
+Object.assign(window.PARTI_PROJECTS, {
+  "zcon-zstars-stage": createArchiveProject({
+    slug: "zcon-zstars-stage",
+    title: "ZCON / ZSTARS Stage Design",
+    navLabel: "zcon / zstars stage",
+    yearLabel: "2025",
+    date: "November 11, 2025",
+    client: "ZCON / ZSTARS",
+    copy: "A low-ceiling, high-energy stage environment for ZCON / ZSTARS with design, fabrication, and installation handled by PARTI.",
+    image: "assets/zcon-zstars-stage-01.jpg",
+    gallery: buildInstagramAssetGallery("zcon-zstars-stage", 4, "ZCON / ZSTARS Stage Design"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DQ707ULknpI/",
+    showInCollage: true
+  }),
+  "sonsies-garden-renders": createArchiveProject({
+    slug: "sonsies-garden-renders",
+    title: "Sonsie's Garden Renders",
+    navLabel: "sonsie's garden renders",
+    yearLabel: "2025",
+    date: "November 10, 2025",
+    client: "Sonsie Skin",
+    copy: "A process-focused archive entry showing the sketches and renders that shaped Sonsie's Garden before fabrication and install.",
+    image: "assets/sonsies-garden-renders-01.jpg",
+    gallery: buildInstagramAssetGallery("sonsies-garden-renders", 17, "Sonsie's Garden Renders"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DQ5V9cKATBR/",
+    showInCollage: true
+  }),
+  "by-overnight-buildout": createArchiveProject({
+    slug: "by-overnight-buildout",
+    title: "By Overnight Vision Buildout",
+    navLabel: "by overnight buildout",
+    yearLabel: "2025",
+    date: "October 8, 2025",
+    client: "by_overnight",
+    meta: "Client: by_overnight | Date: October 8, 2025 | Executive production by by_overnight",
+    copy: "Always sweet to bring by_overnight's vision to life, this project captures a cherry-toned event environment built through close collaboration between executive production, fabrication, lighting, and photography partners.",
+    secondary: "Instagram credits call out executive production by by_overnight, fabrication by PARTI, sound and lighting by LivePros, and photography by brooke.olsen.la.",
+    detailLead: "A full event buildout brought to life for by_overnight, with PARTI handling fabrication across a playful, high-touch environment.",
+    detailBody: "This project centered on translating by_overnight's creative direction into a polished physical build, with PARTI leading fabrication and supporting the final event execution alongside LivePros on sound and lighting.",
+    detailSupport: "This case study now uses the full seven-image carousel pulled from the Instagram post, giving the project page a fuller visual story instead of a single archive image.",
+    image: "assets/by-overnight-buildout-01.jpg",
+    gallery: buildInstagramAssetGallery("by-overnight-buildout", 7, "By Overnight Vision Buildout"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DPkDyLtgToa/",
+    showInCollage: true
+  }),
+  "dairy-boy-nyc-downstairs": createArchiveProject({
+    slug: "dairy-boy-nyc-downstairs",
+    title: "Dairy Boy NYC Pop-Up Downstairs",
+    navLabel: "dairy boy downstairs",
+    yearLabel: "2025",
+    date: "October 1, 2025",
+    client: "Dairy Boy / Shopify",
+    meta: "Client: Dairy Boy / Shopify | Date: October 1, 2025 | NYC pop-up lower level",
+    copy: "The downstairs buildout for Dairy Boy's New York pop-up at the Shopify space, treated as its own project moment within the larger takeover.",
+    secondary: "This archive entry documents the lower-level experience as a separate spatial build, distinct from the upstairs installation captured in a companion post.",
+    detailBody: "PARTI's archive distinguishes the downstairs and upstairs environments as separate buildouts, which gives the portfolio room to show how the event changed floor by floor inside the Shopify space.",
+    image: "assets/dairy-boy-nyc-downstairs-01.jpg",
+    gallery: buildInstagramAssetGallery("dairy-boy-nyc-downstairs", 4, "Dairy Boy NYC Pop-Up Downstairs"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DPR_4StktDt/",
+    showInCollage: true
+  }),
+  "dairy-boy-nyc-upstairs": createArchiveProject({
+    slug: "dairy-boy-nyc-upstairs",
+    title: "Dairy Boy NYC Pop-Up Upstairs",
+    navLabel: "dairy boy upstairs",
+    yearLabel: "2025",
+    date: "September 29, 2025",
+    client: "Dairy Boy / Shopify",
+    meta: "Client: Dairy Boy / Shopify | Date: September 29, 2025 | NYC pop-up upper level",
+    copy: "The upstairs environment for Dairy Boy's New York pop-up at Shopify, documented separately from the downstairs buildout to preserve each floor's identity.",
+    secondary: "The Instagram post positions this as the upper-level counterpart to the downstairs Dairy Boy pop-up build, making the two entries related but not duplicated.",
+    detailBody: "This project page captures the upstairs portion of the Dairy Boy New York pop-up as its own archive case study, reflecting how PARTI's work shifted across the venue.",
+    image: "assets/dairy-boy-nyc-upstairs-01.jpg",
+    gallery: buildInstagramAssetGallery("dairy-boy-nyc-upstairs", 6, "Dairy Boy NYC Pop-Up Upstairs"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DPMtbG9kvi5/",
+    showInCollage: true
+  }),
+  "hypebeast-flea-modelo": createArchiveProject({
+    slug: "hypebeast-flea-modelo",
+    title: "Modelo x Hypebeast Flea",
+    navLabel: "modelo hypebeast flea",
+    yearLabel: "2025",
+    date: "August 18, 2025",
+    client: "Modelo USA / Hypebeast Flea",
+    meta: "Client: Modelo USA / Hypebeast Flea | Date: August 18, 2025 | 3 of 3 flea buildouts",
+    copy: "One of three Hypebeast Flea buildouts by PARTI, this entry focuses on the Modelo USA space and the translation of lexmflee's sketches into a live environment.",
+    secondary: "Instagram identifies this as 3 of 3 spaces that PARTI handled for the flea, which keeps it separate from the Black Twitter and Depop buildouts rather than doubling them up.",
+    image: "assets/hypebeast-flea-modelo-01.jpg",
+    gallery: buildInstagramAssetGallery("hypebeast-flea-modelo", 6, "Modelo x Hypebeast Flea"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DNgTtWXuCt_/",
+    showInCollage: true
+  }),
+  "hypebeast-flea-black-twitter": createArchiveProject({
+    slug: "hypebeast-flea-black-twitter",
+    title: "Black Twitter x Hypebeast Flea",
+    navLabel: "black twitter flea",
+    yearLabel: "2025",
+    date: "August 14, 2025",
+    client: "Black Twitter / Hypebeast Flea",
+    meta: "Client: Black Twitter / Hypebeast Flea | Date: August 14, 2025 | 2 of 3 flea buildouts",
+    copy: "The Black Twitter space at the Hypebeast Flea, documented as its own buildout within PARTI's three-part installation series for the market.",
+    secondary: "Instagram positions this as 2 of 3 flea buildouts, which helps confirm it should remain a standalone case study instead of being merged with the Modelo or Depop environments.",
+    image: "assets/hypebeast-flea-black-twitter-01.jpg",
+    gallery: buildInstagramAssetGallery("hypebeast-flea-black-twitter", 8, "Black Twitter x Hypebeast Flea"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DNWAW_Mu6VZ/",
+    showInCollage: true
+  }),
+  "hypebeast-flea-depop": createArchiveProject({
+    slug: "hypebeast-flea-depop",
+    title: "Depop x Hypebeast Flea",
+    navLabel: "depop hypebeast flea",
+    yearLabel: "2025",
+    date: "August 6, 2025",
+    client: "Depop / Hypebeast Flea",
+    meta: "Client: Depop / Hypebeast Flea | Date: August 6, 2025 | 1 of 3 flea buildouts",
+    copy: "The Depop pop-up environment at the Hypebeast Flea, presented as the first of three distinct spaces PARTI handled for the event.",
+    secondary: "Because Instagram frames this as 1 of 3 buildouts, it reads as its own project page rather than a duplicate of the other Hypebeast Flea entries.",
+    image: "assets/hypebeast-flea-depop-01.jpg",
+    gallery: buildInstagramAssetGallery("hypebeast-flea-depop", 6, "Depop x Hypebeast Flea"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DNB3F17hipP/",
+    showInCollage: true
+  }),
+  "dibs-beauty-launch": createArchiveProject({
+    slug: "dibs-beauty-launch",
+    title: "DIBS Beauty Launch Event",
+    navLabel: "dibs beauty launch",
+    yearLabel: "2025",
+    date: "August 4, 2025",
+    client: "DIBS Beauty / by_overnight",
+    meta: "Client: DIBS Beauty / by_overnight | Date: August 4, 2025 | Nova Studios, Los Angeles",
+    copy: "A product launch event for DIBS Beauty at Nova Studios, delivered by PARTI in collaboration with by_overnight.",
+    secondary: "The Instagram caption also credits photography by lexgallegos, which helps anchor this as a documented launch event rather than a generic studio build.",
+    detailBody: "This archive page captures a beauty launch environment staged at Nova Studios, with PARTI supporting a brand-forward event moment and by_overnight as a key collaborator.",
+    image: "assets/dibs-beauty-launch-01.jpg",
+    gallery: buildInstagramAssetGallery("dibs-beauty-launch", 7, "DIBS Beauty Launch Event"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DM8cXPmSW_7/",
+    showInCollage: true
+  }),
+  "outlander-blood-of-my-blood": createArchiveProject({
+    slug: "outlander-blood-of-my-blood",
+    title: "Outlander: Blood of My Blood",
+    navLabel: "outlander blood of my blood",
+    yearLabel: "2025",
+    date: "July 29, 2025",
+    client: "Westhaus Group / Outlander",
+    meta: "Client: Westhaus Group / Outlander | Date: July 29, 2025 | Los Angeles premiere wall",
+    copy: "A Los Angeles premiere wall install for Outlander: Blood of My Blood, built out by PARTI after being brought in by Westhaus Group.",
+    secondary: "The post frames this as a fast-turn wall install for a premiere, which keeps it distinct from the other film and TV press-wall projects in the archive.",
+    image: "assets/outlander-blood-of-my-blood-01.jpg",
+    gallery: buildInstagramAssetGallery("outlander-blood-of-my-blood", 3, "Outlander: Blood of My Blood"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DMtBwm5zUHf/",
+    showInCollage: true
+  }),
+  "summer-fridays-tablescape": createArchiveProject({
+    slug: "summer-fridays-tablescape",
+    title: "Summer Fridays Tablescape",
+    navLabel: "summer fridays tablescape",
+    yearLabel: "2025",
+    date: "July 22, 2025",
+    client: "Summer Fridays / Sophie's Table",
+    meta: "Client: Summer Fridays / Sophie's Table | Date: July 22, 2025 | Tablescape and projection moment",
+    copy: "A soft, detail-driven tabletop project where PARTI handled plate creation, tablescape styling, a satin seating chart, and a projected photo moment.",
+    secondary: "The Instagram description gives this entry a clearer service mix than the initial archive pass, so it now reads as a fuller production and styling case study.",
+    image: "assets/summer-fridays-tablescape-01.jpg",
+    gallery: buildInstagramAssetGallery("summer-fridays-tablescape", 3, "Summer Fridays Tablescape"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DMa-4wGycW8/",
+    showInCollage: true
+  }),
+  "ikwydls-premiere-wall": createArchiveProject({
+    slug: "ikwydls-premiere-wall",
+    title: "I Know What You Did Last Summer",
+    navLabel: "ikwydls premiere wall",
+    yearLabel: "2025",
+    date: "July 15, 2025",
+    client: "Westhaus Group / IKWYDLS",
+    meta: "Client: Westhaus Group / IKWYDLS | Date: July 15, 2025 | 100-foot premiere wall",
+    copy: "A 100-foot premiere wall built in a single day for I Know What You Did Last Summer, documented as a standalone fabrication project.",
+    secondary: "This one stays separate from the Outlander wall because the caption clearly anchors it to a different film, scale, and turnaround challenge.",
+    image: "assets/ikwydls-premiere-wall-01.jpg",
+    gallery: buildInstagramAssetGallery("ikwydls-premiere-wall", 1, "I Know What You Did Last Summer"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DMJUDa2yDFq/",
+    showInCollage: true
+  }),
+  "running-points-fyc": createArchiveProject({
+    slug: "running-points-fyc",
+    title: "Running Point FYC Event",
+    navLabel: "running point fyc",
+    yearLabel: "2025",
+    date: "July 2, 2025",
+    client: "Warner Bros TV / Netflix / Westhaus Group",
+    copy: "A custom press wall and event fabrication package for the Running Point FYC event at the UCLA Health Training Center.",
+    image: "assets/running-points-fyc-01.jpg",
+    gallery: buildInstagramAssetGallery("running-points-fyc", 4, "Running Point FYC Event"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DLntLEgBR1E/",
+    showInCollage: true
+  }),
+  "invisalign-modular-tour": createArchiveProject({
+    slug: "invisalign-modular-tour",
+    title: "Invisalign Modular Tour",
+    navLabel: "invisalign modular tour",
+    yearLabel: "2025",
+    date: "July 1, 2025",
+    client: "Invisalign / Smarty Social",
+    copy: "A modular activation system designed to travel from San Francisco to San Jose to New York, repurposed at each stop without a full rebuild.",
+    image: "assets/invisalign-modular-tour-01.jpg",
+    gallery: buildInstagramAssetGallery("invisalign-modular-tour", 7, "Invisalign Modular Tour"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DLlev90y_G_/",
+    showInCollage: true
+  }),
+  "pinterest-coachella-collage": createArchiveProject({
+    slug: "pinterest-coachella-collage",
+    title: "Pinterest Coachella Collage Night",
+    navLabel: "pinterest coachella",
+    yearLabel: "2025",
+    date: "April 2, 2025",
+    client: "Pinterest / United Talent",
+    copy: "A collage-driven Coachella event at Craft Contemporary for Pinterest and United Talent, built around community making and an expressive guest experience.",
+    image: "assets/pinterest-coachella-collage-01.jpg",
+    gallery: buildInstagramAssetGallery("pinterest-coachella-collage", 20, "Pinterest Coachella Collage Night"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/DH8_P7FvldW/",
+    showInCollage: true
+  }),
+  "zcon-build-pov": createArchiveProject({
+    slug: "zcon-build-pov",
+    title: "ZCON Build POV",
+    navLabel: "zcon build pov",
+    yearLabel: "2024",
+    date: "October 21, 2024",
+    client: "ZCON",
+    copy: "A behind-the-build archive post from ZCON's account showing PARTI bringing the Gen Z conference environment to life.",
+    image: "assets/zcon-build-pov-01.jpg",
+    gallery: buildInstagramAssetGallery("zcon-build-pov", 2, "ZCON Build POV"),
+    liveUrl: "https://www.instagram.com/zcon.xyz/p/DBZtWDTv5bG/",
+    showInCollage: true
+  }),
+  "omar-apollo-dispose-of-me": createArchiveProject({
+    slug: "omar-apollo-dispose-of-me",
+    title: "Omar Apollo - Dispose of Me",
+    navLabel: "omar apollo dispose of me",
+    yearLabel: "2024",
+    date: "June 24, 2024",
+    client: "Omar Apollo / YouTube",
+    copy: "A performance concept designed and fabricated for Omar Apollo and the musicians behind Dispose of Me, centered on shared musical experience.",
+    image: "assets/omar-apollo-dispose-of-me-01.jpg",
+    gallery: buildInstagramAssetGallery("omar-apollo-dispose-of-me", 6, "Omar Apollo - Dispose of Me"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/C8npeCvvXuZ/",
+    showInCollage: true
+  }),
+  "nova-launch-party": createArchiveProject({
+    slug: "nova-launch-party",
+    title: "Nova Launch Party",
+    navLabel: "nova launch party",
+    yearLabel: "2024",
+    date: "May 31, 2024",
+    client: "Nova / adidas / partners",
+    copy: "A launch party build for Nova with adidas and brand partners, treated as its own event entry within PARTI's archive.",
+    image: "assets/nova-launch-party-01.jpg",
+    gallery: buildInstagramAssetGallery("nova-launch-party", 5, "Nova Launch Party"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/C7pbM-UyhVN/",
+    showInCollage: true
+  }),
+  "fyc-emmys-presswall": createArchiveProject({
+    slug: "fyc-emmys-presswall",
+    title: "FYC Emmys Press Wall",
+    navLabel: "fyc emmys press wall",
+    yearLabel: "2024",
+    date: "May 23, 2024",
+    client: "Westhaus Group / FYC Emmys",
+    copy: "A floral-forward FYC Emmys 2024 press wall built by PARTI from Westhaus Group's vision and brought to life with Floral Crush.",
+    image: "assets/fyc-emmys-presswall-01.jpg",
+    gallery: buildInstagramAssetGallery("fyc-emmys-presswall", 4, "FYC Emmys Press Wall"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/C7VGnxYPWit/",
+    showInCollage: true
+  }),
+  "omar-apollo-live-for-me": createArchiveProject({
+    slug: "omar-apollo-live-for-me",
+    title: "Omar Apollo - Live for Me",
+    navLabel: "omar apollo live for me",
+    yearLabel: "2024",
+    date: "January 31, 2024",
+    client: "Omar Apollo / MoMA PS1",
+    copy: "An immersive listening-party environment for Omar Apollo at MoMA PS1, built around four distinct listening pods and a fully transported soundscape.",
+    image: "assets/omar-apollo-live-for-me-01.jpg",
+    gallery: buildInstagramAssetGallery("omar-apollo-live-for-me", 10, "Omar Apollo - Live for Me"),
+    liveUrl: "https://www.instagram.com/letsparti.co/p/C2xtlL1v3jL/",
+    showInCollage: true
+  })
+});
