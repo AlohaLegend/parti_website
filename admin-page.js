@@ -20,6 +20,7 @@ const adminAuthStatus = document.querySelector("#admin-auth-status");
 
 const THEME_STORAGE_KEY = "parti-theme";
 const ADMIN_EMAIL_DOMAIN = "@letsparti.co";
+const CLEAN_ADMIN_URL = `${window.location.origin}${window.location.pathname}`;
 const projectStore = window.PARTI_PROJECT_STORE;
 const supabaseClient = window.PARTI_SUPABASE?.client;
 const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
@@ -707,7 +708,7 @@ adminLoginButton?.addEventListener("click", async () => {
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: window.location.href,
+      redirectTo: CLEAN_ADMIN_URL,
       queryParams: {
         hd: "letsparti.co",
       },
@@ -743,6 +744,10 @@ document.addEventListener("keydown", (event) => {
 });
 
 function initializeAdminPage() {
+  if (window.location.search || window.location.hash) {
+    window.history.replaceState({}, document.title, CLEAN_ADMIN_URL);
+  }
+
   workingProjects = projectStore?.getMergedProjects() || JSON.parse(JSON.stringify(window.PARTI_PROJECTS || {}));
 
   const initialSlug = Object.keys(workingProjects)[0] || "";
