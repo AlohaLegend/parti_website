@@ -96,7 +96,7 @@ function createImageCard(projectId, index) {
 }
 
 function getOrderedProjects() {
-  return Object.values(projectContent);
+  return Object.values(projectContent).filter((project) => project && project.isHidden !== true);
 }
 
 function renderWorksList() {

@@ -13,6 +13,13 @@
       return null;
     }
 
+    if (project.__deleted) {
+      return {
+        slug: project.slug,
+        __deleted: true,
+      };
+    }
+
     const normalized = {
       ...project,
       pageUrl: `project.html?slug=${project.slug}`,
@@ -62,7 +69,9 @@
         slug: project?.slug || slug,
       });
 
-      if (normalized) {
+      if (normalized?.__deleted) {
+        delete merged[slug];
+      } else if (normalized) {
         merged[normalized.slug] = normalized;
       }
     });
@@ -198,7 +207,16 @@
 
   function removeProject(slug) {
     const overrides = readStoredOverrides();
-    delete overrides[slug];
+
+    if (publishedProjects[slug]) {
+      overrides[slug] = {
+        slug,
+        __deleted: true,
+      };
+    } else {
+      delete overrides[slug];
+    }
+
     writeStoredOverrides(overrides);
   }
 
