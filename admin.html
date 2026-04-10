@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARTI | Admin</title>
+  <meta
+    name="description"
+    content="Internal PARTI admin workspace for adding and editing projects."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css?v=20260410g">
+</head>
+<body>
+  <div class="project-page-shell" data-theme="dark" id="admin-page-shell">
+    <header class="site-header">
+      <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="PARTI home">
+        <img class="logo-image header-logo-image" id="header-logo-image" src="assets/parti-logo-main.png" alt="PARTI">
+      </a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">Mode</button>
+    </header>
+
+    <aside class="site-menu" id="site-menu">
+      <nav class="menu-panel" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="index.html#works">Works</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <section class="admin-sidebar">
+        <article class="project-block admin-panel">
+          <p class="detail-kicker">PARTI Admin</p>
+          <h1>Project Editor</h1>
+          <p class="detail-copy">
+            Add new projects, update existing entries, and shape a clean project-data payload that can become the saved source of truth for the public site.
+          </p>
+          <div class="admin-actions">
+            <button class="project-link" id="admin-new-project" type="button">New Project</button>
+            <button class="project-link" id="admin-export-projects" type="button">Export Site JSON</button>
+            <button class="project-link" id="admin-reset-projects" type="button">Reset Local Edits</button>
+          </div>
+          <p class="detail-copy admin-note" id="admin-status">
+            Local admin edits are currently empty.
+          </p>
+        </article>
+
+        <article class="project-block admin-panel">
+          <h2>Projects</h2>
+          <div class="admin-project-list" id="admin-project-list"></div>
+        </article>
+
+        <article class="project-block admin-panel">
+          <h2>Publish</h2>
+          <p class="detail-copy">
+            Publish the current project library into <code>content/projects.json</code> on GitHub so the live site can read the updated content on deploy.
+          </p>
+          <div class="admin-publish-fields">
+            <label class="admin-field admin-field-wide">
+              <span>GitHub Token</span>
+              <input id="admin-github-token" type="password" autocomplete="off" placeholder="GitHub personal access token">
+            </label>
+            <label class="admin-field">
+              <span>Owner</span>
+              <input id="admin-github-owner" type="text" value="AlohaLegend">
+            </label>
+            <label class="admin-field">
+              <span>Repo</span>
+              <input id="admin-github-repo" type="text" value="parti_website">
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Branch</span>
+              <input id="admin-github-branch" type="text" value="master">
+            </label>
+          </div>
+          <div class="admin-actions">
+            <button class="project-link" id="admin-publish-projects" type="button">Publish to GitHub</button>
+          </div>
+          <p class="detail-copy admin-note">
+            This writes the current full project library JSON into the repo. Uploaded local images are published as embedded data URLs unless you move them into repo assets separately.
+          </p>
+        </article>
+      </section>
+
+      <section class="admin-editor">
+        <article class="project-block admin-panel">
+          <h2>Project Fields</h2>
+          <form class="admin-form" id="admin-form">
+            <label class="admin-field">
+              <span>Slug</span>
+              <input id="admin-slug" name="slug" type="text" required>
+            </label>
+            <label class="admin-field">
+              <span>Title</span>
+              <input id="admin-title" name="title" type="text" required>
+            </label>
+            <label class="admin-field">
+              <span>Manifest Label</span>
+              <input id="admin-nav-label" name="navLabel" type="text" required>
+            </label>
+            <label class="admin-field">
+              <span>Year Label</span>
+              <input id="admin-year-label" name="yearLabel" type="text" required>
+            </label>
+            <label class="admin-field">
+              <span>Kicker</span>
+              <input id="admin-kicker" name="kicker" type="text">
+            </label>
+            <label class="admin-field">
+              <span>Client</span>
+              <input id="admin-client" name="client" type="text">
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Meta</span>
+              <input id="admin-meta" name="meta" type="text">
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Lead Image</span>
+              <input id="admin-image" name="image" type="text" placeholder="assets/project-image-01.jpg">
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Image Alt</span>
+              <input id="admin-image-alt" name="imageAlt" type="text">
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Live URL</span>
+              <input id="admin-live-url" name="liveUrl" type="url">
+            </label>
+            <label class="admin-field admin-field-checkbox">
+              <input id="admin-show-in-collage" name="showInCollage" type="checkbox">
+              <span>Show in homepage collage</span>
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Homepage Copy</span>
+              <textarea id="admin-copy" name="copy" rows="3"></textarea>
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Homepage Secondary Copy</span>
+              <textarea id="admin-secondary" name="secondary" rows="3"></textarea>
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Detail Title</span>
+              <input id="admin-detail-title" name="detailTitle" type="text">
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Detail Lead</span>
+              <textarea id="admin-detail-lead" name="detailLead" rows="3"></textarea>
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Detail Body</span>
+              <textarea id="admin-detail-body" name="detailBody" rows="4"></textarea>
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Detail Support</span>
+              <textarea id="admin-detail-support" name="detailSupport" rows="4"></textarea>
+            </label>
+            <div class="admin-field admin-field-wide">
+              <span>Gallery</span>
+              <div class="admin-gallery-editor">
+                <div class="admin-gallery-list" id="admin-gallery-list"></div>
+                <input id="admin-gallery-upload" type="file" accept="image/*" multiple hidden>
+              </div>
+            </div>
+            <div class="admin-actions admin-actions-form">
+              <button class="project-link" type="submit">Save Local Edit</button>
+              <button class="project-link" id="admin-preview-project" type="button">Open Project Page</button>
+              <button class="project-link" id="admin-revert-project" type="button">Revert Project</button>
+            </div>
+          </form>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="project-data.js?v=20260410g"></script>
+  <script src="project-store.js?v=20260410g"></script>
+  <script src="admin-page.js?v=20260410g"></script>
+</body>
+</html>
