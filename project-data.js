@@ -796,3 +796,69 @@ Object.assign(window.PARTI_PROJECTS, {
     showInCollage: true
   })
 });
+
+const PARTI_ADMIN_STORAGE_KEY = "parti-admin-projects";
+
+function cloneProjectData(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function normalizeAdminProject(project) {
+  if (!project || typeof project !== "object" || !project.slug) {
+    return null;
+  }
+
+  const normalized = {
+    ...project,
+    pageUrl: `project.html?slug=${project.slug}`
+  };
+
+  if (!Array.isArray(normalized.gallery) || !normalized.gallery.length) {
+    if (normalized.image) {
+      normalized.gallery = [
+        {
+          src: normalized.image,
+          alt: normalized.imageAlt || `${normalized.title || normalized.slug} image`
+        }
+      ];
+    } else {
+      normalized.gallery = [];
+    }
+  }
+
+  return normalized;
+}
+
+function applyAdminProjectOverrides() {
+  try {
+    const raw = window.localStorage.getItem(PARTI_ADMIN_STORAGE_KEY);
+
+    if (!raw) {
+      return;
+    }
+
+    const parsed = JSON.parse(raw);
+
+    if (!parsed || typeof parsed !== "object") {
+      return;
+    }
+
+    Object.entries(parsed).forEach(([slug, project]) => {
+      const normalized = normalizeAdminProject({
+        ...project,
+        slug: project?.slug || slug
+      });
+
+      if (normalized) {
+        window.PARTI_PROJECTS[normalized.slug] = normalized;
+      }
+    });
+  } catch (error) {
+    console.warn("PARTI admin project overrides could not be applied.", error);
+  }
+}
+
+window.PARTI_ADMIN_STORAGE_KEY = PARTI_ADMIN_STORAGE_KEY;
+window.PARTI_BASE_PROJECTS = cloneProjectData(window.PARTI_PROJECTS);
+
+applyAdminProjectOverrides();

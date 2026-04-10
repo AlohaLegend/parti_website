@@ -336,6 +336,10 @@ button {
   border-bottom: 1px solid var(--line);
 }
 
+.works-list {
+  display: grid;
+}
+
 .work-row {
   transition: background var(--transition), color var(--transition);
   border-bottom: 0;
@@ -774,6 +778,303 @@ button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.admin-main {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.52fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.admin-sidebar,
+.admin-editor {
+  display: grid;
+  gap: 20px;
+}
+
+.admin-panel h1 {
+  margin: 0 0 12px;
+  font-size: clamp(2.3rem, 4vw, 4.2rem);
+  line-height: 0.96;
+  text-transform: uppercase;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.admin-actions-form {
+  margin-top: 8px;
+}
+
+.admin-note {
+  margin-top: 18px;
+}
+
+.admin-project-list {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--line);
+}
+
+.admin-project-item {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.admin-project-item:last-child {
+  border-bottom: 0;
+}
+
+.admin-project-item:hover,
+.admin-project-item.is-active {
+  background: var(--surface);
+}
+
+.admin-project-item-local span:first-child::after {
+  content: " draft";
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  margin-left: 8px;
+}
+
+.admin-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 18px;
+}
+
+.admin-publish-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 18px;
+}
+
+.admin-field {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-field span {
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.admin-field input,
+.admin-field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: inherit;
+  padding: 12px 14px;
+  font: inherit;
+  resize: vertical;
+}
+
+.admin-field input:focus,
+.admin-field textarea:focus {
+  outline: none;
+  border-color: currentColor;
+}
+
+.admin-field-wide {
+  grid-column: 1 / -1;
+}
+
+.admin-field-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 30px;
+}
+
+.admin-field-checkbox input {
+  width: auto;
+  margin: 0;
+}
+
+.admin-field-checkbox span {
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: inherit;
+}
+
+.admin-gallery-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-gallery-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.admin-gallery-preview {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--line);
+  background: #111111;
+  overflow: hidden;
+}
+
+.admin-gallery-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-gallery-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-gallery-add-tile {
+  appearance: none;
+  border: 1px dashed var(--line);
+  background: transparent;
+  color: inherit;
+  min-height: 220px;
+  padding: 18px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.admin-gallery-add-tile span {
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-gallery-add-tile small {
+  color: var(--muted);
+  max-width: 14rem;
+  line-height: 1.5;
+}
+
+.admin-gallery-add-tile.is-dragging {
+  background: var(--surface);
+}
+
+.admin-gallery-tile {
+  position: relative;
+  margin: 0;
+  cursor: grab;
+}
+
+.admin-gallery-tile.is-dragging {
+  opacity: 0.45;
+  transform: scale(0.98);
+}
+
+.admin-gallery-tile.is-drop-target .admin-gallery-preview {
+  border-color: currentColor;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.admin-gallery-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.18));
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.admin-gallery-tile:hover .admin-gallery-overlay,
+.admin-gallery-tile:focus-within .admin-gallery-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.admin-gallery-label {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-gallery-alt-label {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-gallery-alt-label span {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-gallery-alt {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.38);
+  color: #ffffff;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.admin-gallery-alt:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.75);
+}
+
+.admin-gallery-delete {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  min-height: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.admin-gallery-tile:active {
+  cursor: grabbing;
+}
+
 @media (max-width: 1240px) {
   .portfolio-layout {
     grid-template-columns: 1fr;
@@ -804,12 +1105,28 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .admin-main {
+    grid-template-columns: 1fr;
+  }
+
   .about-columns {
     grid-template-columns: 1fr;
   }
 
   .contact-columns {
     grid-template-columns: 1fr;
+  }
+
+  .admin-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-publish-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-gallery-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .project-visual {

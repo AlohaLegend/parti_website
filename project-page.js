@@ -18,12 +18,11 @@ const projectList = document.querySelector("#project-list");
 const projectGallery = document.querySelector("#project-gallery");
 
 const THEME_STORAGE_KEY = "parti-theme";
-const projectLibrary = window.PARTI_PROJECTS || {};
 const currentProjectId =
   new URLSearchParams(window.location.search).get("slug") ||
   document.body.dataset.project;
 const fallbackProjectId = "marshalls-cbs";
-const currentProject = projectLibrary[currentProjectId] || projectLibrary[fallbackProjectId];
+let projectLibrary = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
 const HERO_SLIDESHOW_DELAY = 3600;
 let heroSlideTimer = null;
 let heroSlides = [];
@@ -246,5 +245,15 @@ document.addEventListener("keydown", (event) => {
 
 window.addEventListener("beforeunload", stopHeroSlideshow);
 
-renderProject(currentProject);
-setProjectTheme(getPreferredTheme(projectPageShell?.getAttribute("data-theme") || "dark"));
+function initializeProjectPage() {
+  projectLibrary = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
+  const currentProject = projectLibrary[currentProjectId] || projectLibrary[fallbackProjectId];
+  renderProject(currentProject);
+  setProjectTheme(getPreferredTheme(projectPageShell?.getAttribute("data-theme") || "dark"));
+}
+
+if (window.PARTI_PROJECT_STORE?.ready?.then) {
+  window.PARTI_PROJECT_STORE.ready.finally(initializeProjectPage);
+} else {
+  initializeProjectPage();
+}

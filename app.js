@@ -8,19 +8,19 @@ const imageField = document.querySelector("#image-field");
 const worksPanel = document.querySelector(".works-panel");
 const splashLogoImage = document.querySelector("#splash-logo-image");
 const headerLogoImage = document.querySelector("#header-logo-image");
-const rows = Array.from(document.querySelectorAll(".work-row"));
+const worksList = document.querySelector("#works-list");
 
 const THEME_STORAGE_KEY = "parti-theme";
-const projectContent = window.PARTI_PROJECTS || {};
-const DEFAULT_PROJECT = "marshalls-cbs";
+let projectContent = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
+let defaultProjectId = "marshalls-cbs";
 const rowEntries = new Map();
 const HOVER_INTENT_DELAY = 210;
 const CARD_SCROLL_DELAY = 180;
 const CARD_SCROLL_DURATION = 680;
 const COLLAGE_BLUEPRINTS = [
-  { shape: "tall" },
   { shape: "landscape" },
   { shape: "square" },
+  { shape: "portrait" },
   { shape: "landscape" },
   { shape: "square" },
   { shape: "portrait" },
@@ -31,6 +31,7 @@ let hoverIntentTimer = null;
 let cardScrollTimer = null;
 let cardScrollAnimationFrame = null;
 let cards = [];
+let rows = [];
 let activeProjectId = null;
 
 function createDropdown(project) {
@@ -94,38 +95,74 @@ function createImageCard(projectId, index) {
   return card;
 }
 
-const orderedProjectIds = rows
-  .map((row) => row.dataset.project)
-  .filter((projectId) => projectContent[projectId]?.showInCollage !== false);
+function getOrderedProjects() {
+  return Object.values(projectContent);
+}
 
-orderedProjectIds.forEach((projectId, index) => {
-  const card = createImageCard(projectId, index);
-
-  if (!card || !imageField) {
+function renderWorksList() {
+  if (!worksList) {
     return;
   }
 
-  imageField.appendChild(card);
-});
+  const orderedProjects = getOrderedProjects();
+  worksList.innerHTML = orderedProjects
+    .map((project) => {
+      return `
+        <a class="work-row" href="${project.pageUrl}" data-project="${project.slug}">
+          <span>${project.navLabel}</span>
+          <span>${project.yearLabel}</span>
+        </a>
+      `;
+    })
+    .join("");
 
-cards = Array.from(document.querySelectorAll(".image-card"));
+  rows = Array.from(worksList.querySelectorAll(".work-row"));
+}
 
-rows.forEach((row) => {
-  const project = projectContent[row.dataset.project];
-
-  if (!project || !row.parentElement) {
+function renderImageField() {
+  if (!imageField) {
     return;
   }
 
-  const entry = document.createElement("div");
-  entry.className = "work-entry";
+  const orderedProjectIds = rows
+    .map((row) => row.dataset.project)
+    .filter((projectId) => projectContent[projectId]?.showInCollage !== false);
 
-  row.parentElement.insertBefore(entry, row);
-  entry.appendChild(row);
-  entry.appendChild(createDropdown(project));
+  imageField.innerHTML = "";
 
-  rowEntries.set(row.dataset.project, entry);
-});
+  orderedProjectIds.forEach((projectId, index) => {
+    const card = createImageCard(projectId, index);
+
+    if (!card) {
+      return;
+    }
+
+    imageField.appendChild(card);
+  });
+
+  cards = Array.from(imageField.querySelectorAll(".image-card"));
+}
+
+function decorateWorkRows() {
+  rowEntries.clear();
+
+  rows.forEach((row) => {
+    const project = projectContent[row.dataset.project];
+
+    if (!project || !row.parentElement) {
+      return;
+    }
+
+    const entry = document.createElement("div");
+    entry.className = "work-entry";
+
+    row.parentElement.insertBefore(entry, row);
+    entry.appendChild(row);
+    entry.appendChild(createDropdown(project));
+
+    rowEntries.set(row.dataset.project, entry);
+  });
+}
 
 function dismissSplash() {
   splashScreen?.classList.add("is-hidden");
@@ -261,7 +298,7 @@ function scrollWorkEntryIntoView(entry) {
 }
 
 function activateProject(projectId, source = "right") {
-  const activeId = projectContent[projectId] ? projectId : DEFAULT_PROJECT;
+  const activeId = projectContent[projectId] ? projectId : defaultProjectId;
   const hasChanged = activeId !== activeProjectId;
 
   if (hasChanged) {
@@ -312,6 +349,50 @@ function scheduleProjectActivation(projectId, source = "right") {
   }, HOVER_INTENT_DELAY);
 }
 
+function bindPortfolioInteractions() {
+  rows.forEach((row) => {
+    row.addEventListener("mouseenter", () => scheduleProjectActivation(row.dataset.project, "right"));
+    row.addEventListener("mouseleave", clearHoverIntent);
+    row.addEventListener("focus", () => {
+      clearHoverIntent();
+      activateProject(row.dataset.project, "right");
+    });
+    row.addEventListener("click", (event) => {
+      clearHoverIntent();
+
+      if (!row.classList.contains("is-active")) {
+        event.preventDefault();
+      }
+
+      activateProject(row.dataset.project, "right");
+    });
+  });
+
+  cards.forEach((card) => {
+    card.addEventListener("mouseenter", () => scheduleProjectActivation(card.dataset.project, "left"));
+    card.addEventListener("mouseleave", clearHoverIntent);
+    card.addEventListener("focus", () => {
+      clearHoverIntent();
+      activateProject(card.dataset.project, "left");
+    });
+  });
+}
+
+function initializePortfolio() {
+  projectContent = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
+
+  const orderedProjects = getOrderedProjects();
+  defaultProjectId = orderedProjects[0]?.slug || "marshalls-cbs";
+
+  renderWorksList();
+  renderImageField();
+  decorateWorkRows();
+  bindPortfolioInteractions();
+
+  activateProject(defaultProjectId, "right");
+  setTheme(getPreferredTheme(siteShell?.getAttribute("data-theme") || "dark"));
+}
+
 skipIntroButton?.addEventListener("click", dismissSplash);
 window.setTimeout(dismissSplash, 1800);
 
@@ -330,33 +411,6 @@ themeToggle?.addEventListener("click", () => {
   setTheme(nextTheme);
 });
 
-rows.forEach((row) => {
-  row.addEventListener("mouseenter", () => scheduleProjectActivation(row.dataset.project, "right"));
-  row.addEventListener("mouseleave", clearHoverIntent);
-  row.addEventListener("focus", () => {
-    clearHoverIntent();
-    activateProject(row.dataset.project, "right");
-  });
-  row.addEventListener("click", (event) => {
-    clearHoverIntent();
-
-    if (!row.classList.contains("is-active")) {
-      event.preventDefault();
-    }
-
-    activateProject(row.dataset.project, "right");
-  });
-});
-
-cards.forEach((card) => {
-  card.addEventListener("mouseenter", () => scheduleProjectActivation(card.dataset.project, "left"));
-  card.addEventListener("mouseleave", clearHoverIntent);
-  card.addEventListener("focus", () => {
-    clearHoverIntent();
-    activateProject(card.dataset.project, "left");
-  });
-});
-
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     toggleMenu(false);
@@ -364,5 +418,8 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-activateProject(DEFAULT_PROJECT, "right");
-setTheme(getPreferredTheme(siteShell?.getAttribute("data-theme") || "dark"));
+if (window.PARTI_PROJECT_STORE?.ready?.then) {
+  window.PARTI_PROJECT_STORE.ready.finally(initializePortfolio);
+} else {
+  initializePortfolio();
+}
