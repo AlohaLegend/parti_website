@@ -858,10 +858,9 @@ button {
   gap: 16px 18px;
 }
 
-.admin-publish-fields {
+.admin-auth-form {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px 18px;
+  gap: 16px;
 }
 
 .admin-field {
@@ -1075,6 +1074,12 @@ button {
   cursor: grabbing;
 }
 
+.admin-panel.is-disabled,
+.admin-form.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
 @media (max-width: 1240px) {
   .portfolio-layout {
     grid-template-columns: 1fr;
@@ -1118,10 +1123,6 @@ button {
   }
 
   .admin-form {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-publish-fields {
     grid-template-columns: 1fr;
   }
 

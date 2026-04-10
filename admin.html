@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260410g">
+  <link rel="stylesheet" href="styles.css?v=20260410h">
 </head>
 <body>
   <div class="project-page-shell" data-theme="dark" id="admin-page-shell">
@@ -45,7 +45,7 @@
           <p class="detail-kicker">PARTI Admin</p>
           <h1>Project Editor</h1>
           <p class="detail-copy">
-            Add new projects, update existing entries, and shape a clean project-data payload that can become the saved source of truth for the public site.
+            Log in once, then add new projects, update existing entries, upload images, and save changes into the live content system.
           </p>
           <div class="admin-actions">
             <button class="project-link" id="admin-new-project" type="button">New Project</button>
@@ -58,39 +58,29 @@
         </article>
 
         <article class="project-block admin-panel">
-          <h2>Projects</h2>
-          <div class="admin-project-list" id="admin-project-list"></div>
+          <h2>Admin Login</h2>
+          <form class="admin-auth-form" id="admin-auth-form">
+            <label class="admin-field admin-field-wide">
+              <span>Email</span>
+              <input id="admin-email" type="email" autocomplete="username">
+            </label>
+            <label class="admin-field admin-field-wide">
+              <span>Password</span>
+              <input id="admin-password" type="password" autocomplete="current-password">
+            </label>
+            <div class="admin-actions">
+              <button class="project-link" id="admin-login" type="submit">Log In</button>
+              <button class="project-link" id="admin-logout" type="button">Log Out</button>
+            </div>
+          </form>
+          <p class="detail-copy admin-note" id="admin-auth-status">
+            Supabase login is not configured yet.
+          </p>
         </article>
 
         <article class="project-block admin-panel">
-          <h2>Publish</h2>
-          <p class="detail-copy">
-            Publish the current project library into <code>content/projects.json</code> on GitHub so the live site can read the updated content on deploy.
-          </p>
-          <div class="admin-publish-fields">
-            <label class="admin-field admin-field-wide">
-              <span>GitHub Token</span>
-              <input id="admin-github-token" type="password" autocomplete="off" placeholder="GitHub personal access token">
-            </label>
-            <label class="admin-field">
-              <span>Owner</span>
-              <input id="admin-github-owner" type="text" value="AlohaLegend">
-            </label>
-            <label class="admin-field">
-              <span>Repo</span>
-              <input id="admin-github-repo" type="text" value="parti_website">
-            </label>
-            <label class="admin-field admin-field-wide">
-              <span>Branch</span>
-              <input id="admin-github-branch" type="text" value="master">
-            </label>
-          </div>
-          <div class="admin-actions">
-            <button class="project-link" id="admin-publish-projects" type="button">Publish to GitHub</button>
-          </div>
-          <p class="detail-copy admin-note">
-            This writes the current full project library JSON into the repo. Uploaded local images are published as embedded data URLs unless you move them into repo assets separately.
-          </p>
+          <h2>Projects</h2>
+          <div class="admin-project-list" id="admin-project-list"></div>
         </article>
       </section>
 
@@ -184,8 +174,11 @@
     </main>
   </div>
 
-  <script src="project-data.js?v=20260410g"></script>
-  <script src="project-store.js?v=20260410g"></script>
-  <script src="admin-page.js?v=20260410g"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=20260410h"></script>
+  <script src="supabase-client.js?v=20260410h"></script>
+  <script src="project-data.js?v=20260410h"></script>
+  <script src="project-store.js?v=20260410h"></script>
+  <script src="admin-page.js?v=20260410h"></script>
 </body>
 </html>

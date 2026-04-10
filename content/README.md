@@ -1,21 +1,25 @@
 # PARTI Content Flow
 
-This site is still a static GitHub Pages build, so browser edits do not publish on their own.
+This site now supports a Supabase-backed content path for real saved edits.
 
-The new shared content layer is designed so project data can move toward a real saved workflow:
+How it works:
 
-1. Edit projects in `admin.html`.
-2. Export the full project library as JSON.
-3. Replace the repo source of truth with that JSON in a future CMS/Git-backed flow.
-4. Commit and deploy the updated content.
+1. The public site loads projects from Supabase when configured.
+2. If Supabase is not configured or does not have content yet, the site falls back to `content/projects.json`.
+3. If that file is empty, the site falls back again to the baked-in library in `project-data.js`.
 
-Current source files:
+Files:
 
-- `project-data.js`: published project library used by the live site today
-- `project-store.js`: shared store that merges published data with local admin overrides
+- `project-data.js`: hardcoded fallback library
+- `content/projects.json`: file fallback library
+- `project-store.js`: shared loader/store
+- `supabase/parti_setup.sql`: database + storage setup
+- `supabase-config.js`: project URL and anon key placeholder
 
-Recommended next step for real publishing:
+Setup checklist:
 
-- move the exported JSON into a committed `content/projects.json`
-- update the site to read directly from that file
-- wire the admin to create a commit or open a pull request when changes are approved
+1. Create a Supabase project.
+2. Run `supabase/parti_setup.sql`.
+3. Add your project URL and anon key to `supabase-config.js`.
+4. Create admin users in Supabase Auth.
+5. Log into `admin.html` and save changes normally.
