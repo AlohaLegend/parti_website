@@ -14,13 +14,12 @@ const adminRevertProjectButton = document.querySelector("#admin-revert-project")
 const adminGalleryList = document.querySelector("#admin-gallery-list");
 const adminGalleryUploadInput = document.querySelector("#admin-gallery-upload");
 const adminAuthForm = document.querySelector("#admin-auth-form");
-const adminEmailInput = document.querySelector("#admin-email");
-const adminPasswordInput = document.querySelector("#admin-password");
 const adminLoginButton = document.querySelector("#admin-login");
 const adminLogoutButton = document.querySelector("#admin-logout");
 const adminAuthStatus = document.querySelector("#admin-auth-status");
 
 const THEME_STORAGE_KEY = "parti-theme";
+const ADMIN_EMAIL_DOMAIN = "@letsparti.co";
 const projectStore = window.PARTI_PROJECT_STORE;
 const supabaseClient = window.PARTI_SUPABASE?.client;
 const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
@@ -86,6 +85,11 @@ function isAuthenticated() {
   return Boolean(currentSession?.user);
 }
 
+function isAllowedAdminUser(user) {
+  const email = user?.email?.toLowerCase() || "";
+  return email.endsWith(ADMIN_EMAIL_DOMAIN);
+}
+
 function syncEditorAccess() {
   const canEdit = isAuthenticated();
   const controlledButtons = [
@@ -148,7 +152,7 @@ function updateAuthUi() {
       adminLogoutButton.disabled = false;
     }
   } else {
-    renderAuthStatus("Log in with a PARTI admin account to edit and publish site content.");
+    renderAuthStatus(`Log in with Google using a ${ADMIN_EMAIL_DOMAIN} address to edit and publish site content.`);
     if (adminLoginButton) {
       adminLoginButton.disabled = false;
     }
@@ -158,6 +162,28 @@ function updateAuthUi() {
   }
 
   syncEditorAccess();
+}
+
+async function enforceAdminDomain(session) {
+  const user = session?.user || null;
+
+  if (!user) {
+    return false;
+  }
+
+  if (isAllowedAdminUser(user)) {
+    return true;
+  }
+
+  renderAuthStatus(`Access is limited to ${ADMIN_EMAIL_DOMAIN} Google accounts.`);
+
+  if (supabaseClient) {
+    await supabaseClient.auth.signOut();
+  }
+
+  currentSession = null;
+  updateAuthUi();
+  return false;
 }
 
 async function pushWorkingProjectsToSupabase() {
@@ -667,45 +693,36 @@ adminForm?.addEventListener("submit", async (event) => {
   );
 });
 
-adminAuthForm?.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
+adminLoginButton?.addEventListener("click", async () => {
   if (!isSupabaseConfigured || !supabaseClient) {
     renderAuthStatus("Supabase login is not configured yet.");
     return;
   }
 
-  const email = adminEmailInput?.value.trim();
-  const password = adminPasswordInput?.value || "";
-
-  if (!email || !password) {
-    renderAuthStatus("Add your email and password to log in.");
-    return;
-  }
-
   if (adminLoginButton) {
     adminLoginButton.disabled = true;
-    adminLoginButton.textContent = "Logging In...";
+    adminLoginButton.textContent = "Redirecting...";
   }
 
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password,
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: window.location.href,
+      queryParams: {
+        hd: "letsparti.co",
+      },
+    },
   });
 
   if (adminLoginButton) {
     adminLoginButton.disabled = false;
-    adminLoginButton.textContent = "Log In";
+    adminLoginButton.textContent = "Continue with Google";
   }
 
   if (error) {
     renderAuthStatus(error.message);
     return;
   }
-
-  currentSession = data.session || null;
-  updateAuthUi();
-  renderStatus("Logged in. Admin edits will now save into the live content store.");
 });
 
 adminLogoutButton?.addEventListener("click", async () => {
@@ -741,12 +758,24 @@ function initializeAdminPage() {
   if (supabaseClient) {
     supabaseClient.auth.getSession().then(({ data }) => {
       currentSession = data.session || null;
-      updateAuthUi();
+      enforceAdminDomain(currentSession).then((isAllowed) => {
+        if (isAllowed || !currentSession) {
+          updateAuthUi();
+        }
+      });
     });
 
-    supabaseClient.auth.onAuthStateChange((_event, session) => {
+    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
       currentSession = session || null;
-      updateAuthUi();
+      const isAllowed = await enforceAdminDomain(currentSession);
+
+      if (isAllowed) {
+        renderStatus("Logged in. Admin edits will now save into the live content store.");
+      }
+
+      if (isAllowed || !currentSession) {
+        updateAuthUi();
+      }
     });
   } else {
     updateAuthUi();
