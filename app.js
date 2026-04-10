@@ -20,10 +20,10 @@ const CARD_SCROLL_DURATION = 680;
 const COLLAGE_BLUEPRINTS = [
   { shape: "landscape" },
   { shape: "square" },
-  { shape: "portrait" },
   { shape: "landscape" },
   { shape: "square" },
-  { shape: "portrait" },
+  { shape: "landscape" },
+  { shape: "square" },
   { shape: "landscape" },
   { shape: "square" }
 ];
