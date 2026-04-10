@@ -558,6 +558,12 @@ function renderProjectList() {
       selectProject(button.dataset.projectSlug);
     });
   });
+
+  const activeButton = adminProjectList.querySelector(`[data-project-slug="${selectedProjectSlug}"]`);
+  activeButton?.scrollIntoView({
+    block: "nearest",
+    behavior: "smooth",
+  });
 }
 
 function populateForm(project) {
