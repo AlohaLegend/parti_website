@@ -88,6 +88,7 @@ function createImageCard(projectId, index) {
   image.className = "image-fill-media";
   image.src = project.image;
   image.alt = project.imageAlt || `${project.title} project image`;
+  image.style.objectPosition = project.leadCrop || "center center";
   fill.appendChild(image);
 
   card.appendChild(fill);
