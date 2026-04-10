@@ -95,8 +95,53 @@ function createImageCard(projectId, index) {
   return card;
 }
 
+function getProjectTimestamp(project) {
+  const explicitDate = typeof project?.date === "string" ? project.date : "";
+  const metaMatch = typeof project?.meta === "string"
+    ? project.meta.match(/Date:\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/)
+    : null;
+  const fallbackDate = metaMatch?.[1] || "";
+  const parsedDate = Date.parse(explicitDate || fallbackDate);
+
+  return Number.isNaN(parsedDate) ? null : parsedDate;
+}
+
 function getOrderedProjects() {
-  return Object.values(projectContent).filter((project) => project && project.isHidden !== true);
+  return Object.values(projectContent)
+    .filter((project) => project && project.isHidden !== true)
+    .sort((a, b) => {
+      const timeA = getProjectTimestamp(a);
+      const timeB = getProjectTimestamp(b);
+
+      if (timeA !== null && timeB !== null && timeA !== timeB) {
+        return timeB - timeA;
+      }
+
+      if (timeA !== null && timeB === null) {
+        return -1;
+      }
+
+      if (timeA === null && timeB !== null) {
+        return 1;
+      }
+
+      const yearA = Number.parseInt(a.yearLabel, 10);
+      const yearB = Number.parseInt(b.yearLabel, 10);
+
+      if (!Number.isNaN(yearA) && !Number.isNaN(yearB) && yearA !== yearB) {
+        return yearB - yearA;
+      }
+
+      if (!Number.isNaN(yearA) && Number.isNaN(yearB)) {
+        return -1;
+      }
+
+      if (Number.isNaN(yearA) && !Number.isNaN(yearB)) {
+        return 1;
+      }
+
+      return (a.navLabel || a.title || a.slug).localeCompare(b.navLabel || b.title || b.slug);
+    });
 }
 
 function renderWorksList() {
