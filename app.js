@@ -97,14 +97,30 @@ function createImageCard(projectId, index) {
 }
 
 function getProjectTimestamp(project) {
+  const datePattern = /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}\b/i;
   const explicitDate = typeof project?.date === "string" ? project.date : "";
-  const metaMatch = typeof project?.meta === "string"
-    ? project.meta.match(/Date:\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/)
-    : null;
-  const fallbackDate = metaMatch?.[1] || "";
-  const parsedDate = Date.parse(explicitDate || fallbackDate);
+  const candidateFields = [
+    explicitDate,
+    typeof project?.meta === "string" ? project.meta : "",
+    typeof project?.detailBody === "string" ? project.detailBody : "",
+    typeof project?.detailLead === "string" ? project.detailLead : "",
+    typeof project?.detailSupport === "string" ? project.detailSupport : "",
+  ];
 
-  return Number.isNaN(parsedDate) ? null : parsedDate;
+  for (const field of candidateFields) {
+    if (!field) {
+      continue;
+    }
+
+    const matchedDate = field.match(datePattern)?.[0] || field;
+    const parsedDate = Date.parse(matchedDate);
+
+    if (!Number.isNaN(parsedDate)) {
+      return parsedDate;
+    }
+  }
+
+  return null;
 }
 
 function getOrderedProjects() {
