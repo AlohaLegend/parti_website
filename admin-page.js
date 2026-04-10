@@ -36,6 +36,7 @@ let selectedProjectSlug = "";
 let currentGalleryItems = [];
 let draggedGalleryIndex = null;
 let currentSession = null;
+const buttonFeedbackTimers = new WeakMap();
 
 const adminFields = {
   slug: document.querySelector("#admin-slug"),
@@ -493,6 +494,44 @@ function renderStatus(message) {
   }
 }
 
+function setButtonFeedback(button, state, nextLabel) {
+  if (!button) {
+    return;
+  }
+
+  const priorTimer = buttonFeedbackTimers.get(button);
+  if (priorTimer) {
+    window.clearTimeout(priorTimer);
+  }
+
+  if (!button.dataset.defaultLabel) {
+    button.dataset.defaultLabel = button.textContent.trim();
+  }
+
+  button.classList.remove("is-busy", "is-success");
+
+  if (!state) {
+    button.textContent = button.dataset.defaultLabel;
+    buttonFeedbackTimers.delete(button);
+    return;
+  }
+
+  button.classList.add(state);
+  if (nextLabel) {
+    button.textContent = nextLabel;
+  }
+
+  if (state === "is-success") {
+    const timeout = window.setTimeout(() => {
+      button.classList.remove("is-success");
+      button.textContent = button.dataset.defaultLabel;
+      buttonFeedbackTimers.delete(button);
+    }, 1400);
+
+    buttonFeedbackTimers.set(button, timeout);
+  }
+}
+
 function renderProjectList() {
   if (!adminProjectList) {
     return;
@@ -695,9 +734,13 @@ adminNewProjectButton?.addEventListener("click", () => {
   populateForm(createBlankProject());
   renderProjectList();
   renderStatus("Started a new draft project. Add a unique slug before saving.");
+  setButtonFeedback(adminNewProjectButton, "is-success", "Started");
 });
 
-adminExportProjectsButton?.addEventListener("click", exportProjects);
+adminExportProjectsButton?.addEventListener("click", () => {
+  exportProjects();
+  setButtonFeedback(adminExportProjectsButton, "is-success", "Exported");
+});
 
 adminGalleryUploadInput?.addEventListener("change", async () => {
   await addGalleryFiles(adminGalleryUploadInput.files);
@@ -716,13 +759,16 @@ adminResetProjectsButton?.addEventListener("click", () => {
   populateForm(firstSlug ? workingProjects[firstSlug] : createBlankProject());
   renderProjectList();
   renderStatus("Cleared local draft edits and restored the published project library.");
+  setButtonFeedback(adminResetProjectsButton, "is-success", "Reset");
 });
 
 adminPreviewProjectButton?.addEventListener("click", async () => {
+  setButtonFeedback(adminPreviewProjectButton, "is-busy", "Opening...");
   const project = collectFormProject();
 
   if (!project.slug) {
     renderStatus("Add a slug before previewing the project page.");
+    setButtonFeedback(adminPreviewProjectButton);
     return;
   }
 
@@ -730,6 +776,7 @@ adminPreviewProjectButton?.addEventListener("click", async () => {
   window.open(`project.html?slug=${project.slug}`, "_blank", "noopener");
   selectProject(project.slug);
   renderStatus(`Opened preview for ${project.slug}.`);
+  setButtonFeedback(adminPreviewProjectButton, "is-success", "Opened");
 });
 
 adminRevertProjectButton?.addEventListener("click", () => {
@@ -744,22 +791,27 @@ adminRevertProjectButton?.addEventListener("click", () => {
 });
 
 adminDeleteProjectButton?.addEventListener("click", async () => {
+  setButtonFeedback(adminDeleteProjectButton, "is-busy", "Deleting...");
   const slug = adminFields.slug.value.trim();
 
   if (!slug) {
     renderStatus("No project selected to delete.");
+    setButtonFeedback(adminDeleteProjectButton);
     return;
   }
 
   await deleteProject(slug);
+  setButtonFeedback(adminDeleteProjectButton, "is-success", "Deleted");
 });
 
 adminForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
+  setButtonFeedback(adminSaveProjectButton, "is-busy", "Saving...");
   const project = collectFormProject();
 
   if (!project.slug || !project.title || !project.navLabel) {
     renderStatus("Slug, title, and manifest label are required before saving.");
+    setButtonFeedback(adminSaveProjectButton);
     return;
   }
 
@@ -771,6 +823,7 @@ adminForm?.addEventListener("submit", async (event) => {
       ? `Saved ${savedProject.slug} into the live content store.`
       : `Saved ${savedProject.slug} into the local project store. Log in to publish changes for everyone.`
   );
+  setButtonFeedback(adminSaveProjectButton, "is-success", "Saved");
 });
 
 adminLoginButton?.addEventListener("click", async () => {
@@ -814,6 +867,7 @@ adminLogoutButton?.addEventListener("click", async () => {
   currentSession = null;
   updateAuthUi();
   renderStatus("Logged out. The editor is now read-only until you sign back in.");
+  setButtonFeedback(adminLogoutButton, "is-success", "Logged Out");
 });
 
 document.addEventListener("keydown", (event) => {

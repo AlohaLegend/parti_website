@@ -625,11 +625,33 @@ button {
   text-decoration: none;
   color: inherit;
   background: transparent;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 120ms ease,
+    opacity 180ms ease;
 }
 
 .project-link:hover,
 .project-link:focus-visible {
   background: var(--surface);
+}
+
+.project-link:active {
+  transform: translateY(1px);
+  background: var(--surface);
+}
+
+.project-link.is-busy {
+  opacity: 0.72;
+  background: var(--surface);
+}
+
+.project-link.is-success {
+  background: currentColor;
+  color: var(--bg);
+  border-color: currentColor;
 }
 
 .project-list {
