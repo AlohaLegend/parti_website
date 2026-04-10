@@ -1012,7 +1012,7 @@ button {
 
 .admin-lead-preview {
   display: grid;
-  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1fr);
   gap: 18px;
   align-items: center;
   padding: 18px;
@@ -1023,12 +1023,37 @@ button {
   opacity: 0.72;
 }
 
+.admin-lead-preview-frames {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-lead-preview-frame {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-lead-preview-label {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .admin-lead-preview-media {
   position: relative;
-  aspect-ratio: 4 / 5;
   border: 1px solid var(--line);
   background: #111111;
   overflow: hidden;
+}
+
+.admin-lead-preview-frame-landscape .admin-lead-preview-media {
+  aspect-ratio: 16 / 10;
+}
+
+.admin-lead-preview-frame-square .admin-lead-preview-media {
+  aspect-ratio: 1 / 1;
 }
 
 .admin-lead-preview-media img {

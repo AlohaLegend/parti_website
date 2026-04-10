@@ -16,7 +16,8 @@ const adminDeleteProjectButton = document.querySelector("#admin-delete-project")
 const adminGalleryList = document.querySelector("#admin-gallery-list");
 const adminGalleryUploadInput = document.querySelector("#admin-gallery-upload");
 const adminLeadPreview = document.querySelector("#admin-lead-preview");
-const adminLeadPreviewMedia = document.querySelector("#admin-lead-preview-media");
+const adminLeadPreviewLandscape = document.querySelector("#admin-lead-preview-media-landscape");
+const adminLeadPreviewSquare = document.querySelector("#admin-lead-preview-media-square");
 const adminAuthForm = document.querySelector("#admin-auth-form");
 const adminLoginButton = document.querySelector("#admin-login");
 const adminLogoutButton = document.querySelector("#admin-logout");
@@ -255,21 +256,26 @@ function syncLeadImageFromGallery() {
   const firstImage = currentGalleryItems.find((item) => item.src);
   const leadCrop = adminFields.leadCrop?.value || "center center";
 
-  if (!adminLeadPreview || !adminLeadPreviewMedia) {
+  if (!adminLeadPreview || !adminLeadPreviewLandscape || !adminLeadPreviewSquare) {
     return;
   }
 
   adminLeadPreview.classList.toggle("is-empty", !firstImage);
 
   if (!firstImage) {
-    adminLeadPreviewMedia.innerHTML = `<div class="admin-gallery-placeholder">No Lead Image Yet</div>`;
+    const emptyMarkup = `<div class="admin-gallery-placeholder">No Lead Image Yet</div>`;
+    adminLeadPreviewLandscape.innerHTML = emptyMarkup;
+    adminLeadPreviewSquare.innerHTML = emptyMarkup;
     return;
   }
 
-  adminLeadPreviewMedia.innerHTML = `
+  const previewMarkup = `
     <img src="${firstImage.src}" alt="${firstImage.alt || "Lead image"}" style="object-position: ${leadCrop};">
     <span class="admin-lead-preview-badge">Lead</span>
   `;
+
+  adminLeadPreviewLandscape.innerHTML = previewMarkup;
+  adminLeadPreviewSquare.innerHTML = previewMarkup;
 }
 
 function readFilesAsGalleryItems(files) {
