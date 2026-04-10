@@ -1,5 +1,7 @@
 (function () {
   const STORAGE_KEY = window.PARTI_ADMIN_STORAGE_KEY || "parti-admin-projects";
+  const supabaseClient = window.PARTI_SUPABASE?.client;
+  const supabaseConfig = window.PARTI_SUPABASE?.config || {};
   let publishedProjects = clone(window.PARTI_PROJECTS || {});
 
   function clone(value) {
@@ -70,15 +72,31 @@
 
   async function loadPublishedProjects() {
     try {
-      const response = await window.fetch("content/projects.json", {
-        cache: "no-store",
-      });
+      let parsed = null;
 
-      if (!response.ok) {
-        return clone(publishedProjects);
+      if (supabaseClient) {
+        const { data, error } = await supabaseClient
+          .from(supabaseConfig.contentTable || "site_content")
+          .select("value")
+          .eq("key", supabaseConfig.contentKey || "projects")
+          .single();
+
+        if (!error && data?.value && typeof data.value === "object") {
+          parsed = data.value;
+        }
       }
 
-      const parsed = await response.json();
+      if (!parsed) {
+        const response = await window.fetch("content/projects.json", {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          return clone(publishedProjects);
+        }
+
+        parsed = await response.json();
+      }
 
       if (!parsed || typeof parsed !== "object") {
         return clone(publishedProjects);
@@ -105,6 +123,63 @@
     }
 
     return clone(publishedProjects);
+  }
+
+  async function savePublishedProjects(projects) {
+    if (!supabaseClient) {
+      throw new Error("Supabase is not configured.");
+    }
+
+    const { error } = await supabaseClient
+      .from(supabaseConfig.contentTable || "site_content")
+      .upsert(
+        {
+          key: supabaseConfig.contentKey || "projects",
+          value: projects,
+          updated_at: new Date().toISOString(),
+        },
+        {
+          onConflict: "key",
+        }
+      );
+
+    if (error) {
+      throw error;
+    }
+
+    publishedProjects = clone(projects);
+    return clone(publishedProjects);
+  }
+
+  async function uploadProjectImage(file, slug) {
+    if (!supabaseClient) {
+      throw new Error("Supabase is not configured.");
+    }
+
+    const safeSlug = (slug || "draft")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "draft";
+    const safeName = file.name
+      .toLowerCase()
+      .replace(/[^a-z0-9.-]+/g, "-")
+      .replace(/-+/g, "-");
+    const path = `${safeSlug}/${Date.now()}-${safeName}`;
+    const bucket = supabaseConfig.storageBucket || "project-images";
+
+    const { error } = await supabaseClient.storage
+      .from(bucket)
+      .upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    const { data } = supabaseClient.storage.from(bucket).getPublicUrl(path);
+    return data?.publicUrl || "";
   }
 
   function saveProject(project) {
@@ -171,6 +246,8 @@
     resetProjects,
     exportProjectsJson,
     importProjectsJson,
+    savePublishedProjects,
+    uploadProjectImage,
     storageKey: STORAGE_KEY,
     ready: loadPublishedProjects(),
   };

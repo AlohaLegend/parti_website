@@ -13,21 +13,24 @@ const adminPreviewProjectButton = document.querySelector("#admin-preview-project
 const adminRevertProjectButton = document.querySelector("#admin-revert-project");
 const adminGalleryList = document.querySelector("#admin-gallery-list");
 const adminGalleryUploadInput = document.querySelector("#admin-gallery-upload");
-const adminPublishProjectsButton = document.querySelector("#admin-publish-projects");
-const adminGithubTokenInput = document.querySelector("#admin-github-token");
-const adminGithubOwnerInput = document.querySelector("#admin-github-owner");
-const adminGithubRepoInput = document.querySelector("#admin-github-repo");
-const adminGithubBranchInput = document.querySelector("#admin-github-branch");
+const adminAuthForm = document.querySelector("#admin-auth-form");
+const adminEmailInput = document.querySelector("#admin-email");
+const adminPasswordInput = document.querySelector("#admin-password");
+const adminLoginButton = document.querySelector("#admin-login");
+const adminLogoutButton = document.querySelector("#admin-logout");
+const adminAuthStatus = document.querySelector("#admin-auth-status");
 
 const THEME_STORAGE_KEY = "parti-theme";
-const GITHUB_TOKEN_STORAGE_KEY = "parti-github-token";
 const projectStore = window.PARTI_PROJECT_STORE;
+const supabaseClient = window.PARTI_SUPABASE?.client;
+const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
 const baseProjects = projectStore?.getBaseProjects() || window.PARTI_BASE_PROJECTS || {};
 
 let workingProjects = projectStore?.getMergedProjects() || JSON.parse(JSON.stringify(window.PARTI_PROJECTS || {}));
 let selectedProjectSlug = "";
 let currentGalleryItems = [];
 let draggedGalleryIndex = null;
+let currentSession = null;
 
 const adminFields = {
   slug: document.querySelector("#admin-slug"),
@@ -77,6 +80,95 @@ function setAdminTheme(theme) {
 function getPreferredTheme(defaultTheme = "dark") {
   const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
   return storedTheme === "light" || storedTheme === "dark" ? storedTheme : defaultTheme;
+}
+
+function isAuthenticated() {
+  return Boolean(currentSession?.user);
+}
+
+function syncEditorAccess() {
+  const canEdit = isAuthenticated();
+  const controlledButtons = [
+    adminNewProjectButton,
+    adminExportProjectsButton,
+    adminResetProjectsButton,
+    adminPreviewProjectButton,
+    adminRevertProjectButton,
+  ];
+
+  controlledButtons.forEach((button) => {
+    if (button) {
+      button.disabled = !canEdit;
+    }
+  });
+
+  adminForm?.classList.toggle("is-disabled", !canEdit);
+  adminForm?.querySelectorAll("input, textarea, button").forEach((field) => {
+    if (field === adminPreviewProjectButton || field === adminRevertProjectButton) {
+      field.disabled = !canEdit;
+      return;
+    }
+
+    if (field.id === "admin-gallery-upload") {
+      field.disabled = !canEdit;
+      return;
+    }
+
+    field.disabled = !canEdit;
+  });
+
+  adminProjectList?.closest(".admin-panel")?.classList.toggle("is-disabled", !canEdit);
+}
+
+function renderAuthStatus(message) {
+  if (adminAuthStatus) {
+    adminAuthStatus.textContent = message;
+  }
+}
+
+function updateAuthUi() {
+  if (!isSupabaseConfigured) {
+    renderAuthStatus("Supabase login is not configured yet. Add your project URL and anon key in supabase-config.js.");
+    if (adminLoginButton) {
+      adminLoginButton.disabled = true;
+    }
+    if (adminLogoutButton) {
+      adminLogoutButton.disabled = true;
+    }
+    syncEditorAccess();
+    return;
+  }
+
+  if (isAuthenticated()) {
+    renderAuthStatus(`Signed in as ${currentSession.user.email}.`);
+    if (adminLoginButton) {
+      adminLoginButton.disabled = false;
+    }
+    if (adminLogoutButton) {
+      adminLogoutButton.disabled = false;
+    }
+  } else {
+    renderAuthStatus("Log in with a PARTI admin account to edit and publish site content.");
+    if (adminLoginButton) {
+      adminLoginButton.disabled = false;
+    }
+    if (adminLogoutButton) {
+      adminLogoutButton.disabled = true;
+    }
+  }
+
+  syncEditorAccess();
+}
+
+async function pushWorkingProjectsToSupabase() {
+  if (!isAuthenticated() || !projectStore?.savePublishedProjects) {
+    return false;
+  }
+
+  await projectStore.savePublishedProjects(workingProjects);
+  projectStore.resetProjects?.();
+  workingProjects = projectStore.getMergedProjects();
+  return true;
 }
 
 function getStoredAdminProjects() {
@@ -147,7 +239,22 @@ function readFilesAsGalleryItems(files) {
 
 async function addGalleryFiles(files) {
   try {
-    const items = await readFilesAsGalleryItems(files);
+    const fileList = Array.from(files || []).filter((file) => file.type.startsWith("image/"));
+    let items = [];
+
+    if (isAuthenticated() && projectStore?.uploadProjectImage) {
+      items = await Promise.all(
+        fileList.map(async (file) => {
+          const src = await projectStore.uploadProjectImage(file, adminFields.slug.value.trim() || "draft");
+          return {
+            src,
+            alt: file.name.replace(/\.[^.]+$/, ""),
+          };
+        })
+      );
+    } else {
+      items = await readFilesAsGalleryItems(fileList);
+    }
 
     if (!items.length) {
       renderStatus("Only image files can be added to the gallery.");
@@ -157,7 +264,7 @@ async function addGalleryFiles(files) {
     currentGalleryItems.push(...items);
     syncLeadImageFromGallery();
     renderGalleryEditor();
-    renderStatus(`Added ${items.length} image${items.length === 1 ? "" : "s"} to the gallery draft.`);
+    renderStatus(`Added ${items.length} image${items.length === 1 ? "" : "s"} to the gallery.`);
   } catch (error) {
     console.warn("Unable to read gallery files.", error);
     renderStatus("One or more images could not be added.");
@@ -385,7 +492,7 @@ function selectProject(slug) {
   selectedProjectSlug = slug;
   populateForm(workingProjects[slug]);
   renderProjectList();
-  renderStatus(`Editing ${slug}. Local admin changes apply in this browser only until committed into the repo.`);
+  renderStatus(`Editing ${slug}. Logged-in changes save into the live content store.`);
 }
 
 function collectFormProject() {
@@ -421,9 +528,20 @@ function collectFormProject() {
   };
 }
 
-function saveProject(project) {
+async function saveProject(project) {
   const normalizedProject = projectStore?.saveProject(project) || project;
   workingProjects[normalizedProject.slug] = normalizedProject;
+
+  try {
+    if (await pushWorkingProjectsToSupabase()) {
+      renderProjectList();
+    }
+  } catch (error) {
+    console.warn("Unable to save project to Supabase.", error);
+    renderStatus(`Saved locally, but the shared content update failed: ${error.message}`);
+  }
+
+  return normalizedProject;
 }
 
 function revertProject(slug) {
@@ -462,85 +580,6 @@ function exportProjects() {
   renderStatus("Exported the full site project library as JSON.");
 }
 
-function encodeBase64Utf8(value) {
-  const bytes = new TextEncoder().encode(value);
-  let binary = "";
-
-  bytes.forEach((byte) => {
-    binary += String.fromCharCode(byte);
-  });
-
-  return window.btoa(binary);
-}
-
-async function publishProjectsToGitHub() {
-  const token = adminGithubTokenInput?.value.trim();
-  const owner = adminGithubOwnerInput?.value.trim();
-  const repo = adminGithubRepoInput?.value.trim();
-  const branch = adminGithubBranchInput?.value.trim() || "master";
-
-  if (!token || !owner || !repo) {
-    renderStatus("Add a GitHub token, owner, and repo before publishing.");
-    return;
-  }
-
-  if (adminPublishProjectsButton) {
-    adminPublishProjectsButton.disabled = true;
-    adminPublishProjectsButton.textContent = "Publishing...";
-  }
-
-  const payload = projectStore?.exportProjectsJson() || JSON.stringify(getStoredAdminProjects(), null, 2);
-  const endpoint = `https://api.github.com/repos/${owner}/${repo}/contents/content/projects.json`;
-  let currentSha = null;
-
-  try {
-    window.sessionStorage.setItem(GITHUB_TOKEN_STORAGE_KEY, token);
-
-    const existingResponse = await window.fetch(`${endpoint}?ref=${encodeURIComponent(branch)}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json",
-      },
-    });
-
-    if (existingResponse.ok) {
-      const existingFile = await existingResponse.json();
-      currentSha = existingFile.sha || null;
-    } else if (existingResponse.status !== 404) {
-      throw new Error(`GitHub read failed with status ${existingResponse.status}.`);
-    }
-
-    const writeResponse = await window.fetch(endpoint, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: "Update published project content",
-        branch,
-        content: encodeBase64Utf8(payload),
-        sha: currentSha || undefined,
-      }),
-    });
-
-    if (!writeResponse.ok) {
-      throw new Error(`GitHub write failed with status ${writeResponse.status}.`);
-    }
-
-    renderStatus(`Published the project library to ${owner}/${repo} on ${branch}. Push or GitHub Pages deploy will now use content/projects.json.`);
-  } catch (error) {
-    console.warn("Unable to publish project JSON to GitHub.", error);
-    renderStatus(`Publish failed: ${error.message}`);
-  } finally {
-    if (adminPublishProjectsButton) {
-      adminPublishProjectsButton.disabled = false;
-      adminPublishProjectsButton.textContent = "Publish to GitHub";
-    }
-  }
-}
-
 adminMenuButton?.addEventListener("click", () => {
   toggleAdminMenu();
 });
@@ -564,7 +603,6 @@ adminNewProjectButton?.addEventListener("click", () => {
 });
 
 adminExportProjectsButton?.addEventListener("click", exportProjects);
-adminPublishProjectsButton?.addEventListener("click", publishProjectsToGitHub);
 
 adminGalleryUploadInput?.addEventListener("change", async () => {
   await addGalleryFiles(adminGalleryUploadInput.files);
@@ -582,10 +620,10 @@ adminResetProjectsButton?.addEventListener("click", () => {
   selectedProjectSlug = firstSlug;
   populateForm(firstSlug ? workingProjects[firstSlug] : createBlankProject());
   renderProjectList();
-  renderStatus("Cleared all local admin edits and restored the published project library.");
+  renderStatus("Cleared local draft edits and restored the published project library.");
 });
 
-adminPreviewProjectButton?.addEventListener("click", () => {
+adminPreviewProjectButton?.addEventListener("click", async () => {
   const project = collectFormProject();
 
   if (!project.slug) {
@@ -593,7 +631,7 @@ adminPreviewProjectButton?.addEventListener("click", () => {
     return;
   }
 
-  saveProject(project);
+  await saveProject(project);
   window.open(`project.html?slug=${project.slug}`, "_blank", "noopener");
   selectProject(project.slug);
   renderStatus(`Opened preview for ${project.slug}.`);
@@ -610,9 +648,8 @@ adminRevertProjectButton?.addEventListener("click", () => {
   revertProject(slug);
 });
 
-adminForm?.addEventListener("submit", (event) => {
+adminForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
-
   const project = collectFormProject();
 
   if (!project.slug || !project.title || !project.navLabel) {
@@ -620,10 +657,66 @@ adminForm?.addEventListener("submit", (event) => {
     return;
   }
 
-  saveProject(project);
-  selectedProjectSlug = project.slug;
+  const savedProject = await saveProject(project);
+  selectedProjectSlug = savedProject.slug;
   renderProjectList();
-  renderStatus(`Saved ${project.slug} into the local project store. Export the JSON when you're ready to move these edits into the repo.`);
+  renderStatus(
+    isAuthenticated()
+      ? `Saved ${savedProject.slug} into the live content store.`
+      : `Saved ${savedProject.slug} into the local project store. Log in to publish changes for everyone.`
+  );
+});
+
+adminAuthForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!isSupabaseConfigured || !supabaseClient) {
+    renderAuthStatus("Supabase login is not configured yet.");
+    return;
+  }
+
+  const email = adminEmailInput?.value.trim();
+  const password = adminPasswordInput?.value || "";
+
+  if (!email || !password) {
+    renderAuthStatus("Add your email and password to log in.");
+    return;
+  }
+
+  if (adminLoginButton) {
+    adminLoginButton.disabled = true;
+    adminLoginButton.textContent = "Logging In...";
+  }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (adminLoginButton) {
+    adminLoginButton.disabled = false;
+    adminLoginButton.textContent = "Log In";
+  }
+
+  if (error) {
+    renderAuthStatus(error.message);
+    return;
+  }
+
+  currentSession = data.session || null;
+  updateAuthUi();
+  renderStatus("Logged in. Admin edits will now save into the live content store.");
+});
+
+adminLogoutButton?.addEventListener("click", async () => {
+  if (!supabaseClient) {
+    return;
+  }
+
+  await supabaseClient.auth.signOut();
+  currentSession = null;
+  updateAuthUi();
+  renderStatus("Logged out. The editor is now read-only until you sign back in.");
 });
 
 document.addEventListener("keydown", (event) => {
@@ -635,10 +728,6 @@ document.addEventListener("keydown", (event) => {
 function initializeAdminPage() {
   workingProjects = projectStore?.getMergedProjects() || JSON.parse(JSON.stringify(window.PARTI_PROJECTS || {}));
 
-  if (adminGithubTokenInput) {
-    adminGithubTokenInput.value = window.sessionStorage.getItem(GITHUB_TOKEN_STORAGE_KEY) || "";
-  }
-
   const initialSlug = Object.keys(workingProjects)[0] || "";
   selectedProjectSlug = initialSlug;
   populateForm(initialSlug ? workingProjects[initialSlug] : createBlankProject());
@@ -646,8 +735,23 @@ function initializeAdminPage() {
   renderStatus(
     getLocalOnlyProjects()
       ? `Loaded ${getLocalOnlyProjects()} local project override${getLocalOnlyProjects() === 1 ? "" : "s"} from the shared admin store.`
-      : "No local overrides yet. Editing here builds a repo-ready JSON payload, and Publish to GitHub writes it to content/projects.json."
+      : "No local overrides yet. Sign in to save edits into the shared content system."
   );
+
+  if (supabaseClient) {
+    supabaseClient.auth.getSession().then(({ data }) => {
+      currentSession = data.session || null;
+      updateAuthUi();
+    });
+
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      currentSession = session || null;
+      updateAuthUi();
+    });
+  } else {
+    updateAuthUi();
+  }
+
   setAdminTheme(getPreferredTheme(adminPageShell?.getAttribute("data-theme") || "dark"));
 }
 
