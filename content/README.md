@@ -21,5 +21,5 @@ Setup checklist:
 1. Create a Supabase project.
 2. Run `supabase/parti_setup.sql`.
 3. Add your project URL and anon key to `supabase-config.js`.
-4. Create admin users in Supabase Auth.
+4. Enable Google auth in Supabase and use your `letsparti.co` Google Workspace.
 5. Log into `admin.html` and save changes normally.

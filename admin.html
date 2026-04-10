@@ -59,20 +59,15 @@
 
         <article class="project-block admin-panel">
           <h2>Admin Login</h2>
-          <form class="admin-auth-form" id="admin-auth-form">
-            <label class="admin-field admin-field-wide">
-              <span>Email</span>
-              <input id="admin-email" type="email" autocomplete="username">
-            </label>
-            <label class="admin-field admin-field-wide">
-              <span>Password</span>
-              <input id="admin-password" type="password" autocomplete="current-password">
-            </label>
+          <div class="admin-auth-form" id="admin-auth-form">
+            <p class="detail-copy">
+              Sign in with your Google Workspace account. Only <code>@letsparti.co</code> addresses are allowed to edit.
+            </p>
             <div class="admin-actions">
-              <button class="project-link" id="admin-login" type="submit">Log In</button>
+              <button class="project-link" id="admin-login" type="button">Continue with Google</button>
               <button class="project-link" id="admin-logout" type="button">Log Out</button>
             </div>
-          </form>
+          </div>
           <p class="detail-copy admin-note" id="admin-auth-status">
             Supabase login is not configured yet.
           </p>
