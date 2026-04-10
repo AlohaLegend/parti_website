@@ -9,6 +9,7 @@ const adminStatus = document.querySelector("#admin-status");
 const adminNewProjectButton = document.querySelector("#admin-new-project");
 const adminExportProjectsButton = document.querySelector("#admin-export-projects");
 const adminResetProjectsButton = document.querySelector("#admin-reset-projects");
+const adminSaveProjectButton = document.querySelector("#admin-save-project");
 const adminPreviewProjectButton = document.querySelector("#admin-preview-project");
 const adminRevertProjectButton = document.querySelector("#admin-revert-project");
 const adminDeleteProjectButton = document.querySelector("#admin-delete-project");
@@ -148,6 +149,9 @@ function updateAuthUi() {
     if (adminLogoutButton) {
       adminLogoutButton.disabled = true;
     }
+    if (adminSaveProjectButton) {
+      adminSaveProjectButton.textContent = "Save Project Changes";
+    }
     syncEditorAccess();
     return;
   }
@@ -160,6 +164,9 @@ function updateAuthUi() {
     if (adminLogoutButton) {
       adminLogoutButton.disabled = false;
     }
+    if (adminSaveProjectButton) {
+      adminSaveProjectButton.textContent = "Save to Live Site";
+    }
   } else {
     renderAuthStatus(`Log in with Google using a ${ADMIN_EMAIL_DOMAIN} address to edit and publish site content.`);
     if (adminLoginButton) {
@@ -167,6 +174,9 @@ function updateAuthUi() {
     }
     if (adminLogoutButton) {
       adminLogoutButton.disabled = true;
+    }
+    if (adminSaveProjectButton) {
+      adminSaveProjectButton.textContent = "Save Project Changes";
     }
   }
 
@@ -807,7 +817,9 @@ function initializeAdminPage() {
   renderStatus(
     getLocalOnlyProjects()
       ? `Loaded ${getLocalOnlyProjects()} local project override${getLocalOnlyProjects() === 1 ? "" : "s"} from the shared admin store.`
-      : "No local overrides yet. Sign in to save edits into the shared content system."
+      : isAuthenticated()
+        ? "Logged in. Project edits save into the live content system."
+        : "No local overrides yet. Sign in to save edits into the shared content system."
   );
 
   if (supabaseClient) {
