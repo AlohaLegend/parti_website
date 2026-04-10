@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARTI | Admin Login</title>
+  <meta
+    name="description"
+    content="PARTI admin login."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css?v=20260410j">
+</head>
+<body>
+  <div class="project-page-shell" data-theme="dark" id="admin-login-shell">
+    <header class="site-header">
+      <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <a class="brand-link" href="index.html" aria-label="PARTI home">
+        <img class="logo-image header-logo-image" id="header-logo-image" src="assets/parti-logo-main.png" alt="PARTI">
+      </a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">Mode</button>
+    </header>
+
+    <aside class="site-menu" id="site-menu">
+      <nav class="menu-panel" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="index.html#works">Works</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </aside>
+
+    <main class="admin-login-main">
+      <article class="project-block admin-login-card">
+        <p class="detail-kicker">PARTI Admin</p>
+        <h1>Login</h1>
+        <p class="detail-copy">
+          Sign in with your Google Workspace account. Only <code>@letsparti.co</code> addresses are allowed to enter the editor.
+        </p>
+        <div class="admin-actions">
+          <button class="project-link" id="admin-login" type="button">Continue with Google</button>
+        </div>
+        <p class="detail-copy admin-note" id="admin-auth-status">
+          Supabase login is not configured yet.
+        </p>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=20260410j"></script>
+  <script src="supabase-client.js?v=20260410j"></script>
+  <script src="admin-login.js?v=20260410j"></script>
+</body>
+</html>

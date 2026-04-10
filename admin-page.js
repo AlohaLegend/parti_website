@@ -21,6 +21,7 @@ const adminAuthStatus = document.querySelector("#admin-auth-status");
 const THEME_STORAGE_KEY = "parti-theme";
 const ADMIN_EMAIL_DOMAIN = "@letsparti.co";
 const CLEAN_ADMIN_URL = `${window.location.origin}${window.location.pathname}`;
+const ADMIN_LOGIN_URL = `${window.location.origin}${window.location.pathname.replace("admin.html", "admin-login.html")}`;
 const projectStore = window.PARTI_PROJECT_STORE;
 const supabaseClient = window.PARTI_SUPABASE?.client;
 const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
@@ -184,6 +185,7 @@ async function enforceAdminDomain(session) {
 
   currentSession = null;
   updateAuthUi();
+  window.location.replace(ADMIN_LOGIN_URL);
   return false;
 }
 
@@ -764,8 +766,13 @@ function initializeAdminPage() {
     supabaseClient.auth.getSession().then(({ data }) => {
       currentSession = data.session || null;
       enforceAdminDomain(currentSession).then((isAllowed) => {
-        if (isAllowed || !currentSession) {
+        if (isAllowed) {
           updateAuthUi();
+          return;
+        }
+
+        if (!currentSession) {
+          window.location.replace(ADMIN_LOGIN_URL);
         }
       });
     });
@@ -776,10 +783,12 @@ function initializeAdminPage() {
 
       if (isAllowed) {
         renderStatus("Logged in. Admin edits will now save into the live content store.");
+        updateAuthUi();
+        return;
       }
 
-      if (isAllowed || !currentSession) {
-        updateAuthUi();
+      if (!currentSession) {
+        window.location.replace(ADMIN_LOGIN_URL);
       }
     });
   } else {
