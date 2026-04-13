@@ -18,6 +18,13 @@
 </head>
 <body>
   <div class="project-page-shell" data-theme="dark" id="project-page-shell">
+    <script>
+      (() => {
+        const storedTheme = window.localStorage.getItem("parti-theme");
+        const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+        document.currentScript.previousElementSibling?.setAttribute("data-theme", theme);
+      })();
+    </script>
     <header class="site-header">
       <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
         <span></span>
