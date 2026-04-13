@@ -246,14 +246,8 @@ function setTheme(theme) {
     themeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";
   }
 
-  const logoSource = "assets/parti-logo-purple.png";
-
-  if (splashLogoImage) {
-    splashLogoImage.src = logoSource;
-  }
-
   if (headerLogoImage) {
-    headerLogoImage.src = logoSource;
+    headerLogoImage.src = "assets/parti-logo-purple.png";
   }
 
   window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
