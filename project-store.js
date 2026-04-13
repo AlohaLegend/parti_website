@@ -111,10 +111,11 @@
         return clone(publishedProjects);
       }
 
-      const normalizedProjects = {};
+      const normalizedProjects = clone(window.PARTI_PROJECTS || {});
 
       Object.entries(parsed).forEach(([slug, project]) => {
         const normalized = normalizeProject({
+          ...(normalizedProjects[project?.slug || slug] || {}),
           ...project,
           slug: project?.slug || slug,
         });

@@ -26,6 +26,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/marshalls-cbs-03.jpg", alt: "Marshalls CBS photo moment alternate view" }
     ],
     liveUrl: "https://www.instagram.com/p/DVrCt2nlA5w/",
+    companyUrl: "https://www.marshalls.com/",
     pageUrl: "project.html?slug=marshalls-cbs"
   },
   "eos-bush-on-main": {
@@ -55,6 +56,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/eos-bush-on-main-03.jpg", alt: "EOS Bush On Main alternate installation view" }
     ],
     liveUrl: "https://www.instagram.com/p/DVcBKZCkk1s/",
+    companyUrl: "https://evolutionofsmooth.com/",
     pageUrl: "project.html?slug=eos-bush-on-main"
   },
   "eos-valentines": {
@@ -84,6 +86,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/eos-valentines-03.jpg", alt: "EOS Valentine's event alternate view" }
     ],
     liveUrl: "https://www.instagram.com/p/DUvZRGOFdAz/",
+    companyUrl: "https://evolutionofsmooth.com/",
     pageUrl: "project.html?slug=eos-valentines"
   },
   "dairy-boy-holiday": {
@@ -113,6 +116,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/dairy-boy-holiday-03.jpg", alt: "Dairy Boy holiday market alternate view" }
     ],
     liveUrl: "https://www.instagram.com/p/DVHcZ53EpOe/",
+    companyUrl: "https://dairyboy.com/",
     pageUrl: "project.html?slug=dairy-boy-holiday"
   },
   "alchemai-popup": {
@@ -140,6 +144,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/alchemai-popup-01.jpg", alt: "Alchemai pop-up recap image" }
     ],
     liveUrl: "https://www.instagram.com/p/DU6wlxfEmtQ/",
+    companyUrl: "https://www.alchemai.world/",
     pageUrl: "project.html?slug=alchemai-popup"
   },
   "sadie-hawkins": {
@@ -169,6 +174,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/sadie-hawkins-03.jpg", alt: "Sadie Hawkins Winter Formal alternate view" }
     ],
     liveUrl: "https://www.instagram.com/p/DT_JCHCkoW_/",
+    companyUrl: "https://bornxraised.com/",
     pageUrl: "project.html?slug=sadie-hawkins"
   },
   "jcrew-miracle": {
@@ -198,6 +204,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/jcrew-miracle-03.jpg", alt: "J.Crew Miracle in Manhattan alternate view" }
     ],
     liveUrl: "https://www.instagram.com/p/DTba7Pokprk/",
+    companyUrl: "https://www.jcrew.com/us",
     pageUrl: "project.html?slug=jcrew-miracle"
   },
   "zcon-summit": {
@@ -228,6 +235,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/zcon-summit-04.jpg", alt: "ZCON stage and scenic build alternate view" }
     ],
     liveUrl: "https://www.instagram.com/p/DQ7wavLkgj6/",
+    companyUrl: "https://zcon.xyz/",
     pageUrl: "project.html?slug=zcon-summit"
   },
   "sonsies-garden": {
@@ -258,6 +266,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/sonsies-garden-04.jpg", alt: "Sonsie's Garden render or design development view" }
     ],
     liveUrl: "https://www.instagram.com/p/DQ5Jr6BEjWp/",
+    companyUrl: "https://sonsieskin.com/",
     pageUrl: "project.html?slug=sonsies-garden"
   },
   "graveyard-shift": {
@@ -287,6 +296,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/graveyard-shift-03.jpg", alt: "Graveyard Shift alternate installation view" }
     ],
     liveUrl: "https://www.instagram.com/p/DQsMqsiksSD/",
+    companyUrl: "https://www.adidas.com/us",
     pageUrl: "project.html?slug=graveyard-shift"
   },
   bytedance: {
@@ -317,6 +327,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/bytedance-04.jpg", alt: "Byte Dance wide experiential setup" }
     ],
     liveUrl: "https://www.letsparti.co/bytedance",
+    companyUrl: "https://www.bytedance.com/en/",
     pageUrl: "project.html?slug=bytedance"
   },
   hwood: {
@@ -347,6 +358,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/hwood-04.jpeg", alt: "The h.wood Group guest-facing photo moment" }
     ],
     liveUrl: "https://www.letsparti.co/hwood",
+    companyUrl: "https://hwoodgroup.com",
     pageUrl: "project.html?slug=hwood"
   },
   ciroc: {
@@ -377,6 +389,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/ciroc-04.jpg", alt: "Ciroc bar activation detail" }
     ],
     liveUrl: "https://www.letsparti.co/ciroc",
+    companyUrl: "https://www.ciroc.com/en-us",
     pageUrl: "project.html?slug=ciroc"
   },
   "club-renaissance": {
@@ -407,6 +420,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/club-renaissance-04.jpg", alt: "Club Renaissance installation detail" }
     ],
     liveUrl: "https://www.letsparti.co/club-renaissance",
+    companyUrl: "https://music.amazon.com/",
     pageUrl: "project.html?slug=club-renaissance"
   },
   "artist-lounge": {
@@ -437,6 +451,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/artist-lounge-04.jpeg", alt: "Artist Lounge design detail" }
     ],
     liveUrl: "https://www.letsparti.co/artist-lounge",
+    companyUrl: "https://www.youtube.com/",
     pageUrl: "project.html?slug=artist-lounge"
   },
   houseplant: {
@@ -467,6 +482,7 @@ window.PARTI_PROJECTS = {
       { src: "assets/houseplant-04.png", alt: "Houseplant lounge wide concept view" }
     ],
     liveUrl: "https://www.letsparti.co/houseplant",
+    companyUrl: "https://www.houseplant.com/",
     pageUrl: "project.html?slug=houseplant"
   }
 };
@@ -496,6 +512,7 @@ function createArchiveProject(config) {
     imageAlt: config.imageAlt || `${config.title} Instagram archive preview`,
     gallery: config.gallery || [{ src: config.image, alt: config.imageAlt || `${config.title} archive image` }],
     liveUrl: config.liveUrl,
+    companyUrl: config.companyUrl || "",
     pageUrl: `project.html?slug=${config.slug}`,
     showInCollage: config.showInCollage ?? false
   };
@@ -520,6 +537,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/zcon-zstars-stage-01.jpg",
     gallery: buildInstagramAssetGallery("zcon-zstars-stage", 4, "ZCON / ZSTARS Stage Design"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DQ707ULknpI/",
+    companyUrl: "https://zcon.xyz/",
     showInCollage: true
   }),
   "sonsies-garden-renders": createArchiveProject({
@@ -533,6 +551,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/sonsies-garden-renders-01.jpg",
     gallery: buildInstagramAssetGallery("sonsies-garden-renders", 17, "Sonsie's Garden Renders"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DQ5V9cKATBR/",
+    companyUrl: "https://sonsieskin.com/",
     showInCollage: true
   }),
   "by-overnight-buildout": createArchiveProject({
@@ -551,6 +570,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/by-overnight-buildout-01.jpg",
     gallery: buildInstagramAssetGallery("by-overnight-buildout", 7, "By Overnight Vision Buildout"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DPkDyLtgToa/",
+    companyUrl: "https://byovernight.com/",
     showInCollage: true
   }),
   "dairy-boy-nyc-downstairs": createArchiveProject({
@@ -567,6 +587,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/dairy-boy-nyc-downstairs-01.jpg",
     gallery: buildInstagramAssetGallery("dairy-boy-nyc-downstairs", 4, "Dairy Boy NYC Pop-Up Downstairs"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DPR_4StktDt/",
+    companyUrl: "https://dairyboy.com/",
     showInCollage: true
   }),
   "dairy-boy-nyc-upstairs": createArchiveProject({
@@ -583,6 +604,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/dairy-boy-nyc-upstairs-01.jpg",
     gallery: buildInstagramAssetGallery("dairy-boy-nyc-upstairs", 6, "Dairy Boy NYC Pop-Up Upstairs"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DPMtbG9kvi5/",
+    companyUrl: "https://dairyboy.com/",
     showInCollage: true
   }),
   "hypebeast-flea-modelo": createArchiveProject({
@@ -598,6 +620,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/hypebeast-flea-modelo-01.jpg",
     gallery: buildInstagramAssetGallery("hypebeast-flea-modelo", 6, "Modelo x Hypebeast Flea"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DNgTtWXuCt_/",
+    companyUrl: "https://www.modelo.com/",
     showInCollage: true
   }),
   "hypebeast-flea-black-twitter": createArchiveProject({
@@ -628,6 +651,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/hypebeast-flea-depop-01.jpg",
     gallery: buildInstagramAssetGallery("hypebeast-flea-depop", 6, "Depop x Hypebeast Flea"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DNB3F17hipP/",
+    companyUrl: "https://www.depop.com/",
     showInCollage: true
   }),
   "dibs-beauty-launch": createArchiveProject({
@@ -644,6 +668,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/dibs-beauty-launch-01.jpg",
     gallery: buildInstagramAssetGallery("dibs-beauty-launch", 7, "DIBS Beauty Launch Event"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DM8cXPmSW_7/",
+    companyUrl: "https://dibsbeauty.com/",
     showInCollage: true
   }),
   "outlander-blood-of-my-blood": createArchiveProject({
@@ -674,6 +699,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/summer-fridays-tablescape-01.jpg",
     gallery: buildInstagramAssetGallery("summer-fridays-tablescape", 3, "Summer Fridays Tablescape"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DMa-4wGycW8/",
+    companyUrl: "https://summerfridays.com/",
     showInCollage: true
   }),
   "ikwydls-premiere-wall": createArchiveProject({
@@ -715,6 +741,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/invisalign-modular-tour-01.jpg",
     gallery: buildInstagramAssetGallery("invisalign-modular-tour", 7, "Invisalign Modular Tour"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DLlev90y_G_/",
+    companyUrl: "https://www.invisalign.com/",
     showInCollage: true
   }),
   "pinterest-coachella-collage": createArchiveProject({
@@ -728,6 +755,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/pinterest-coachella-collage-01.jpg",
     gallery: buildInstagramAssetGallery("pinterest-coachella-collage", 20, "Pinterest Coachella Collage Night"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/DH8_P7FvldW/",
+    companyUrl: "https://www.pinterest.com/",
     showInCollage: true
   }),
   "zcon-build-pov": createArchiveProject({
@@ -741,6 +769,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/zcon-build-pov-01.jpg",
     gallery: buildInstagramAssetGallery("zcon-build-pov", 2, "ZCON Build POV"),
     liveUrl: "https://www.instagram.com/zcon.xyz/p/DBZtWDTv5bG/",
+    companyUrl: "https://zcon.xyz/",
     showInCollage: true
   }),
   "omar-apollo-dispose-of-me": createArchiveProject({
@@ -754,6 +783,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/omar-apollo-dispose-of-me-01.jpg",
     gallery: buildInstagramAssetGallery("omar-apollo-dispose-of-me", 6, "Omar Apollo - Dispose of Me"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/C8npeCvvXuZ/",
+    companyUrl: "https://www.omarapollo.com/",
     showInCollage: true
   }),
   "nova-launch-party": createArchiveProject({
@@ -767,6 +797,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/nova-launch-party-01.jpg",
     gallery: buildInstagramAssetGallery("nova-launch-party", 5, "Nova Launch Party"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/C7pbM-UyhVN/",
+    companyUrl: "https://www.adidas.com/us",
     showInCollage: true
   }),
   "fyc-emmys-presswall": createArchiveProject({
@@ -780,6 +811,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/fyc-emmys-presswall-01.jpg",
     gallery: buildInstagramAssetGallery("fyc-emmys-presswall", 4, "FYC Emmys Press Wall"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/C7VGnxYPWit/",
+    companyUrl: "https://www.netflix.com/",
     showInCollage: true
   }),
   "omar-apollo-live-for-me": createArchiveProject({
@@ -793,6 +825,7 @@ Object.assign(window.PARTI_PROJECTS, {
     image: "assets/omar-apollo-live-for-me-01.jpg",
     gallery: buildInstagramAssetGallery("omar-apollo-live-for-me", 10, "Omar Apollo - Live for Me"),
     liveUrl: "https://www.instagram.com/letsparti.co/p/C2xtlL1v3jL/",
+    companyUrl: "https://www.omarapollo.com/",
     showInCollage: true
   })
 });
