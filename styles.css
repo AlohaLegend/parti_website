@@ -868,6 +868,40 @@ button {
   border: 1px solid var(--line);
 }
 
+.admin-current-project {
+  margin-bottom: 14px;
+}
+
+.admin-project-current-card {
+  width: 100%;
+  appearance: none;
+  border: 1px solid currentColor;
+  background: currentColor;
+  color: var(--bg);
+  text-align: left;
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: transform 120ms ease, opacity 180ms ease;
+}
+
+.admin-project-current-card:hover {
+  transform: translateX(2px);
+}
+
+.admin-project-current-card small {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--bg) 72%, transparent);
+}
+
+.admin-project-current-card strong {
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
 .admin-project-item {
   appearance: none;
   border: 0;
