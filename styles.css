@@ -8,6 +8,15 @@
   --transition: 260ms ease;
 }
 
+html[data-theme="light"] {
+  --bg: #f7f7f5;
+  --fg: #111111;
+  --muted: rgba(17, 17, 17, 0.72);
+  --line: rgba(17, 17, 17, 0.56);
+  --surface: rgba(0, 0, 0, 0.03);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+}
+
 * {
   box-sizing: border-box;
 }

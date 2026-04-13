@@ -71,6 +71,7 @@ function toggleAdminMenu(forceOpen) {
 function setAdminTheme(theme) {
   const nextTheme = theme === "light" ? "light" : "dark";
 
+  document.documentElement.setAttribute("data-theme", nextTheme);
   adminPageShell?.setAttribute("data-theme", nextTheme);
 
   if (adminThemeToggle) {

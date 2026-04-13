@@ -17,6 +17,7 @@ function toggleAboutMenu(forceOpen) {
 function setAboutTheme(theme) {
   const nextTheme = theme === "light" ? "light" : "dark";
 
+  document.documentElement.setAttribute("data-theme", nextTheme);
   aboutPageShell?.setAttribute("data-theme", nextTheme);
 
   if (aboutThemeToggle) {

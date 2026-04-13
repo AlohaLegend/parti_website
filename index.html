@@ -8,6 +8,13 @@
     name="description"
     content="PARTI is an experiential design and production studio creating bold live moments, campaigns, and cultural installations."
   >
+  <script>
+    (() => {
+      const storedTheme = window.localStorage.getItem("parti-theme");
+      const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -30,13 +37,6 @@
   </div>
 
   <div class="site-shell" data-theme="dark" id="site-shell">
-    <script>
-      (() => {
-        const storedTheme = window.localStorage.getItem("parti-theme");
-        const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
-        document.currentScript.previousElementSibling?.setAttribute("data-theme", theme);
-      })();
-    </script>
     <header class="site-header">
       <button
         class="menu-button"
