@@ -59,6 +59,15 @@ function getPreferredTheme(defaultTheme = "dark") {
   return storedTheme === "light" || storedTheme === "dark" ? storedTheme : defaultTheme;
 }
 
+function getCurrentTheme(defaultTheme = "dark") {
+  const activeTheme =
+    document.documentElement.getAttribute("data-theme") ||
+    projectPageShell?.getAttribute("data-theme") ||
+    defaultTheme;
+
+  return activeTheme === "light" || activeTheme === "dark" ? activeTheme : defaultTheme;
+}
+
 function stopHeroSlideshow() {
   if (heroSlideTimer) {
     window.clearInterval(heroSlideTimer);
@@ -235,7 +244,7 @@ projectSiteMenu?.querySelectorAll("a").forEach((link) => {
 });
 
 projectThemeToggle?.addEventListener("click", () => {
-  const nextTheme = projectPageShell?.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  const nextTheme = getCurrentTheme() === "dark" ? "light" : "dark";
   setProjectTheme(nextTheme);
 });
 
@@ -251,7 +260,7 @@ function initializeProjectPage() {
   projectLibrary = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
   const currentProject = projectLibrary[currentProjectId] || projectLibrary[fallbackProjectId];
   renderProject(currentProject);
-  setProjectTheme(getPreferredTheme(projectPageShell?.getAttribute("data-theme") || "dark"));
+  setProjectTheme(getPreferredTheme(getCurrentTheme()));
 }
 
 if (window.PARTI_PROJECT_STORE?.ready?.then) {
