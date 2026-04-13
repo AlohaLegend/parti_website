@@ -246,7 +246,7 @@ function setTheme(theme) {
     themeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";
   }
 
-  const logoSource = nextTheme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
+  const logoSource = "assets/parti-logo-purple.png";
 
   if (splashLogoImage) {
     splashLogoImage.src = logoSource;

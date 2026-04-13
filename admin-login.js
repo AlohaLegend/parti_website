@@ -32,7 +32,7 @@ function setTheme(theme) {
   }
 
   if (loginHeaderLogoImage) {
-    loginHeaderLogoImage.src = nextTheme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
+    loginHeaderLogoImage.src = "assets/parti-logo-purple.png";
   }
 
   window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);

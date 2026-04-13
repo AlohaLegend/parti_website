@@ -47,7 +47,7 @@ function setProjectTheme(theme) {
   }
 
   if (projectHeaderLogoImage) {
-    projectHeaderLogoImage.src = nextTheme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
+    projectHeaderLogoImage.src = "assets/parti-logo-purple.png";
   }
 
   window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
