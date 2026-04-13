@@ -41,6 +41,7 @@ function toggleProjectMenu(forceOpen) {
 function setProjectTheme(theme) {
   const nextTheme = theme === "light" ? "light" : "dark";
 
+  document.documentElement.setAttribute("data-theme", nextTheme);
   projectPageShell?.setAttribute("data-theme", nextTheme);
   if (projectThemeToggle) {
     projectThemeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";

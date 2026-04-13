@@ -17,6 +17,7 @@ function toggleContactMenu(forceOpen) {
 function setContactTheme(theme) {
   const nextTheme = theme === "light" ? "light" : "dark";
 
+  document.documentElement.setAttribute("data-theme", nextTheme);
   contactPageShell?.setAttribute("data-theme", nextTheme);
 
   if (contactThemeToggle) {
