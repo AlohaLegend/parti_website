@@ -78,7 +78,7 @@ function setAdminTheme(theme) {
   }
 
   if (adminHeaderLogoImage) {
-    adminHeaderLogoImage.src = nextTheme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
+    adminHeaderLogoImage.src = "assets/parti-logo-purple.png";
   }
 
   window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);

@@ -24,7 +24,7 @@ function setAboutTheme(theme) {
   }
 
   if (aboutHeaderLogoImage) {
-    aboutHeaderLogoImage.src = nextTheme === "dark" ? "assets/parti-logo-main.png" : "assets/parti-logo-purple.png";
+    aboutHeaderLogoImage.src = "assets/parti-logo-purple.png";
   }
 
   window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
