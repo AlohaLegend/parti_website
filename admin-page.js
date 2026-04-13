@@ -548,14 +548,24 @@ function renderProjectList() {
   }
 
   adminProjectList.innerHTML = Object.values(workingProjects)
-    .sort((a, b) => (b.yearLabel || "").localeCompare(a.yearLabel || "") || a.navLabel.localeCompare(b.navLabel))
+    .sort((a, b) => {
+      if (a.slug === selectedProjectSlug) {
+        return -1;
+      }
+
+      if (b.slug === selectedProjectSlug) {
+        return 1;
+      }
+
+      return (b.yearLabel || "").localeCompare(a.yearLabel || "") || a.navLabel.localeCompare(b.navLabel);
+    })
     .map((project) => {
       const isActive = project.slug === selectedProjectSlug ? "is-active" : "";
       const isLocal = !baseProjects[project.slug] ? "admin-project-item-local" : "";
       const hiddenLabel = project.isHidden ? '<small class="admin-project-flag">hidden</small>' : "";
       const activeLabel = project.slug === selectedProjectSlug ? '<small class="admin-project-flag admin-project-flag-active">editing</small>' : "";
       return `
-        <button class="admin-project-item ${isActive} ${isLocal}" type="button" data-project-slug="${project.slug}">
+        <button class="admin-project-item ${isActive} ${isLocal}" type="button" data-project-slug="${project.slug}" aria-current="${project.slug === selectedProjectSlug ? "true" : "false"}">
           <span>${project.navLabel || project.title || project.slug}${hiddenLabel}${activeLabel}</span>
           <span>${project.yearLabel || "draft"}</span>
         </button>
@@ -570,10 +580,23 @@ function renderProjectList() {
   });
 
   const activeButton = adminProjectList.querySelector(`[data-project-slug="${selectedProjectSlug}"]`);
-  activeButton?.scrollIntoView({
-    block: "nearest",
-    behavior: "smooth",
-  });
+  if (activeButton) {
+    const listRect = adminProjectList.getBoundingClientRect();
+    const buttonRect = activeButton.getBoundingClientRect();
+    const offsetTop = activeButton.offsetTop - 12;
+    const offsetBottom = activeButton.offsetTop + activeButton.offsetHeight + 12;
+    const visibleTop = adminProjectList.scrollTop;
+    const visibleBottom = visibleTop + adminProjectList.clientHeight;
+
+    if (buttonRect.top < listRect.top || offsetTop < visibleTop) {
+      adminProjectList.scrollTo({ top: Math.max(0, offsetTop), behavior: "smooth" });
+    } else if (buttonRect.bottom > listRect.bottom || offsetBottom > visibleBottom) {
+      adminProjectList.scrollTo({
+        top: Math.max(0, offsetBottom - adminProjectList.clientHeight),
+        behavior: "smooth",
+      });
+    }
+  }
 }
 
 function populateForm(project) {
