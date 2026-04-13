@@ -49,6 +49,7 @@ const adminFields = {
   client: document.querySelector("#admin-client"),
   meta: document.querySelector("#admin-meta"),
   liveUrl: document.querySelector("#admin-live-url"),
+  companyUrl: document.querySelector("#admin-company-url"),
   leadCrop: document.querySelector("#admin-lead-crop"),
   showInCollage: document.querySelector("#admin-show-in-collage"),
   isHidden: document.querySelector("#admin-is-hidden"),
@@ -491,6 +492,7 @@ function createBlankProject() {
     image: "",
     imageAlt: "",
     liveUrl: "",
+    companyUrl: "",
     leadCrop: "center center",
     gallery: [],
     showInCollage: true,
@@ -613,6 +615,7 @@ function populateForm(project) {
   adminFields.client.value = nextProject.client || "";
   adminFields.meta.value = nextProject.meta || "";
   adminFields.liveUrl.value = nextProject.liveUrl || "";
+  adminFields.companyUrl.value = nextProject.companyUrl || "";
   adminFields.leadCrop.value = nextProject.leadCrop || "center center";
   adminFields.showInCollage.checked = nextProject.showInCollage !== false;
   adminFields.isHidden.checked = nextProject.isHidden === true;
@@ -655,6 +658,7 @@ function collectFormProject() {
     image: leadImage?.src || "",
     imageAlt: leadImage?.alt || "",
     liveUrl: adminFields.liveUrl.value.trim(),
+    companyUrl: adminFields.companyUrl.value.trim(),
     leadCrop: adminFields.leadCrop.value,
     showInCollage: adminFields.showInCollage.checked,
     isHidden: adminFields.isHidden.checked,

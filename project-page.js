@@ -14,6 +14,7 @@ const projectHeroSlides = document.querySelector("#project-hero-slides");
 const projectHeroDots = document.querySelector("#project-hero-dots");
 const projectHeroCopy = document.querySelector("#project-hero-copy");
 const projectLiveLink = document.querySelector("#project-live-link");
+const projectCompanyLink = document.querySelector("#project-company-link");
 const projectList = document.querySelector("#project-list");
 const projectGallery = document.querySelector("#project-gallery");
 
@@ -199,6 +200,15 @@ function renderProject(project) {
 
   if (projectLiveLink) {
     projectLiveLink.href = project.liveUrl;
+  }
+
+  if (projectCompanyLink) {
+    if (project.companyUrl) {
+      projectCompanyLink.href = project.companyUrl;
+      projectCompanyLink.hidden = false;
+    } else {
+      projectCompanyLink.hidden = true;
+    }
   }
 
   if (projectGallery) {
