@@ -14,7 +14,7 @@ const projectHeroSlides = document.querySelector("#project-hero-slides");
 const projectHeroDots = document.querySelector("#project-hero-dots");
 const projectHeroCopy = document.querySelector("#project-hero-copy");
 const projectLiveLink = document.querySelector("#project-live-link");
-const projectCompanyLink = document.querySelector("#project-company-link");
+const projectCompanyLinks = document.querySelector("#project-company-links");
 const projectList = document.querySelector("#project-list");
 const projectGallery = document.querySelector("#project-gallery");
 
@@ -67,6 +67,27 @@ function getCurrentTheme(defaultTheme = "dark") {
     defaultTheme;
 
   return activeTheme === "light" || activeTheme === "dark" ? activeTheme : defaultTheme;
+}
+
+function normalizeCompanyUrls(project) {
+  if (Array.isArray(project.companyUrls) && project.companyUrls.length) {
+    return project.companyUrls.filter(Boolean);
+  }
+
+  if (project.companyUrl) {
+    return [project.companyUrl];
+  }
+
+  return [];
+}
+
+function getCompanyLinkLabel(url, index) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, "");
+    return `Visit ${hostname}`;
+  } catch {
+    return `Visit Company Website${index > 0 ? ` ${index + 1}` : ""}`;
+  }
 }
 
 function stopHeroSlideshow() {
@@ -202,12 +223,23 @@ function renderProject(project) {
     projectLiveLink.href = project.liveUrl;
   }
 
-  if (projectCompanyLink) {
-    if (project.companyUrl) {
-      projectCompanyLink.href = project.companyUrl;
-      projectCompanyLink.hidden = false;
+  if (projectCompanyLinks) {
+    const companyUrls = normalizeCompanyUrls(project);
+
+    if (companyUrls.length) {
+      projectCompanyLinks.innerHTML = companyUrls
+        .map(
+          (url, index) => `
+            <a class="project-link" href="${url}" target="_blank" rel="noreferrer">
+              ${getCompanyLinkLabel(url, index)}
+            </a>
+          `
+        )
+        .join("");
+      projectCompanyLinks.hidden = false;
     } else {
-      projectCompanyLink.hidden = true;
+      projectCompanyLinks.innerHTML = "";
+      projectCompanyLinks.hidden = true;
     }
   }
 

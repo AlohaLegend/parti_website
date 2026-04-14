@@ -49,7 +49,7 @@ const adminFields = {
   client: document.querySelector("#admin-client"),
   meta: document.querySelector("#admin-meta"),
   liveUrl: document.querySelector("#admin-live-url"),
-  companyUrl: document.querySelector("#admin-company-url"),
+  companyUrls: document.querySelector("#admin-company-urls"),
   leadCrop: document.querySelector("#admin-lead-crop"),
   showInCollage: document.querySelector("#admin-show-in-collage"),
   isHidden: document.querySelector("#admin-is-hidden"),
@@ -492,7 +492,7 @@ function createBlankProject() {
     image: "",
     imageAlt: "",
     liveUrl: "",
-    companyUrl: "",
+    companyUrls: [],
     leadCrop: "center center",
     gallery: [],
     showInCollage: true,
@@ -615,7 +615,12 @@ function populateForm(project) {
   adminFields.client.value = nextProject.client || "";
   adminFields.meta.value = nextProject.meta || "";
   adminFields.liveUrl.value = nextProject.liveUrl || "";
-  adminFields.companyUrl.value = nextProject.companyUrl || "";
+  const companyUrls = Array.isArray(nextProject.companyUrls)
+    ? nextProject.companyUrls
+    : nextProject.companyUrl
+      ? [nextProject.companyUrl]
+      : [];
+  adminFields.companyUrls.value = companyUrls.join("\n");
   adminFields.leadCrop.value = nextProject.leadCrop || "center center";
   adminFields.showInCollage.checked = nextProject.showInCollage !== false;
   adminFields.isHidden.checked = nextProject.isHidden === true;
@@ -637,6 +642,17 @@ function selectProject(slug) {
   renderStatus(`Editing ${slug}. Logged-in changes save into the live content store.`);
 }
 
+function parseCompanyUrls(rawValue = "") {
+  return Array.from(
+    new Set(
+      rawValue
+        .split(/\r?\n/)
+        .map((value) => value.trim())
+        .filter(Boolean)
+    )
+  );
+}
+
 function collectFormProject() {
   const slug = adminFields.slug.value.trim();
   const gallery = currentGalleryItems
@@ -646,6 +662,8 @@ function collectFormProject() {
     }))
     .filter((item) => item.src);
   const leadImage = gallery[0] || null;
+
+  const companyUrls = parseCompanyUrls(adminFields.companyUrls.value);
 
   return {
     slug,
@@ -658,7 +676,8 @@ function collectFormProject() {
     image: leadImage?.src || "",
     imageAlt: leadImage?.alt || "",
     liveUrl: adminFields.liveUrl.value.trim(),
-    companyUrl: adminFields.companyUrl.value.trim(),
+    companyUrl: companyUrls[0] || "",
+    companyUrls,
     leadCrop: adminFields.leadCrop.value,
     showInCollage: adminFields.showInCollage.checked,
     isHidden: adminFields.isHidden.checked,

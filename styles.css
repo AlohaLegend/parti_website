@@ -624,6 +624,12 @@ button {
   gap: 12px;
 }
 
+.project-link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .project-link {
   display: inline-flex;
   align-items: center;
