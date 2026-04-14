@@ -25,6 +25,16 @@
       pageUrl: `project.html?slug=${project.slug}`,
     };
 
+    if (!Array.isArray(normalized.companyUrls)) {
+      normalized.companyUrls = normalized.companyUrl ? [normalized.companyUrl] : [];
+    } else {
+      normalized.companyUrls = normalized.companyUrls.filter(Boolean);
+    }
+
+    if (!normalized.companyUrl && normalized.companyUrls.length) {
+      normalized.companyUrl = normalized.companyUrls[0];
+    }
+
     if (!Array.isArray(normalized.gallery) || !normalized.gallery.length) {
       if (normalized.image) {
         normalized.gallery = [
