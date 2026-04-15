@@ -33,6 +33,7 @@ let cardScrollAnimationFrame = null;
 let cards = [];
 let rows = [];
 let activeProjectId = null;
+let revealObserver = null;
 
 function createDropdown(project) {
   const dropdown = document.createElement("div");
@@ -80,6 +81,10 @@ function createImageCard(projectId, index) {
   card.dataset.project = projectId;
   card.href = project.pageUrl;
   card.setAttribute("aria-label", `Open ${project.title} project`);
+  card.classList.add("reveal-item");
+  card.style.setProperty("--reveal-delay", `${Math.min(index, 10) * 60}ms`);
+  card.style.setProperty("--drift-duration", `${14 + (index % 5) * 2}s`);
+  card.style.setProperty("--drift-delay", `${(index % 6) * -0.9}s`);
 
   const fill = document.createElement("div");
   fill.className = "image-fill";
@@ -217,12 +222,59 @@ function decorateWorkRows() {
 
     const entry = document.createElement("div");
     entry.className = "work-entry";
+    entry.classList.add("reveal-item");
+    entry.style.setProperty("--reveal-delay", `${Math.min(rowEntries.size, 10) * 55}ms`);
 
     row.parentElement.insertBefore(entry, row);
     entry.appendChild(row);
     entry.appendChild(createDropdown(project));
 
     rowEntries.set(row.dataset.project, entry);
+  });
+}
+
+function initializeRevealObserver() {
+  revealObserver?.disconnect();
+
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver?.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.14,
+      rootMargin: "0px 0px -8% 0px",
+    }
+  );
+}
+
+function observeRevealTargets() {
+  initializeRevealObserver();
+
+  const staticTargets = [
+    document.querySelector(".site-header"),
+    document.querySelector(".works-table"),
+    document.querySelector(".info-strip"),
+    document.querySelector(".site-footer"),
+  ].filter(Boolean);
+
+  staticTargets.forEach((target, index) => {
+    target.classList.add("reveal-item");
+    target.style.setProperty("--reveal-delay", `${index * 80}ms`);
+  });
+
+  const targets = [
+    ...staticTargets,
+    ...cards,
+    ...Array.from(rowEntries.values()),
+  ];
+
+  targets.forEach((target) => {
+    revealObserver?.observe(target);
   });
 }
 
@@ -444,6 +496,7 @@ function initializePortfolio() {
   renderWorksList();
   renderImageField();
   decorateWorkRows();
+  observeRevealTargets();
   bindPortfolioInteractions();
 
   activateProject(defaultProjectId, "right");

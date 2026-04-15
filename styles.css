@@ -34,6 +34,23 @@ body {
   transition: background var(--transition), color var(--transition);
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background:
+    radial-gradient(circle at top, color-mix(in srgb, var(--fg) 6%, transparent), transparent 42%),
+    var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.is-page-transitioning::after {
+  opacity: 1;
+}
+
 body.menu-open {
   overflow: hidden;
 }
@@ -52,7 +69,11 @@ button {
   padding: 26px 20px 28px;
   background: var(--bg);
   color: var(--fg);
-  transition: background var(--transition), color var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition),
+    opacity 360ms ease,
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .site-shell[data-theme="light"],
@@ -141,6 +162,7 @@ button {
   display: grid;
   gap: 7px;
   margin-top: 6px;
+  transition: transform 220ms ease, opacity 180ms ease;
 }
 
 .menu-button span {
@@ -148,6 +170,20 @@ button {
   width: 100%;
   background: currentColor;
   display: block;
+  transform-origin: center;
+  transition: transform 260ms ease, opacity 180ms ease;
+}
+
+.menu-button:hover {
+  transform: translateY(-1px);
+}
+
+.menu-button:hover span:nth-child(1) {
+  transform: translateX(-2px);
+}
+
+.menu-button:hover span:nth-child(3) {
+  transform: translateX(2px);
 }
 
 .theme-toggle {
@@ -158,6 +194,20 @@ button {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 160ms ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  transform: translateY(-1px);
+}
+
+.theme-toggle:active {
+  transform: translateY(1px);
 }
 
 .brand-link {
@@ -171,7 +221,7 @@ button {
   width: min(320px, 78vw);
   padding: 94px 20px 20px;
   transform: translateX(-100%);
-  transition: transform 260ms ease;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 
@@ -186,16 +236,44 @@ button {
   border: 1px solid var(--line);
   background: var(--bg);
   box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
 .menu-panel a {
   padding: 18px 16px;
   text-decoration: none;
   border-bottom: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 420ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 180ms ease;
 }
 
 .menu-panel a:last-child {
   border-bottom: 0;
+}
+
+.menu-panel a:nth-child(1) {
+  transition-delay: 40ms;
+}
+
+.menu-panel a:nth-child(2) {
+  transition-delay: 90ms;
+}
+
+.menu-panel a:nth-child(3) {
+  transition-delay: 140ms;
+}
+
+.menu-panel a:nth-child(4) {
+  transition-delay: 190ms;
+}
+
+.site-menu.is-open .menu-panel a {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .portfolio-layout {
@@ -218,6 +296,7 @@ button {
   padding: 18px 10px 28px 18px;
   align-content: start;
   scrollbar-width: none;
+  isolation: isolate;
 }
 
 .image-field::-webkit-scrollbar {
@@ -278,6 +357,8 @@ button {
   height: 100%;
   object-fit: cover;
   display: block;
+  animation: imageDrift var(--drift-duration, 16s) ease-in-out infinite;
+  animation-delay: var(--drift-delay, 0s);
   transition:
     transform 640ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 460ms ease;
@@ -286,6 +367,7 @@ button {
 
 .image-card:hover .image-fill-media,
 .image-card.is-active .image-fill-media {
+  animation-play-state: paused;
   transform: scale(1.03);
   opacity: 1;
 }
@@ -302,6 +384,20 @@ button {
   box-shadow: 0 26px 62px rgba(0, 0, 0, 0.22);
 }
 
+.reveal-item {
+  opacity: 0;
+  transform: translate3d(0, 34px, 0);
+  transition:
+    opacity 700ms ease,
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-item.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
 .site-shell[data-theme="light"] .image-card.is-active {
   border-color: rgba(17, 17, 17, 0.5);
 }
@@ -315,12 +411,21 @@ button {
 .works-table,
 .project-detail {
   border: 1px solid var(--line);
+  transition:
+    border-color 260ms ease,
+    box-shadow 260ms ease,
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-detail {
   margin-top: 20px;
   padding: 20px 18px;
   background: var(--surface);
+}
+
+.works-table:hover,
+.project-detail:hover {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.08);
 }
 
 .works-head,
@@ -477,7 +582,29 @@ button {
   padding: 26px 20px 28px;
   background: var(--bg);
   color: var(--fg);
-  transition: background var(--transition), color var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition),
+    opacity 360ms ease,
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.is-page-transitioning .site-shell,
+body.is-page-transitioning .project-page-shell {
+  opacity: 0.22;
+  transform: translateY(18px) scale(0.995);
+}
+
+@keyframes imageDrift {
+  0% {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.06) translate3d(0, -10px, 0);
+  }
+  100% {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
 }
 
 .project-main {
@@ -501,6 +628,15 @@ button {
   border: 1px solid var(--line);
   background: #111111;
   box-shadow: var(--shadow);
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 320ms ease,
+    border-color 260ms ease;
+}
+
+.project-hero-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 28px 68px rgba(0, 0, 0, 0.22);
 }
 
 .project-hero-slides {
@@ -527,6 +663,12 @@ button {
   height: 100%;
   object-fit: cover;
   display: block;
+  transform: scale(1.035);
+  transition: transform 1800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-hero-slide.is-active img {
+  transform: scale(1);
 }
 
 .project-hero-overlay {
@@ -576,6 +718,11 @@ button {
   border: 1px solid var(--line);
   background: var(--surface);
   padding: 20px 18px;
+  transition:
+    border-color 260ms ease,
+    box-shadow 320ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 260ms ease;
 }
 
 .project-block h1,
@@ -600,6 +747,11 @@ button {
 
 .project-block p:last-child {
   margin-bottom: 0;
+}
+
+.project-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.08);
 }
 
 .project-meta-list {
@@ -651,6 +803,7 @@ button {
 .project-link:hover,
 .project-link:focus-visible {
   background: var(--surface);
+  transform: translateY(-1px);
 }
 
 .project-link:active {
@@ -683,11 +836,19 @@ button {
   text-decoration: none;
   color: inherit;
   background: transparent;
+  transition:
+    background 180ms ease,
+    transform 180ms ease,
+    color 180ms ease;
 }
 
 .project-list a:hover,
 .project-list a.is-active {
   background: var(--surface);
+}
+
+.project-list a:hover {
+  transform: translateX(4px);
 }
 
 .project-gallery {
@@ -701,6 +862,15 @@ button {
   border: 1px solid var(--line);
   background: #111111;
   overflow: hidden;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms ease,
+    border-color 260ms ease;
+}
+
+.project-gallery figure:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.16);
 }
 
 .project-gallery img {
@@ -709,6 +879,11 @@ button {
   min-height: 220px;
   object-fit: cover;
   display: block;
+  transition: transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-gallery figure:hover img {
+  transform: scale(1.035);
 }
 
 .about-main {
@@ -739,6 +914,16 @@ button {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
+}
+
+.about-columns > * {
+  transition:
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms ease;
+}
+
+.about-columns > *:hover {
+  transform: translateY(-2px);
 }
 
 .about-list-title {
@@ -821,6 +1006,16 @@ button {
 
 .contact-columns {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.contact-columns > * {
+  transition:
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms ease;
+}
+
+.contact-columns > *:hover {
+  transform: translateY(-2px);
 }
 
 .admin-main {
