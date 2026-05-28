@@ -28,10 +28,36 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Build static site
+        run: |
+          mkdir -p _site/assets
+
+          cp *.html *.js *.css CNAME .nojekyll README.md _site/
+
+          if [ -d content ]; then
+            cp -R content _site/content
+          fi
+
+          if [ -d supabase ]; then
+            cp -R supabase _site/supabase
+          fi
+
+          cp -R assets/thumbs _site/assets/thumbs
+          cp -R assets/optimized _site/assets/optimized
+          cp assets/parti-logo-main.png _site/assets/
+          cp assets/parti-logo-purple.png _site/assets/
+          cp assets/parti-01.png _site/assets/
+          cp assets/youtube.jpg _site/assets/
+          cp assets/byte-dance.jpg _site/assets/
+          cp assets/hwood-group.jpg _site/assets/
+          cp assets/ciroc.jpg _site/assets/
+          cp assets/club-renaissance.jpg _site/assets/
+          cp assets/houseplant.jpg _site/assets/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy
         id: deployment
