@@ -484,12 +484,17 @@ function bindPortfolioInteractions() {
     });
     row.addEventListener("click", (event) => {
       clearHoverIntent();
+      activateProject(row.dataset.project, "right");
 
-      if (!row.classList.contains("is-active")) {
-        event.preventDefault();
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+        return;
       }
 
-      activateProject(row.dataset.project, "right");
+      event.preventDefault();
+      document.body.classList.add("is-page-transitioning");
+      window.setTimeout(() => {
+        window.location.href = row.href;
+      }, 120);
     });
   });
 
