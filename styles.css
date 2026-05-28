@@ -278,8 +278,8 @@ button {
 
 .portfolio-layout {
   display: grid;
-  grid-template-columns: minmax(540px, 0.95fr) minmax(420px, 0.72fr);
-  gap: clamp(8px, 0.9vw, 14px);
+  grid-template-columns: minmax(560px, 0.96fr) minmax(420px, 0.7fr);
+  gap: clamp(24px, 2.1vw, 38px);
   align-items: start;
 }
 
@@ -287,13 +287,13 @@ button {
   position: sticky;
   top: 92px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(230px, 340px));
+  grid-template-columns: repeat(2, minmax(230px, 350px));
   grid-auto-rows: 62px;
   justify-content: end;
-  gap: 26px clamp(12px, 1.2vw, 18px);
+  gap: 34px clamp(18px, 1.8vw, 26px);
   height: calc(100vh - 126px);
   overflow: auto;
-  padding: 18px 6px 28px 10px;
+  padding: 18px 10px 32px 10px;
   align-content: start;
   scrollbar-width: none;
   isolation: isolate;
@@ -456,7 +456,7 @@ button {
   grid-template-columns: 1fr 86px;
   gap: 16px;
   align-items: center;
-  padding: 16px 16px;
+  padding: 17px 18px;
   text-decoration: none;
 }
 
