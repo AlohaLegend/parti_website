@@ -24,7 +24,7 @@ const COLLAGE_BLUEPRINTS = [
   { shape: "landscape" },
   { shape: "square" }
 ];
-const MAX_COLLAGE_CARDS = 16;
+const MAX_COLLAGE_CARDS = 36;
 let hoverIntentTimer = null;
 let cardScrollTimer = null;
 let cardScrollAnimationFrame = null;
@@ -32,6 +32,7 @@ let cards = [];
 let rows = [];
 let activeProjectId = null;
 let revealObserver = null;
+let rowScrollObserver = null;
 
 function getOptimizedAssetPath(src, folder = "optimized") {
   if (typeof src !== "string" || !src.startsWith("assets/")) {
@@ -384,8 +385,17 @@ function clearCardScrollIntent() {
   clearCardScrollAnimation();
 }
 
+function findCardForProject(projectId) {
+  return cards.find((card) => card.dataset.project === projectId) || null;
+}
+
 function scheduleCardScroll(card) {
   clearCardScrollIntent();
+
+  if (!card) {
+    return;
+  }
+
   cardScrollTimer = window.setTimeout(() => {
     scrollCardIntoView(card);
     cardScrollTimer = null;
@@ -436,7 +446,11 @@ function activateProject(projectId, source = "right") {
     });
   }
 
-  clearCardScrollIntent();
+  if (source === "right") {
+    scheduleCardScroll(findCardForProject(activeId));
+  } else {
+    clearCardScrollIntent();
+  }
 }
 
 function clearHoverIntent() {
@@ -479,6 +493,47 @@ function bindPortfolioInteractions() {
   });
 }
 
+function initializeRowScrollObserver() {
+  rowScrollObserver?.disconnect();
+
+  if (!rows.length) {
+    return;
+  }
+
+  rowScrollObserver = new IntersectionObserver(
+    (entries) => {
+      if (window.scrollY < 24) {
+        return;
+      }
+
+      const centeredEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => {
+          const viewportCenter = window.innerHeight / 2;
+          const aCenter = a.boundingClientRect.top + a.boundingClientRect.height / 2;
+          const bCenter = b.boundingClientRect.top + b.boundingClientRect.height / 2;
+
+          return Math.abs(aCenter - viewportCenter) - Math.abs(bCenter - viewportCenter);
+        })[0];
+
+      const projectId = centeredEntry?.target?.dataset.project;
+
+      if (projectId && projectId !== activeProjectId) {
+        activateProject(projectId, "right");
+      }
+    },
+    {
+      root: null,
+      rootMargin: "-42% 0px -42% 0px",
+      threshold: 0,
+    }
+  );
+
+  rows.forEach((row) => {
+    rowScrollObserver.observe(row);
+  });
+}
+
 function initializePortfolio() {
   projectContent = window.PARTI_PROJECTS || {};
 
@@ -490,6 +545,7 @@ function initializePortfolio() {
   decorateWorkRows();
   observeRevealTargets();
   bindPortfolioInteractions();
+  initializeRowScrollObserver();
 
   activeProjectId = null;
   activateProject(defaultProjectId, "right");
