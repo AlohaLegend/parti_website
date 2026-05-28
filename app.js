@@ -592,8 +592,12 @@ function initializeCardVisibilityObserver() {
   });
 }
 
-function initializePortfolio() {
-  projectContent = window.PARTI_PROJECTS || {};
+async function initializePortfolio() {
+  if (window.PARTI_PROJECT_STORE?.ready?.then) {
+    await window.PARTI_PROJECT_STORE.ready;
+  }
+
+  projectContent = window.PARTI_PROJECT_STORE?.getMergedProjects?.() || window.PARTI_PROJECTS || {};
 
   const orderedProjects = getOrderedProjects();
   defaultProjectId = orderedProjects[0]?.slug || "marshalls-cbs";

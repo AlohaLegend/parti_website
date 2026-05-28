@@ -385,8 +385,12 @@ document.addEventListener("keydown", (event) => {
 
 window.addEventListener("beforeunload", stopHeroSlideshow);
 
-function initializeProjectPage() {
-  projectLibrary = window.PARTI_PROJECTS || {};
+async function initializeProjectPage() {
+  if (window.PARTI_PROJECT_STORE?.ready?.then) {
+    await window.PARTI_PROJECT_STORE.ready;
+  }
+
+  projectLibrary = window.PARTI_PROJECT_STORE?.getMergedProjects?.() || window.PARTI_PROJECTS || {};
   const currentProject = projectLibrary[currentProjectId] || projectLibrary[fallbackProjectId];
   renderProject(currentProject);
   setProjectTheme(getPreferredTheme(getCurrentTheme()));
