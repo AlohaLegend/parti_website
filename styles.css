@@ -411,9 +411,6 @@ button {
 }
 
 .works-head {
-  position: sticky;
-  top: 92px;
-  z-index: 1;
   background: var(--bg);
   box-shadow: 0 1px 0 var(--line);
 }
