@@ -407,6 +407,28 @@ button {
   scroll-margin-top: 110px;
 }
 
+@media (min-width: 1500px) {
+  .portfolio-layout {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    grid-template-columns:
+      minmax(56px, 1fr)
+      minmax(700px, 760px)
+      minmax(56px, 1fr)
+      minmax(620px, 760px)
+      minmax(56px, 1fr);
+    gap: 0;
+  }
+
+  .image-field {
+    grid-column: 2;
+  }
+
+  .works-panel {
+    grid-column: 4;
+  }
+}
+
 .works-table {
   overflow: visible;
 }
