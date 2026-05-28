@@ -1,6 +1,6 @@
 (() => {
   const TRANSITIONING_CLASS = "is-page-transitioning";
-  const TRANSITION_DELAY = 280;
+  const TRANSITION_DELAY = 120;
   let revealObserver = null;
 
   function isModifiedClick(event) {
@@ -93,6 +93,10 @@
   }
 
   document.addEventListener("click", (event) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
     const link = event.target.closest("a[href]");
 
     if (!link || isModifiedClick(event) || !isInternalPageLink(link)) {

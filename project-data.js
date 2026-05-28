@@ -36,7 +36,7 @@ window.PARTI_PROJECTS = {
     yearLabel: "2026",
     kicker: "completed project",
     client: "eos products / United Talent",
-    meta: "Client: eos products | NYC | Design, production, fabrication, run of show",
+    meta: "Client: eos products | Date: March 3, 2026 | NYC | Design, production, fabrication, run of show",
     copy:
       "A Bush on Main event in New York City for eos products, with design, production, run of show, and fabrication handled by PARTI.",
     secondary:

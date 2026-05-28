@@ -23,12 +23,32 @@ const currentProjectId =
   new URLSearchParams(window.location.search).get("slug") ||
   document.body.dataset.project;
 const fallbackProjectId = "marshalls-cbs";
-let projectLibrary = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
+let projectLibrary = window.PARTI_PROJECTS || {};
 const HERO_SLIDESHOW_DELAY = 3600;
 let heroSlideTimer = null;
 let heroSlides = [];
 let heroDots = [];
 let currentHeroSlideIndex = 0;
+
+function getOptimizedAssetPath(src, folder = "optimized") {
+  if (typeof src !== "string" || !src.startsWith("assets/")) {
+    return src;
+  }
+
+  const fileName = src.split("/").pop() || "";
+  const stem = fileName.replace(/\.[^.]+$/, "");
+  return `assets/${folder}/${stem}.webp`;
+}
+
+function bindImageFallbacks(root) {
+  root?.querySelectorAll("img[data-original-src]").forEach((image) => {
+    image.addEventListener("error", () => {
+      if (image.dataset.originalSrc && image.src !== image.dataset.originalSrc) {
+        image.src = image.dataset.originalSrc;
+      }
+    }, { once: true });
+  });
+}
 
 function toggleProjectMenu(forceOpen) {
   const shouldOpen =
@@ -79,6 +99,72 @@ function normalizeCompanyUrls(project) {
   }
 
   return [];
+}
+
+function getProjectTimestamp(project) {
+  const datePattern = /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}\b/i;
+  const candidateFields = [
+    typeof project?.date === "string" ? project.date : "",
+    typeof project?.meta === "string" ? project.meta : "",
+    typeof project?.detailBody === "string" ? project.detailBody : "",
+    typeof project?.detailLead === "string" ? project.detailLead : "",
+    typeof project?.detailSupport === "string" ? project.detailSupport : "",
+  ];
+
+  for (const field of candidateFields) {
+    if (!field) {
+      continue;
+    }
+
+    const matchedDate = field.match(datePattern)?.[0] || field;
+    const parsedDate = Date.parse(matchedDate);
+
+    if (!Number.isNaN(parsedDate)) {
+      return parsedDate;
+    }
+  }
+
+  return null;
+}
+
+function getOrderedProjects() {
+  return Object.values(projectLibrary)
+    .filter((entry) => entry && entry.isHidden !== true)
+    .sort((a, b) => {
+      const timeA = getProjectTimestamp(a);
+      const timeB = getProjectTimestamp(b);
+
+      if (timeA !== null && timeB !== null && timeA !== timeB) {
+        return timeB - timeA;
+      }
+
+      if (timeA !== null && timeB === null) {
+        return -1;
+      }
+
+      if (timeA === null && timeB !== null) {
+        return 1;
+      }
+
+      const yearA = Number.parseInt(a.yearLabel, 10);
+      const yearB = Number.parseInt(b.yearLabel, 10);
+
+      if (!Number.isNaN(yearA) && !Number.isNaN(yearB) && yearA !== yearB) {
+        return yearB - yearA;
+      }
+
+      return (a.navLabel || a.title || a.slug).localeCompare(b.navLabel || b.title || b.slug);
+    });
+}
+
+function setTextOrHide(node, value) {
+  if (!node) {
+    return;
+  }
+
+  const nextValue = typeof value === "string" ? value.trim() : "";
+  node.textContent = nextValue;
+  node.hidden = !nextValue;
 }
 
 function getCompanyLinkLabel(url, index) {
@@ -142,9 +228,10 @@ function renderHeroSlideshow(project) {
   projectHeroSlides.innerHTML = slides
     .map((item, index) => {
       const activeClass = index === 0 ? " is-active" : "";
+      const optimizedSrc = getOptimizedAssetPath(item.src, "optimized");
       return `
         <figure class="project-hero-slide${activeClass}">
-          <img src="${item.src}" alt="${item.alt}">
+          <img src="${optimizedSrc}" data-original-src="${item.src}" alt="${item.alt}" decoding="async" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
         </figure>
       `;
     })
@@ -169,6 +256,7 @@ function renderHeroSlideshow(project) {
   heroSlides = Array.from(projectHeroSlides.querySelectorAll(".project-hero-slide"));
   heroDots = Array.from(projectHeroDots.querySelectorAll(".project-hero-dot"));
   currentHeroSlideIndex = 0;
+  bindImageFallbacks(projectHeroSlides);
 
   heroDots.forEach((dot) => {
     dot.addEventListener("click", () => {
@@ -194,33 +282,31 @@ function renderProject(project) {
   }
 
   if (projectKickerNode) {
-    projectKickerNode.textContent = project.detailTitle;
+    projectKickerNode.textContent = project.detailTitle || project.kicker || "Project";
   }
 
   if (projectMetaNode) {
-    projectMetaNode.textContent = project.meta;
+    projectMetaNode.textContent = project.meta || project.client || "";
   }
 
-  if (projectLeadNode) {
-    projectLeadNode.textContent = project.detailLead;
-  }
-
-  if (projectBodyNode) {
-    projectBodyNode.textContent = project.detailBody;
-  }
-
-  if (projectSupportNode) {
-    projectSupportNode.textContent = project.detailSupport;
-  }
+  setTextOrHide(projectLeadNode, project.detailLead || project.copy);
+  setTextOrHide(projectBodyNode, project.detailBody || project.secondary);
+  setTextOrHide(projectSupportNode, project.detailSupport);
 
   if (projectHeroCopy) {
-    projectHeroCopy.textContent = project.copy;
+    projectHeroCopy.textContent = project.copy || project.detailLead || project.title;
   }
 
   renderHeroSlideshow(project);
 
   if (projectLiveLink) {
-    projectLiveLink.href = project.liveUrl;
+    if (project.liveUrl) {
+      projectLiveLink.href = project.liveUrl;
+      projectLiveLink.hidden = false;
+    } else {
+      projectLiveLink.removeAttribute("href");
+      projectLiveLink.hidden = true;
+    }
   }
 
   if (projectCompanyLinks) {
@@ -246,20 +332,21 @@ function renderProject(project) {
   if (projectGallery) {
     const galleryItems = (project.gallery || [])
       .map((item) => {
+        const optimizedSrc = getOptimizedAssetPath(item.src, "optimized");
         return `
           <figure>
-            <img src="${item.src}" alt="${item.alt}">
+            <img src="${optimizedSrc}" data-original-src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async">
           </figure>
         `;
       })
       .join("");
 
     projectGallery.innerHTML = galleryItems;
+    bindImageFallbacks(projectGallery);
   }
 
   if (projectList) {
-    const items = Object.values(projectLibrary)
-      .filter((entry) => entry.slug === project.slug || entry.isHidden !== true)
+    const items = getOrderedProjects()
       .map((entry) => {
         const activeClass = entry.slug === project.slug ? "is-active" : "";
         return `
@@ -299,14 +386,10 @@ document.addEventListener("keydown", (event) => {
 window.addEventListener("beforeunload", stopHeroSlideshow);
 
 function initializeProjectPage() {
-  projectLibrary = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
+  projectLibrary = window.PARTI_PROJECTS || {};
   const currentProject = projectLibrary[currentProjectId] || projectLibrary[fallbackProjectId];
   renderProject(currentProject);
   setProjectTheme(getPreferredTheme(getCurrentTheme()));
 }
 
-if (window.PARTI_PROJECT_STORE?.ready?.then) {
-  window.PARTI_PROJECT_STORE.ready.finally(initializeProjectPage);
-} else {
-  initializeProjectPage();
-}
+initializeProjectPage();

@@ -2,6 +2,7 @@
   const STORAGE_KEY = window.PARTI_ADMIN_STORAGE_KEY || "parti-admin-projects";
   const supabaseClient = window.PARTI_SUPABASE?.client;
   const supabaseConfig = window.PARTI_SUPABASE?.config || {};
+  const CONTENT_REFRESH_TIMEOUT = 1400;
   let publishedProjects = clone(window.PARTI_PROJECTS || {});
 
   function clone(value) {
@@ -69,6 +70,15 @@
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides, null, 2));
   }
 
+  function withTimeout(promise, timeout = CONTENT_REFRESH_TIMEOUT) {
+    return Promise.race([
+      promise,
+      new Promise((resolve) => {
+        window.setTimeout(() => resolve(null), timeout);
+      }),
+    ]);
+  }
+
   function getMergedProjects() {
     const merged = getBaseProjects();
     const overrides = readStoredOverrides();
@@ -94,11 +104,14 @@
       let parsed = null;
 
       if (supabaseClient) {
-        const { data, error } = await supabaseClient
-          .from(supabaseConfig.contentTable || "site_content")
-          .select("value")
-          .eq("key", supabaseConfig.contentKey || "projects")
-          .single();
+        const result = await withTimeout(
+          supabaseClient
+            .from(supabaseConfig.contentTable || "site_content")
+            .select("value")
+            .eq("key", supabaseConfig.contentKey || "projects")
+            .single()
+        );
+        const { data, error } = result || {};
 
         if (!error && data?.value && typeof data.value === "object") {
           parsed = data.value;
@@ -106,11 +119,9 @@
       }
 
       if (!parsed) {
-        const response = await window.fetch("content/projects.json", {
-          cache: "no-store",
-        });
+        const response = await withTimeout(window.fetch("content/projects.json"));
 
-        if (!response.ok) {
+        if (!response?.ok) {
           return clone(publishedProjects);
         }
 

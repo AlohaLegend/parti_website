@@ -1,17 +1,14 @@
-const splashScreen = document.querySelector("#splash-screen");
-const skipIntroButton = document.querySelector("#skip-intro");
 const menuButton = document.querySelector("#menu-button");
 const siteMenu = document.querySelector("#site-menu");
 const themeToggle = document.querySelector("#theme-toggle");
 const siteShell = document.querySelector("#site-shell");
 const imageField = document.querySelector("#image-field");
 const worksPanel = document.querySelector(".works-panel");
-const splashLogoImage = document.querySelector("#splash-logo-image");
 const headerLogoImage = document.querySelector("#header-logo-image");
 const worksList = document.querySelector("#works-list");
 
 const THEME_STORAGE_KEY = "parti-theme";
-let projectContent = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
+let projectContent = window.PARTI_PROJECTS || {};
 let defaultProjectId = "marshalls-cbs";
 const rowEntries = new Map();
 const HOVER_INTENT_DELAY = 210;
@@ -27,6 +24,7 @@ const COLLAGE_BLUEPRINTS = [
   { shape: "landscape" },
   { shape: "square" }
 ];
+const MAX_COLLAGE_CARDS = 16;
 let hoverIntentTimer = null;
 let cardScrollTimer = null;
 let cardScrollAnimationFrame = null;
@@ -34,6 +32,16 @@ let cards = [];
 let rows = [];
 let activeProjectId = null;
 let revealObserver = null;
+
+function getOptimizedAssetPath(src, folder = "optimized") {
+  if (typeof src !== "string" || !src.startsWith("assets/")) {
+    return src;
+  }
+
+  const fileName = src.split("/").pop() || "";
+  const stem = fileName.replace(/\.[^.]+$/, "");
+  return `assets/${folder}/${stem}.webp`;
+}
 
 function createDropdown(project) {
   const dropdown = document.createElement("div");
@@ -91,9 +99,18 @@ function createImageCard(projectId, index) {
 
   const image = document.createElement("img");
   image.className = "image-fill-media";
-  image.src = project.image;
+  image.src = getOptimizedAssetPath(project.image, "thumbs");
+  image.dataset.originalSrc = project.image;
   image.alt = project.imageAlt || `${project.title} project image`;
+  image.decoding = "async";
+  image.loading = index < 4 ? "eager" : "lazy";
+  image.fetchPriority = index < 2 ? "high" : "auto";
   image.style.objectPosition = project.leadCrop || "center center";
+  image.addEventListener("error", () => {
+    if (image.dataset.originalSrc && image.src !== image.dataset.originalSrc) {
+      image.src = image.dataset.originalSrc;
+    }
+  }, { once: true });
   fill.appendChild(image);
 
   card.appendChild(fill);
@@ -193,7 +210,8 @@ function renderImageField() {
 
   const orderedProjectIds = rows
     .map((row) => row.dataset.project)
-    .filter((projectId) => projectContent[projectId]?.showInCollage !== false);
+    .filter((projectId) => projectContent[projectId]?.showInCollage !== false)
+    .slice(0, MAX_COLLAGE_CARDS);
 
   imageField.innerHTML = "";
 
@@ -222,8 +240,6 @@ function decorateWorkRows() {
 
     const entry = document.createElement("div");
     entry.className = "work-entry";
-    entry.classList.add("reveal-item");
-    entry.style.setProperty("--reveal-delay", `${Math.min(rowEntries.size, 10) * 55}ms`);
 
     row.parentElement.insertBefore(entry, row);
     entry.appendChild(row);
@@ -257,7 +273,6 @@ function observeRevealTargets() {
 
   const staticTargets = [
     document.querySelector(".site-header"),
-    document.querySelector(".works-table"),
     document.querySelector(".info-strip"),
     document.querySelector(".site-footer"),
   ].filter(Boolean);
@@ -270,16 +285,11 @@ function observeRevealTargets() {
   const targets = [
     ...staticTargets,
     ...cards,
-    ...Array.from(rowEntries.values()),
   ];
 
   targets.forEach((target) => {
     revealObserver?.observe(target);
   });
-}
-
-function dismissSplash() {
-  splashScreen?.classList.add("is-hidden");
 }
 
 function toggleMenu(forceOpen) {
@@ -426,21 +436,7 @@ function activateProject(projectId, source = "right") {
     });
   }
 
-  const activeCard = cards.find((card) => card.dataset.project === activeId);
-  const activeEntry = rowEntries.get(activeId);
-
-  if (source === "right") {
-    if (activeCard) {
-      scheduleCardScroll(activeCard);
-    }
-    return;
-  }
-
   clearCardScrollIntent();
-
-  if (activeEntry) {
-    scrollWorkEntryIntoView(activeEntry);
-  }
 }
 
 function clearHoverIntent() {
@@ -460,8 +456,6 @@ function scheduleProjectActivation(projectId, source = "right") {
 
 function bindPortfolioInteractions() {
   rows.forEach((row) => {
-    row.addEventListener("mouseenter", () => scheduleProjectActivation(row.dataset.project, "right"));
-    row.addEventListener("mouseleave", clearHoverIntent);
     row.addEventListener("focus", () => {
       clearHoverIntent();
       activateProject(row.dataset.project, "right");
@@ -478,8 +472,6 @@ function bindPortfolioInteractions() {
   });
 
   cards.forEach((card) => {
-    card.addEventListener("mouseenter", () => scheduleProjectActivation(card.dataset.project, "left"));
-    card.addEventListener("mouseleave", clearHoverIntent);
     card.addEventListener("focus", () => {
       clearHoverIntent();
       activateProject(card.dataset.project, "left");
@@ -488,7 +480,7 @@ function bindPortfolioInteractions() {
 }
 
 function initializePortfolio() {
-  projectContent = window.PARTI_PROJECT_STORE?.getMergedProjects() || window.PARTI_PROJECTS || {};
+  projectContent = window.PARTI_PROJECTS || {};
 
   const orderedProjects = getOrderedProjects();
   defaultProjectId = orderedProjects[0]?.slug || "marshalls-cbs";
@@ -499,12 +491,10 @@ function initializePortfolio() {
   observeRevealTargets();
   bindPortfolioInteractions();
 
+  activeProjectId = null;
   activateProject(defaultProjectId, "right");
   setTheme(getPreferredTheme(siteShell?.getAttribute("data-theme") || "dark"));
 }
-
-skipIntroButton?.addEventListener("click", dismissSplash);
-window.setTimeout(dismissSplash, 1800);
 
 menuButton?.addEventListener("click", () => {
   toggleMenu();
@@ -524,12 +514,7 @@ themeToggle?.addEventListener("click", () => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     toggleMenu(false);
-    dismissSplash();
   }
 });
 
-if (window.PARTI_PROJECT_STORE?.ready?.then) {
-  window.PARTI_PROJECT_STORE.ready.finally(initializePortfolio);
-} else {
-  initializePortfolio();
-}
+initializePortfolio();
