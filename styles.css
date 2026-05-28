@@ -66,7 +66,7 @@ button {
 
 .site-shell {
   min-height: 100vh;
-  padding: 26px 20px 28px;
+  padding: 26px clamp(32px, 4vw, 58px) 28px;
   background: var(--bg);
   color: var(--fg);
   transition:
