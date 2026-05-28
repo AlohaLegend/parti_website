@@ -13,6 +13,7 @@ const THEME_STORAGE_KEY = "parti-theme";
 const CLEAN_LOGIN_URL = `${window.location.origin}${window.location.pathname}`;
 const ADMIN_EDITOR_URL = `${window.location.origin}${window.location.pathname.replace("admin-login.html", "admin.html")}`;
 const supabaseClient = window.PARTI_SUPABASE?.client;
+const supabaseConfig = window.PARTI_SUPABASE?.config || window.PARTI_SUPABASE_CONFIG || {};
 const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
 
 function toggleMenu(forceOpen) {
@@ -50,6 +51,25 @@ function renderAuthStatus(message) {
   if (adminAuthStatus) {
     adminAuthStatus.textContent = message;
   }
+}
+
+function getSupabaseHost() {
+  try {
+    return new URL(supabaseConfig.url || "").host;
+  } catch (_error) {
+    return supabaseConfig.url || "the configured Supabase project";
+  }
+}
+
+function renderLoginError(error) {
+  const message = error?.message || String(error || "");
+
+  if (/failed to fetch|network/i.test(message)) {
+    renderAuthStatus(`Cannot reach ${getSupabaseHost()}. Check the Supabase Project URL and anon public key in supabase-config.js.`);
+    return;
+  }
+
+  renderAuthStatus(message || "Login failed. Check the Supabase auth settings and try again.");
 }
 
 async function isApprovedAdmin() {
@@ -116,7 +136,12 @@ async function startEmailLogin(event) {
     adminEmailSubmit.textContent = "Send Magic Link";
   }
 
-  renderAuthStatus(error ? error.message : "Check your email for the admin login link.");
+  if (error) {
+    renderLoginError(error);
+    return;
+  }
+
+  renderAuthStatus("Check your email for the admin login link.");
 }
 
 async function startGoogleLogin() {
@@ -143,7 +168,7 @@ async function startGoogleLogin() {
   }
 
   if (error) {
-    renderAuthStatus(error.message);
+    renderLoginError(error);
   }
 }
 
