@@ -1081,11 +1081,13 @@ window.addEventListener("beforeunload", (event) => {
   event.returnValue = "";
 });
 
-function initializeAdminPage() {
+function cleanAdminUrl() {
   if (window.location.search || window.location.hash) {
     window.history.replaceState({}, document.title, CLEAN_ADMIN_URL);
   }
+}
 
+function initializeAdminPage() {
   workingProjects = projectStore?.getMergedProjects() || JSON.parse(JSON.stringify(window.PARTI_PROJECTS || {}));
 
   const initialSlug = Object.keys(workingProjects)[0] || "";
@@ -1105,6 +1107,7 @@ function initializeAdminPage() {
       currentSession = data.session || null;
       enforceAdminAccess(currentSession).then((isAllowed) => {
         if (isAllowed) {
+          cleanAdminUrl();
           updateAuthUi();
           return;
         }
@@ -1122,6 +1125,7 @@ function initializeAdminPage() {
       const isAllowed = await enforceAdminAccess(currentSession);
 
       if (isAllowed) {
+        cleanAdminUrl();
         renderStatus("Logged in. Admin edits will now save into the live content store.");
         updateAuthUi();
         return;

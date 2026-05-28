@@ -126,7 +126,7 @@ async function startEmailLogin(event) {
   const { error } = await supabaseClient.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: CLEAN_LOGIN_URL,
+      emailRedirectTo: ADMIN_EDITOR_URL,
       shouldCreateUser: true,
     },
   });
@@ -158,7 +158,7 @@ async function startGoogleLogin() {
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: CLEAN_LOGIN_URL,
+      redirectTo: ADMIN_EDITOR_URL,
     },
   });
 
@@ -173,10 +173,6 @@ async function startGoogleLogin() {
 }
 
 async function initializeLoginPage() {
-  if (window.location.search || window.location.hash) {
-    window.history.replaceState({}, document.title, CLEAN_LOGIN_URL);
-  }
-
   setTheme(getPreferredTheme(adminLoginShell?.getAttribute("data-theme") || "dark"));
 
   if (!isSupabaseConfigured || !supabaseClient) {
@@ -192,13 +188,22 @@ async function initializeLoginPage() {
 
   renderAuthStatus("Sign in with an approved admin email.");
 
-  const { data } = await supabaseClient.auth.getSession();
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    renderLoginError(error);
+  }
+
   const session = data.session || null;
   const isAllowed = await enforceAdminAccess(session);
 
   if (isAllowed) {
     window.location.replace(ADMIN_EDITOR_URL);
     return;
+  }
+
+  if (window.location.search || window.location.hash) {
+    window.history.replaceState({}, document.title, CLEAN_LOGIN_URL);
   }
 
   supabaseClient.auth.onAuthStateChange(async (_event, nextSession) => {
