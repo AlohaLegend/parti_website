@@ -279,7 +279,7 @@ button {
 .portfolio-layout {
   display: grid;
   grid-template-columns: minmax(560px, 1fr) minmax(420px, 0.72fr);
-  gap: clamp(28px, 2.4vw, 44px);
+  gap: clamp(42px, 3.5vw, 56px);
   align-items: start;
 }
 
