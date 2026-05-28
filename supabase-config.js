@@ -4,9 +4,4 @@ window.PARTI_SUPABASE_CONFIG = {
   contentTable: "site_content",
   contentKey: "projects",
   storageBucket: "project-images",
-  adminPassword: {
-    enabled: true,
-    sessionKey: "parti-admin-password-session",
-    sha256: "3ec102eee01ec11c218cf8d8b0f710a5585bd67ff4949a7d925895180d2ee17b",
-  },
 };

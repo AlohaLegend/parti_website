@@ -21,5 +21,7 @@ Setup checklist:
 1. Create a Supabase project.
 2. Run `supabase/parti_setup.sql`.
 3. Add your project URL and anon key to `supabase-config.js`.
-4. Enable Google auth in Supabase and use your `letsparti.co` Google Workspace.
-5. Log into `admin.html` and save changes normally.
+4. In Supabase Auth, enable Email auth for magic links. Google auth can also stay enabled as an optional shortcut.
+5. Confirm the approved editors in `public.admin_users`. The setup SQL seeds Liam, Ria, BT Tags, and Luca; update the email values there if any address is different.
+6. Add `https://www.letsparti.co/admin-login.html` and `https://www.letsparti.co/admin.html` to Supabase Auth redirect URLs.
+7. Log into `admin-login.html` and save changes normally.

@@ -51,18 +51,18 @@
         <p class="detail-kicker">PARTI Admin</p>
         <h1>Login</h1>
         <p class="detail-copy">
-          Sign in with your Google Workspace account or use the admin password.
+          Sign in with an approved admin email. New editors can use a magic link without sharing a password.
         </p>
+        <form class="admin-auth-form" id="admin-email-form">
+          <label class="admin-field">
+            <span>Email</span>
+            <input id="admin-email" name="email" type="email" autocomplete="email" required>
+          </label>
+          <button class="project-link" id="admin-email-submit" type="submit">Send Magic Link</button>
+        </form>
         <div class="admin-actions">
           <button class="project-link" id="admin-login" type="button">Continue with Google</button>
         </div>
-        <form class="admin-auth-form" id="admin-password-form">
-          <label class="admin-field">
-            <span>Admin Password</span>
-            <input id="admin-password" name="adminPassword" type="password" autocomplete="current-password">
-          </label>
-          <button class="project-link" id="admin-password-submit" type="submit">Enter Admin</button>
-        </form>
         <p class="detail-copy admin-note" id="admin-auth-status">
           Supabase login is not configured yet.
         </p>
@@ -71,9 +71,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="supabase-config.js?v=20260528a"></script>
+  <script src="supabase-config.js?v=20260528b"></script>
   <script src="supabase-client.js?v=20260528a"></script>
   <script src="transitions.js?v=20260528b"></script>
-  <script src="admin-login.js?v=20260528a"></script>
+  <script src="admin-login.js?v=20260528b"></script>
 </body>
 </html>
