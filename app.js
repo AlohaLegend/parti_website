@@ -33,6 +33,8 @@ let rows = [];
 let activeProjectId = null;
 let revealObserver = null;
 let rowScrollObserver = null;
+let cardVisibilityObserver = null;
+let isSyncingCardScroll = false;
 
 function getOptimizedAssetPath(src, folder = "optimized") {
   if (typeof src !== "string" || !src.startsWith("assets/")) {
@@ -354,6 +356,7 @@ function scrollCardIntoView(card) {
   }
 
   clearCardScrollAnimation();
+  isSyncingCardScroll = true;
 
   const startTop = currentTop;
   const startTime = performance.now();
@@ -370,6 +373,9 @@ function scrollCardIntoView(card) {
       cardScrollAnimationFrame = window.requestAnimationFrame(animate);
     } else {
       cardScrollAnimationFrame = null;
+      window.setTimeout(() => {
+        isSyncingCardScroll = false;
+      }, 120);
     }
   };
 
@@ -383,6 +389,7 @@ function clearCardScrollIntent() {
   }
 
   clearCardScrollAnimation();
+  isSyncingCardScroll = false;
 }
 
 function findCardForProject(projectId) {
@@ -417,11 +424,8 @@ function scrollWorkEntryIntoView(entry) {
     return;
   }
 
-  const absoluteTop = window.scrollY + entryRect.top;
-  const targetTop = absoluteTop - (viewportHeight / 2) + (entryRect.height / 2);
-
-  window.scrollTo({
-    top: Math.max(0, targetTop),
+  entry.scrollIntoView({
+    block: "center",
     behavior: "smooth",
   });
 }
@@ -450,6 +454,7 @@ function activateProject(projectId, source = "right") {
     scheduleCardScroll(findCardForProject(activeId));
   } else {
     clearCardScrollIntent();
+    scrollWorkEntryIntoView(rowEntries.get(activeId));
   }
 }
 
@@ -474,6 +479,9 @@ function bindPortfolioInteractions() {
       clearHoverIntent();
       activateProject(row.dataset.project, "right");
     });
+    row.addEventListener("pointerenter", () => {
+      scheduleProjectActivation(row.dataset.project, "right");
+    });
     row.addEventListener("click", (event) => {
       clearHoverIntent();
 
@@ -489,6 +497,9 @@ function bindPortfolioInteractions() {
     card.addEventListener("focus", () => {
       clearHoverIntent();
       activateProject(card.dataset.project, "left");
+    });
+    card.addEventListener("pointerenter", () => {
+      scheduleProjectActivation(card.dataset.project, "left");
     });
   });
 }
@@ -534,6 +545,48 @@ function initializeRowScrollObserver() {
   });
 }
 
+function initializeCardVisibilityObserver() {
+  cardVisibilityObserver?.disconnect();
+
+  if (!imageField || !cards.length) {
+    return;
+  }
+
+  cardVisibilityObserver = new IntersectionObserver(
+    (entries) => {
+      if (isSyncingCardScroll || imageField.scrollTop < 24) {
+        return;
+      }
+
+      const centeredEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => {
+          const fieldRect = imageField.getBoundingClientRect();
+          const fieldCenter = fieldRect.top + fieldRect.height / 2;
+          const aCenter = a.boundingClientRect.top + a.boundingClientRect.height / 2;
+          const bCenter = b.boundingClientRect.top + b.boundingClientRect.height / 2;
+
+          return Math.abs(aCenter - fieldCenter) - Math.abs(bCenter - fieldCenter);
+        })[0];
+
+      const projectId = centeredEntry?.target?.dataset.project;
+
+      if (projectId && projectId !== activeProjectId) {
+        activateProject(projectId, "left");
+      }
+    },
+    {
+      root: imageField,
+      rootMargin: "-42% 0px -42% 0px",
+      threshold: 0,
+    }
+  );
+
+  cards.forEach((card) => {
+    cardVisibilityObserver.observe(card);
+  });
+}
+
 function initializePortfolio() {
   projectContent = window.PARTI_PROJECTS || {};
 
@@ -546,6 +599,7 @@ function initializePortfolio() {
   observeRevealTargets();
   bindPortfolioInteractions();
   initializeRowScrollObserver();
+  initializeCardVisibilityObserver();
 
   activeProjectId = null;
   activateProject(defaultProjectId, "right");
