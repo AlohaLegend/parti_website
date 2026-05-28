@@ -10,6 +10,15 @@
   >
   <script>
     (() => {
+      const authSearchParams = new URLSearchParams(window.location.search);
+      const hasAuthSearch = authSearchParams.has("code") || authSearchParams.has("error") || authSearchParams.has("error_description");
+      const hasAuthHash = /(?:access_token|refresh_token|error|error_description)=/.test(window.location.hash);
+
+      if (hasAuthSearch || hasAuthHash) {
+        window.location.replace(`${window.location.origin}/admin.html${window.location.search}${window.location.hash}`);
+        return;
+      }
+
       const storedTheme = window.localStorage.getItem("parti-theme");
       const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
       document.documentElement.setAttribute("data-theme", theme);
