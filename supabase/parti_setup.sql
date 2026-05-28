@@ -11,6 +11,7 @@ create table if not exists public.admin_users (
 insert into public.admin_users (email, display_name, is_active)
 values
   ('liammoherlihy@gmail.com', 'Liam', true),
+  ('liam@letsparti.co', 'Liam', true),
   ('ria@letsparti.co', 'Ria', true),
   ('bttags@letsparti.co', 'BT Tags', true),
   ('luca@letsparti.co', 'Luca', true)
