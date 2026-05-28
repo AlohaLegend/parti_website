@@ -1,4 +1,104 @@
 window.PARTI_PROJECTS = {
+  "dairy-boy-db-sport-miami": {
+    slug: "dairy-boy-db-sport-miami",
+    title: "Dairy Boy DB Sport Miami",
+    navLabel: "dairy boy db sport miami",
+    yearLabel: "2026",
+    kicker: "completed project",
+    client: "Dairy Boy",
+    date: "May 20, 2026",
+    meta: "Client: Dairy Boy | Date: April 28, 2026 | Miami | Design, production, fabrication, run of show",
+    copy:
+      "A DB Sport Miami pop-up for Dairy Boy, powered by PARTI from design through production, fabrication, and run of show.",
+    secondary:
+      "The latest behind-the-scenes post adds a closer look at how the Miami activation came together, so this project now combines the polished pop-up views with build-process moments.",
+    detailTitle: "DB Sport Miami Pop-Up",
+    detailLead:
+      "A tennis-coded Miami brand environment built for Dairy Boy with a full-service PARTI role.",
+    detailBody:
+      "The April 28, 2026 Instagram post describes PARTI's scope as design, production, fabrication, and run of show for the DB Sport Miami pop-up.",
+    detailSupport:
+      "A May 20, 2026 follow-up post shared behind-the-scenes documentation from the same activation, giving the project page a broader read on both the finished experience and the making of it.",
+    image: "assets/dairy-boy-db-sport-miami-01.jpg",
+    imageAlt: "Dairy Boy DB Sport Miami pop-up installation",
+    gallery: [
+      { src: "assets/dairy-boy-db-sport-miami-01.jpg", alt: "Dairy Boy DB Sport Miami hero image" },
+      { src: "assets/dairy-boy-db-sport-miami-02.jpg", alt: "Dairy Boy DB Sport Miami branded detail" },
+      { src: "assets/dairy-boy-db-sport-miami-03.jpg", alt: "Dairy Boy DB Sport Miami environment view" },
+      { src: "assets/dairy-boy-db-sport-miami-04.jpg", alt: "Dairy Boy DB Sport Miami activation detail" },
+      { src: "assets/dairy-boy-db-sport-miami-05.jpg", alt: "Dairy Boy DB Sport Miami behind-the-scenes view" },
+      { src: "assets/dairy-boy-db-sport-miami-06.jpg", alt: "Dairy Boy DB Sport Miami production detail" },
+      { src: "assets/dairy-boy-db-sport-miami-07.jpg", alt: "Dairy Boy DB Sport Miami build process" },
+      { src: "assets/dairy-boy-db-sport-miami-08.jpg", alt: "Dairy Boy DB Sport Miami alternate behind-the-scenes view" }
+    ],
+    liveUrl: "https://www.instagram.com/p/DXsXrNKD2Sm/",
+    companyUrl: "https://dairyboy.com/",
+    pageUrl: "project.html?slug=dairy-boy-db-sport-miami"
+  },
+  "dairy-boy-study-break-san-diego": {
+    slug: "dairy-boy-study-break-san-diego",
+    title: "Dairy Boy Study Break San Diego",
+    navLabel: "dairy boy study break",
+    yearLabel: "2026",
+    kicker: "completed project",
+    client: "Dairy Boy",
+    date: "May 18, 2026",
+    meta: "Client: Dairy Boy | Date: May 18, 2026 | San Diego | Event production",
+    copy:
+      "A sunny San Diego event production for Dairy Boy Study Break, extending Dairy Boy's world into a coastal guest experience.",
+    secondary:
+      "The post frames the activation as a continued partnership with Dairy Boy, focused on bringing the brand's dreamlike event language into a new setting.",
+    detailTitle: "Study Break San Diego",
+    detailLead:
+      "A recent Dairy Boy production shaped around sunlit atmosphere, brand presence, and guest-ready details.",
+    detailBody:
+      "The May 18, 2026 Instagram post publicly credits PARTI with event production for Dairy Boy Study Break in San Diego.",
+    detailSupport:
+      "The carousel gives the page a fresh 2026 project touchpoint while keeping the copy grounded in the exact public scope shared by PARTI.",
+    image: "assets/dairy-boy-study-break-san-diego-01.jpg",
+    imageAlt: "Dairy Boy Study Break San Diego event production",
+    gallery: [
+      { src: "assets/dairy-boy-study-break-san-diego-01.jpg", alt: "Dairy Boy Study Break San Diego hero image" },
+      { src: "assets/dairy-boy-study-break-san-diego-02.jpg", alt: "Dairy Boy Study Break San Diego event detail" },
+      { src: "assets/dairy-boy-study-break-san-diego-03.jpg", alt: "Dairy Boy Study Break San Diego branded moment" },
+      { src: "assets/dairy-boy-study-break-san-diego-04.jpg", alt: "Dairy Boy Study Break San Diego alternate view" }
+    ],
+    liveUrl: "https://www.instagram.com/p/DYfddU4D1a4/",
+    companyUrl: "https://dairyboy.com/",
+    pageUrl: "project.html?slug=dairy-boy-study-break-san-diego"
+  },
+  "damson-madder-la-concept-store": {
+    slug: "damson-madder-la-concept-store",
+    title: "Damson Madder LA Concept Store",
+    navLabel: "damson madder la",
+    yearLabel: "2026",
+    kicker: "completed project",
+    client: "Damson Madder",
+    date: "April 29, 2026",
+    meta: "Client: Damson Madder | Date: April 29, 2026 | Los Angeles | Design + fabrication",
+    copy:
+      "An LA summer concept store for Damson Madder, designed and fabricated by PARTI.",
+    secondary:
+      "The project brought a seasonal retail world into Gallery 6, with production by Lucky Charm and food and beverage by Chloe Cooks.",
+    detailTitle: "LA Summer Concept Store",
+    detailLead:
+      "A retail-forward brand environment translating Damson Madder's summer story into a physical Los Angeles space.",
+    detailBody:
+      "PARTI's April 29, 2026 post publicly credits the studio with design and fabrication for the LA summer concept store.",
+    detailSupport:
+      "The source caption also credits Lucky Charm on production, Chloe Cooks on food and beverage, and Gallery 6 as the venue, so the project page preserves that context without overstating PARTI's role.",
+    image: "assets/damson-madder-la-concept-store-01.jpg",
+    imageAlt: "Damson Madder LA summer concept store installation",
+    gallery: [
+      { src: "assets/damson-madder-la-concept-store-01.jpg", alt: "Damson Madder LA concept store hero image" },
+      { src: "assets/damson-madder-la-concept-store-02.jpg", alt: "Damson Madder LA concept store retail detail" },
+      { src: "assets/damson-madder-la-concept-store-03.jpg", alt: "Damson Madder LA concept store environment view" },
+      { src: "assets/damson-madder-la-concept-store-04.jpg", alt: "Damson Madder LA concept store alternate view" }
+    ],
+    liveUrl: "https://www.instagram.com/p/DXuqDQjknhk/",
+    companyUrl: "https://damsonmadder.com/",
+    pageUrl: "project.html?slug=damson-madder-la-concept-store"
+  },
   "marshalls-cbs": {
     slug: "marshalls-cbs",
     title: "Marshalls CBS Premier Event",
