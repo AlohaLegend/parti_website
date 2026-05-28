@@ -14,6 +14,10 @@ const adminSaveProjectButton = document.querySelector("#admin-save-project");
 const adminPreviewProjectButton = document.querySelector("#admin-preview-project");
 const adminRevertProjectButton = document.querySelector("#admin-revert-project");
 const adminDeleteProjectButton = document.querySelector("#admin-delete-project");
+const adminSaveProjectTopButton = document.querySelector("#admin-save-project-top");
+const adminPreviewProjectTopButton = document.querySelector("#admin-preview-project-top");
+const adminProjectSearchInput = document.querySelector("#admin-project-search");
+const adminEditorTitle = document.querySelector("#admin-editor-title");
 const adminGalleryList = document.querySelector("#admin-gallery-list");
 const adminGalleryUploadInput = document.querySelector("#admin-gallery-upload");
 const adminLeadPreview = document.querySelector("#admin-lead-preview");
@@ -37,6 +41,11 @@ let selectedProjectSlug = "";
 let currentGalleryItems = [];
 let draggedGalleryIndex = null;
 let currentSession = null;
+let projectSearchQuery = "";
+let slugWasEdited = false;
+let navLabelWasEdited = false;
+let isPopulatingForm = false;
+let hasUnsavedChanges = false;
 const buttonFeedbackTimers = new WeakMap();
 
 const adminFields = {
@@ -102,6 +111,8 @@ function syncEditorAccess() {
     adminExportProjectsButton,
     adminResetProjectsButton,
     adminPreviewProjectButton,
+    adminSaveProjectTopButton,
+    adminPreviewProjectTopButton,
     adminRevertProjectButton,
     adminDeleteProjectButton,
   ];
@@ -337,6 +348,7 @@ async function addGalleryFiles(files) {
     }
 
     currentGalleryItems.push(...items);
+    markDirty();
     syncLeadImageFromGallery();
     renderGalleryEditor();
     renderStatus(`Added ${items.length} image${items.length === 1 ? "" : "s"} to the gallery.`);
@@ -454,6 +466,7 @@ function renderGalleryEditor() {
       const [movedItem] = currentGalleryItems.splice(draggedGalleryIndex, 1);
       currentGalleryItems.splice(index, 0, movedItem);
       draggedGalleryIndex = null;
+      markDirty();
       syncLeadImageFromGallery();
       renderGalleryEditor();
       renderStatus("Reordered gallery images.");
@@ -468,6 +481,7 @@ function renderGalleryEditor() {
 
     altInput?.addEventListener("input", () => {
       currentGalleryItems[index].alt = altInput.value.trim();
+      markDirty();
       syncLeadImageFromGallery();
 
       if (previewImage) {
@@ -477,6 +491,7 @@ function renderGalleryEditor() {
 
     deleteButton?.addEventListener("click", () => {
       currentGalleryItems.splice(index, 1);
+      markDirty();
       syncLeadImageFromGallery();
       renderGalleryEditor();
     });
@@ -513,6 +528,11 @@ function createBlankProject() {
 function renderStatus(message) {
   if (adminStatus) {
     adminStatus.textContent = message;
+    adminStatus.dataset.tone = message.toLowerCase().includes("failed") || message.toLowerCase().includes("required")
+      ? "error"
+      : message.toLowerCase().includes("saved") || message.toLowerCase().includes("logged in")
+        ? "success"
+        : "neutral";
   }
 }
 
@@ -554,12 +574,36 @@ function setButtonFeedback(button, state, nextLabel) {
   }
 }
 
+function setSharedButtonFeedback(buttons, state, nextLabel) {
+  buttons.forEach((button) => setButtonFeedback(button, state, nextLabel));
+}
+
+function setDirtyState(isDirty) {
+  hasUnsavedChanges = isDirty;
+  adminPageShell?.classList.toggle("has-unsaved-changes", hasUnsavedChanges);
+}
+
+function markDirty() {
+  if (!isPopulatingForm) {
+    setDirtyState(true);
+  }
+}
+
 function renderProjectList() {
   if (!adminProjectList) {
     return;
   }
 
   const activeProject = workingProjects[selectedProjectSlug];
+  const normalizedQuery = projectSearchQuery.trim().toLowerCase();
+
+  if (adminEditorTitle) {
+    adminEditorTitle.textContent =
+      activeProject?.title ||
+      activeProject?.navLabel ||
+      adminFields.title?.value.trim() ||
+      "New Project";
+  }
 
   if (adminCurrentProject) {
     adminCurrentProject.innerHTML = activeProject
@@ -577,10 +621,28 @@ function renderProjectList() {
     });
   }
 
-  adminProjectList.innerHTML = Object.values(workingProjects)
+  const listedProjects = Object.values(workingProjects)
     .filter((project) => project.slug !== selectedProjectSlug)
+    .filter((project) => {
+      if (!normalizedQuery) {
+        return true;
+      }
+
+      return [
+        project.title,
+        project.navLabel,
+        project.client,
+        project.yearLabel,
+        project.slug,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedQuery);
+    })
     .sort((a, b) => (b.yearLabel || "").localeCompare(a.yearLabel || "") || a.navLabel.localeCompare(b.navLabel))
-    .map((project) => {
+  adminProjectList.innerHTML = listedProjects.length
+    ? listedProjects.map((project) => {
       const isLocal = !baseProjects[project.slug] ? "admin-project-item-local" : "";
       const hiddenLabel = project.isHidden ? '<small class="admin-project-flag">hidden</small>' : "";
       return `
@@ -589,8 +651,8 @@ function renderProjectList() {
           <span>${project.yearLabel || "draft"}</span>
         </button>
       `;
-    })
-    .join("");
+    }).join("")
+    : '<p class="admin-empty-state">No projects match that search.</p>';
 
   adminProjectList.querySelectorAll("[data-project-slug]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -604,6 +666,7 @@ function renderProjectList() {
 function populateForm(project) {
   const nextProject = project || createBlankProject();
 
+  isPopulatingForm = true;
   adminFields.slug.value = nextProject.slug || "";
   adminFields.title.value = nextProject.title || "";
   adminFields.navLabel.value = nextProject.navLabel || "";
@@ -640,8 +703,29 @@ function populateForm(project) {
   adminFields.detailBody.value = nextProject.detailBody || "";
   adminFields.detailSupport.value = nextProject.detailSupport || "";
   currentGalleryItems = normalizeGalleryItems(nextProject.gallery || []);
+  slugWasEdited = Boolean(nextProject.slug);
+  navLabelWasEdited = Boolean(nextProject.navLabel);
   syncLeadImageFromGallery();
   renderGalleryEditor();
+  isPopulatingForm = false;
+  setDirtyState(false);
+}
+
+function slugify(value = "") {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-+/g, "-");
+}
+
+function createManifestLabel(value = "") {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ");
 }
 
 function selectProject(slug) {
@@ -794,6 +878,43 @@ adminThemeToggle?.addEventListener("click", () => {
   setAdminTheme(nextTheme);
 });
 
+adminProjectSearchInput?.addEventListener("input", () => {
+  projectSearchQuery = adminProjectSearchInput.value;
+  renderProjectList();
+});
+
+adminForm?.addEventListener("input", markDirty);
+adminForm?.addEventListener("change", markDirty);
+
+adminFields.title?.addEventListener("input", () => {
+  const title = adminFields.title.value;
+
+  if (!slugWasEdited) {
+    adminFields.slug.value = slugify(title);
+  }
+
+  if (!navLabelWasEdited) {
+    adminFields.navLabel.value = createManifestLabel(title);
+  }
+
+  if (adminEditorTitle) {
+    adminEditorTitle.textContent = title.trim() || "New Project";
+  }
+});
+
+adminFields.slug?.addEventListener("input", () => {
+  slugWasEdited = true;
+  const nextSlug = slugify(adminFields.slug.value);
+
+  if (adminFields.slug.value !== nextSlug) {
+    adminFields.slug.value = nextSlug;
+  }
+});
+
+adminFields.navLabel?.addEventListener("input", () => {
+  navLabelWasEdited = true;
+});
+
 adminNewProjectButton?.addEventListener("click", () => {
   selectedProjectSlug = "";
   populateForm(createBlankProject());
@@ -833,12 +954,12 @@ adminResetProjectsButton?.addEventListener("click", () => {
 });
 
 adminPreviewProjectButton?.addEventListener("click", async () => {
-  setButtonFeedback(adminPreviewProjectButton, "is-busy", "Opening...");
+  setSharedButtonFeedback([adminPreviewProjectButton, adminPreviewProjectTopButton], "is-busy", "Opening...");
   const project = collectFormProject();
 
   if (!project.slug) {
     renderStatus("Add a slug before previewing the project page.");
-    setButtonFeedback(adminPreviewProjectButton);
+    setSharedButtonFeedback([adminPreviewProjectButton, adminPreviewProjectTopButton]);
     return;
   }
 
@@ -846,7 +967,15 @@ adminPreviewProjectButton?.addEventListener("click", async () => {
   window.open(`project.html?slug=${project.slug}`, "_blank", "noopener");
   selectProject(project.slug);
   renderStatus(`Opened preview for ${project.slug}.`);
-  setButtonFeedback(adminPreviewProjectButton, "is-success", "Opened");
+  setSharedButtonFeedback([adminPreviewProjectButton, adminPreviewProjectTopButton], "is-success", "Opened");
+});
+
+adminSaveProjectTopButton?.addEventListener("click", () => {
+  adminSaveProjectButton?.click();
+});
+
+adminPreviewProjectTopButton?.addEventListener("click", () => {
+  adminPreviewProjectButton?.click();
 });
 
 adminRevertProjectButton?.addEventListener("click", () => {
@@ -876,12 +1005,12 @@ adminDeleteProjectButton?.addEventListener("click", async () => {
 
 adminForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
-  setButtonFeedback(adminSaveProjectButton, "is-busy", "Saving...");
+  setSharedButtonFeedback([adminSaveProjectButton, adminSaveProjectTopButton], "is-busy", "Saving...");
   const project = collectFormProject();
 
   if (!project.slug || !project.title || !project.navLabel) {
-    renderStatus("Slug, title, and manifest label are required before saving.");
-    setButtonFeedback(adminSaveProjectButton);
+    renderStatus("Slug, title, and homepage label are required before saving.");
+    setSharedButtonFeedback([adminSaveProjectButton, adminSaveProjectTopButton]);
     return;
   }
 
@@ -893,7 +1022,8 @@ adminForm?.addEventListener("submit", async (event) => {
       ? `Saved ${savedProject.slug} into the live content store.`
       : `Saved ${savedProject.slug} into the local project store. Log in to publish changes for everyone.`
   );
-  setButtonFeedback(adminSaveProjectButton, "is-success", "Saved");
+  setDirtyState(false);
+  setSharedButtonFeedback([adminSaveProjectButton, adminSaveProjectTopButton], "is-success", "Saved");
 });
 
 adminLoginButton?.addEventListener("click", async () => {
@@ -940,6 +1070,15 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     toggleAdminMenu(false);
   }
+});
+
+window.addEventListener("beforeunload", (event) => {
+  if (!hasUnsavedChanges) {
+    return;
+  }
+
+  event.preventDefault();
+  event.returnValue = "";
 });
 
 function initializeAdminPage() {

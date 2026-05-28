@@ -21,7 +21,7 @@
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260528n">
+  <link rel="stylesheet" href="styles.css?v=20260528o">
 </head>
 <body>
   <div class="project-page-shell" data-theme="dark" id="admin-page-shell">
@@ -55,9 +55,9 @@
             Log in with an approved admin account, then add new projects, update existing entries, upload images, and save changes into the live content system.
           </p>
           <div class="admin-actions">
-            <button class="project-link" id="admin-new-project" type="button">New Project</button>
-            <button class="project-link" id="admin-export-projects" type="button">Export Site JSON</button>
+            <button class="project-link" id="admin-new-project" type="button">Add Project</button>
             <button class="project-link" id="admin-reset-projects" type="button">Reset Local Edits</button>
+            <button class="project-link" id="admin-export-projects" type="button">Export Backup</button>
             <button class="project-link" id="admin-logout" type="button">Log Out</button>
           </div>
           <p class="detail-copy admin-note" id="admin-auth-status">
@@ -70,6 +70,10 @@
 
         <article class="project-block admin-panel">
           <h2>Projects</h2>
+          <label class="admin-field admin-project-search">
+            <span>Find Project</span>
+            <input id="admin-project-search" type="search" placeholder="Search by title, client, year, or slug">
+          </label>
           <div class="admin-current-project" id="admin-current-project"></div>
           <div class="admin-project-list" id="admin-project-list"></div>
         </article>
@@ -77,26 +81,35 @@
 
       <section class="admin-editor">
         <article class="project-block admin-panel">
-          <h2>Project Editor</h2>
+          <div class="admin-editor-head">
+            <div>
+              <p class="detail-kicker">Project Editor</p>
+              <h2 id="admin-editor-title">Select a Project</h2>
+            </div>
+            <div class="admin-actions admin-actions-compact">
+              <button class="project-link" id="admin-save-project-top" type="button">Save</button>
+              <button class="project-link" id="admin-preview-project-top" type="button">Preview</button>
+            </div>
+          </div>
           <form class="admin-form" id="admin-form">
             <div class="admin-form-section admin-field-wide">
               <p class="detail-kicker">Project Basics</p>
             </div>
             <label class="admin-field">
-              <span>Slug</span>
-              <input id="admin-slug" name="slug" type="text" required>
+              <span>URL Slug</span>
+              <input id="admin-slug" name="slug" type="text" placeholder="dairy-boy-miami-popup" required>
             </label>
             <label class="admin-field">
               <span>Title</span>
-              <input id="admin-title" name="title" type="text" required>
+              <input id="admin-title" name="title" type="text" placeholder="Dairy Boy Miami Pop-Up" required>
             </label>
             <label class="admin-field">
-              <span>Manifest Label</span>
-              <input id="admin-nav-label" name="navLabel" type="text" required>
+              <span>Homepage Label</span>
+              <input id="admin-nav-label" name="navLabel" type="text" placeholder="dairy boy miami" required>
             </label>
             <label class="admin-field">
-              <span>Year Label</span>
-              <input id="admin-year-label" name="yearLabel" type="text" required>
+              <span>Year</span>
+              <input id="admin-year-label" name="yearLabel" type="text" inputmode="numeric" placeholder="2026" required>
             </label>
             <label class="admin-field">
               <span>Kicker</span>
@@ -111,7 +124,7 @@
             </label>
             <label class="admin-field admin-field-wide">
               <span>Meta</span>
-              <input id="admin-meta" name="meta" type="text">
+              <input id="admin-meta" name="meta" type="text" placeholder="Client: Dairy Boy | Date: May 2026 | Design + production">
             </label>
             <label class="admin-field admin-field-wide">
               <span>Live URL</span>
@@ -134,7 +147,7 @@
             </div>
             <label class="admin-field admin-field-wide">
               <span>Homepage Copy</span>
-              <textarea id="admin-copy" name="copy" rows="3"></textarea>
+              <textarea id="admin-copy" name="copy" rows="3" placeholder="Short summary shown when this project is active on the homepage."></textarea>
             </label>
             <label class="admin-field admin-field-wide">
               <span>Homepage Secondary Copy</span>
@@ -145,7 +158,7 @@
               <input id="admin-detail-title" name="detailTitle" type="text">
             </label>
             <label class="admin-field admin-field-wide">
-              <span>Detail Lead</span>
+              <span>Project Page Intro</span>
               <textarea id="admin-detail-lead" name="detailLead" rows="3"></textarea>
             </label>
             <label class="admin-field admin-field-wide">
@@ -196,8 +209,8 @@
               </div>
             </div>
             <div class="admin-actions admin-actions-form">
-              <button class="project-link" id="admin-save-project" type="submit">Save Project Changes</button>
-              <button class="project-link" id="admin-preview-project" type="button">Open Project Page</button>
+              <button class="project-link" id="admin-save-project" type="submit">Save to Live Site</button>
+              <button class="project-link" id="admin-preview-project" type="button">Preview Project</button>
               <button class="project-link" id="admin-revert-project" type="button">Revert Project</button>
               <button class="project-link" id="admin-delete-project" type="button">Delete Project</button>
             </div>
@@ -213,6 +226,6 @@
   <script src="project-data.js?v=20260528b"></script>
   <script src="project-store.js?v=20260528a"></script>
   <script src="transitions.js?v=20260528b"></script>
-  <script src="admin-page.js?v=20260528b"></script>
+  <script src="admin-page.js?v=20260528c"></script>
 </body>
 </html>
