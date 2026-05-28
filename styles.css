@@ -66,7 +66,7 @@ button {
 
 .site-shell {
   min-height: 100vh;
-  padding: 26px clamp(32px, 4vw, 58px) 28px;
+  padding: 26px clamp(32px, 4vw, 58px) 18px;
   background: var(--bg);
   color: var(--fg);
   transition:
@@ -595,15 +595,23 @@ button {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
-  margin-top: 42px;
   padding-top: 18px;
   border-top: 1px solid var(--line);
 }
 
+.info-strip {
+  margin-top: 38px;
+}
+
 .site-footer {
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(4, auto);
   justify-content: space-between;
   align-items: center;
+  gap: 18px 28px;
+  margin-top: 24px;
+  padding-top: 14px;
+  padding-bottom: 0;
+  font-size: 0.9rem;
 }
 
 .site-footer a {
@@ -625,7 +633,7 @@ button {
 
 .project-page-shell {
   min-height: 100vh;
-  padding: 26px 20px 28px;
+  padding: 26px 20px 18px;
   background: var(--bg);
   color: var(--fg);
   transition:
@@ -1743,6 +1751,15 @@ body.is-page-transitioning .project-page-shell {
   .site-footer {
     grid-template-columns: 1fr;
     gap: 14px;
+  }
+
+  .site-footer {
+    margin-top: 20px;
+    padding-top: 12px;
+  }
+
+  .admin-footer-link {
+    justify-self: start;
   }
 
   .project-page-shell {
