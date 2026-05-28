@@ -21,7 +21,7 @@
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260528l">
+  <link rel="stylesheet" href="styles.css?v=20260528m">
 </head>
 <body>
   <div class="project-page-shell" data-theme="dark" id="admin-login-shell">
@@ -51,11 +51,18 @@
         <p class="detail-kicker">PARTI Admin</p>
         <h1>Login</h1>
         <p class="detail-copy">
-          Sign in with your Google Workspace account. Only <code>@letsparti.co</code> addresses are allowed to enter the editor.
+          Sign in with your Google Workspace account or use the admin password.
         </p>
         <div class="admin-actions">
           <button class="project-link" id="admin-login" type="button">Continue with Google</button>
         </div>
+        <form class="admin-auth-form" id="admin-password-form">
+          <label class="admin-field">
+            <span>Admin Password</span>
+            <input id="admin-password" name="adminPassword" type="password" autocomplete="current-password">
+          </label>
+          <button class="project-link" id="admin-password-submit" type="submit">Enter Admin</button>
+        </form>
         <p class="detail-copy admin-note" id="admin-auth-status">
           Supabase login is not configured yet.
         </p>
@@ -63,10 +70,10 @@
     </main>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js?v=20260410j"></script>
-  <script src="supabase-client.js?v=20260410j"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js?v=20260528a"></script>
+  <script src="supabase-client.js?v=20260528a"></script>
   <script src="transitions.js?v=20260528b"></script>
-  <script src="admin-login.js?v=20260410j"></script>
+  <script src="admin-login.js?v=20260528a"></script>
 </body>
 </html>

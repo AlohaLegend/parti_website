@@ -28,6 +28,8 @@ const THEME_STORAGE_KEY = "parti-theme";
 const ADMIN_EMAIL_DOMAIN = "@letsparti.co";
 const CLEAN_ADMIN_URL = `${window.location.origin}${window.location.pathname}`;
 const ADMIN_LOGIN_URL = `${window.location.origin}${window.location.pathname.replace("admin.html", "admin-login.html")}`;
+const ADMIN_PASSWORD_CONFIG = window.PARTI_SUPABASE_CONFIG?.adminPassword || {};
+const ADMIN_PASSWORD_SESSION_KEY = ADMIN_PASSWORD_CONFIG.sessionKey || "parti-admin-password-session";
 const projectStore = window.PARTI_PROJECT_STORE;
 const supabaseClient = window.PARTI_SUPABASE?.client;
 const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
@@ -93,12 +95,20 @@ function getPreferredTheme(defaultTheme = "dark") {
 }
 
 function isAuthenticated() {
-  return Boolean(currentSession?.user);
+  return Boolean(currentSession?.user) || isPasswordAuthenticated();
 }
 
 function isAllowedAdminUser(user) {
   const email = user?.email?.toLowerCase() || "";
   return email.endsWith(ADMIN_EMAIL_DOMAIN);
+}
+
+function isPasswordLoginEnabled() {
+  return Boolean(ADMIN_PASSWORD_CONFIG.enabled && ADMIN_PASSWORD_CONFIG.sha256);
+}
+
+function isPasswordAuthenticated() {
+  return isPasswordLoginEnabled() && window.localStorage.getItem(ADMIN_PASSWORD_SESSION_KEY) === "true";
 }
 
 function syncEditorAccess() {
@@ -147,8 +157,12 @@ function renderAuthStatus(message) {
 }
 
 function updateAuthUi() {
-  if (!isSupabaseConfigured) {
-    renderAuthStatus("Supabase login is not configured yet. Add your project URL and anon key in supabase-config.js.");
+  if (!isSupabaseConfigured && !isPasswordAuthenticated()) {
+    renderAuthStatus(
+      isPasswordLoginEnabled()
+        ? "Google login is unavailable right now. Use the admin password to edit."
+        : "Supabase login is not configured yet. Add your project URL and anon key in supabase-config.js."
+    );
     if (adminLoginButton) {
       adminLoginButton.disabled = true;
     }
@@ -163,7 +177,11 @@ function updateAuthUi() {
   }
 
   if (isAuthenticated()) {
-    renderAuthStatus(`Signed in as ${currentSession.user.email}.`);
+    renderAuthStatus(
+      currentSession?.user
+        ? `Signed in as ${currentSession.user.email}.`
+        : "Signed in with the admin password."
+    );
     if (adminLoginButton) {
       adminLoginButton.disabled = false;
     }
@@ -174,7 +192,7 @@ function updateAuthUi() {
       adminSaveProjectButton.textContent = "Save to Live Site";
     }
   } else {
-    renderAuthStatus(`Log in with Google using a ${ADMIN_EMAIL_DOMAIN} address to edit and publish site content.`);
+    renderAuthStatus(`Log in with Google using a ${ADMIN_EMAIL_DOMAIN} address or the admin password to edit site content.`);
     if (adminLoginButton) {
       adminLoginButton.disabled = false;
     }
@@ -920,11 +938,12 @@ adminLoginButton?.addEventListener("click", async () => {
 });
 
 adminLogoutButton?.addEventListener("click", async () => {
-  if (!supabaseClient) {
-    return;
+  window.localStorage.removeItem(ADMIN_PASSWORD_SESSION_KEY);
+
+  if (supabaseClient) {
+    await supabaseClient.auth.signOut();
   }
 
-  await supabaseClient.auth.signOut();
   currentSession = null;
   updateAuthUi();
   renderStatus("Logged out. The editor is now read-only until you sign back in.");
@@ -956,6 +975,10 @@ function initializeAdminPage() {
         : "No local overrides yet. Sign in to save edits into the shared content system."
   );
 
+  if (isPasswordAuthenticated()) {
+    updateAuthUi();
+  }
+
   if (supabaseClient) {
     supabaseClient.auth.getSession().then(({ data }) => {
       currentSession = data.session || null;
@@ -965,9 +988,11 @@ function initializeAdminPage() {
           return;
         }
 
-        if (!currentSession) {
+        if (!currentSession && !isPasswordAuthenticated()) {
           window.location.replace(ADMIN_LOGIN_URL);
         }
+
+        updateAuthUi();
       });
     });
 
@@ -981,9 +1006,11 @@ function initializeAdminPage() {
         return;
       }
 
-      if (!currentSession) {
+      if (!currentSession && !isPasswordAuthenticated()) {
         window.location.replace(ADMIN_LOGIN_URL);
       }
+
+      updateAuthUi();
     });
   } else {
     updateAuthUi();

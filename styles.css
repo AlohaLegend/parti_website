@@ -1218,6 +1218,7 @@ body.is-page-transitioning .project-page-shell {
 .admin-auth-form {
   display: grid;
   gap: 16px;
+  margin-top: 18px;
 }
 
 .admin-field {
