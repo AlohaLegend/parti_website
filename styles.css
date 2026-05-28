@@ -285,15 +285,15 @@ button {
 
 .image-field {
   position: sticky;
-  top: 92px;
+  top: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(230px, 350px));
   grid-auto-rows: 62px;
   justify-content: center;
   gap: 34px clamp(20px, 1.9vw, 28px);
-  height: calc(100vh - 126px);
+  height: 100vh;
   overflow: auto;
-  padding: 18px 10px 32px 10px;
+  padding: 0 10px 32px 10px;
   align-content: start;
   scrollbar-width: none;
   isolation: isolate;
