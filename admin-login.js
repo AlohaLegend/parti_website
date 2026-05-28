@@ -72,6 +72,19 @@ function renderLoginError(error) {
   renderAuthStatus(message || "Login failed. Check the Supabase auth settings and try again.");
 }
 
+function renderLoginReason() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("reason") !== "not_admin") {
+    return false;
+  }
+
+  const email = params.get("email") || "That email";
+  renderAuthStatus(`${email} is signed in with Google, but is not on the PARTI admin allowlist yet.`);
+  window.history.replaceState({}, document.title, CLEAN_LOGIN_URL);
+  return true;
+}
+
 async function isApprovedAdmin() {
   if (!supabaseClient) {
     return false;
@@ -98,7 +111,7 @@ async function enforceAdminAccess(session) {
     return true;
   }
 
-  renderAuthStatus("This email is not on the PARTI admin allowlist.");
+  renderAuthStatus(`${user.email || "This email"} is not on the PARTI admin allowlist.`);
   await supabaseClient?.auth.signOut();
   return false;
 }
@@ -186,7 +199,11 @@ async function initializeLoginPage() {
     return;
   }
 
-  renderAuthStatus("Sign in with an approved admin email.");
+  const showedLoginReason = renderLoginReason();
+
+  if (!showedLoginReason) {
+    renderAuthStatus("Sign in with an approved admin email.");
+  }
 
   const { data, error } = await supabaseClient.auth.getSession();
 
@@ -202,7 +219,7 @@ async function initializeLoginPage() {
     return;
   }
 
-  if (window.location.search || window.location.hash) {
+  if (!showedLoginReason && (window.location.search || window.location.hash)) {
     window.history.replaceState({}, document.title, CLEAN_LOGIN_URL);
   }
 

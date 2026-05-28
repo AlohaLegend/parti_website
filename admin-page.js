@@ -220,7 +220,9 @@ async function enforceAdminAccess(session) {
     return true;
   }
 
-  renderAuthStatus("This email is not on the PARTI admin allowlist.");
+  const email = user.email || "this email";
+
+  renderAuthStatus(`${email} is not on the PARTI admin allowlist.`);
 
   if (supabaseClient) {
     await supabaseClient.auth.signOut();
@@ -228,7 +230,7 @@ async function enforceAdminAccess(session) {
 
   currentSession = null;
   updateAuthUi();
-  window.location.replace(ADMIN_LOGIN_URL);
+  window.location.replace(`${ADMIN_LOGIN_URL}?reason=not_admin&email=${encodeURIComponent(email)}`);
   return false;
 }
 
