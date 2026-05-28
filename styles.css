@@ -278,8 +278,8 @@ button {
 
 .portfolio-layout {
   display: grid;
-  grid-template-columns: minmax(560px, 0.96fr) minmax(420px, 0.7fr);
-  gap: clamp(24px, 2.1vw, 38px);
+  grid-template-columns: minmax(560px, 1fr) minmax(420px, 0.72fr);
+  gap: clamp(28px, 2.4vw, 44px);
   align-items: start;
 }
 
@@ -289,8 +289,8 @@ button {
   display: grid;
   grid-template-columns: repeat(2, minmax(230px, 350px));
   grid-auto-rows: 62px;
-  justify-content: end;
-  gap: 34px clamp(18px, 1.8vw, 26px);
+  justify-content: center;
+  gap: 34px clamp(20px, 1.9vw, 28px);
   height: calc(100vh - 126px);
   overflow: auto;
   padding: 18px 10px 32px 10px;
