@@ -10,6 +10,7 @@ const adminEmailSubmit = document.querySelector("#admin-email-submit");
 const adminAuthStatus = document.querySelector("#admin-auth-status");
 
 const THEME_STORAGE_KEY = "parti-theme";
+const AUTH_PENDING_STORAGE_KEY = "parti-auth-pending-until";
 const CLEAN_LOGIN_URL = `${window.location.origin}${window.location.pathname}`;
 const ADMIN_EDITOR_URL = `${window.location.origin}${window.location.pathname.replace("admin-login.html", "admin.html")}`;
 const supabaseClient = window.PARTI_SUPABASE?.client;
@@ -136,6 +137,8 @@ async function startEmailLogin(event) {
     adminEmailSubmit.textContent = "Sending...";
   }
 
+  window.sessionStorage.setItem(AUTH_PENDING_STORAGE_KEY, String(Date.now() + 60000));
+
   const { error } = await supabaseClient.auth.signInWithOtp({
     email,
     options: {
@@ -167,6 +170,8 @@ async function startGoogleLogin() {
     adminLoginButton.disabled = true;
     adminLoginButton.textContent = "Redirecting...";
   }
+
+  window.sessionStorage.setItem(AUTH_PENDING_STORAGE_KEY, String(Date.now() + 60000));
 
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: "google",

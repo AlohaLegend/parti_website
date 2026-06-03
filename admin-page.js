@@ -29,14 +29,18 @@ const adminLogoutButton = document.querySelector("#admin-logout");
 const adminAuthStatus = document.querySelector("#admin-auth-status");
 
 const THEME_STORAGE_KEY = "parti-theme";
+const AUTH_PENDING_STORAGE_KEY = "parti-auth-pending-until";
 const CLEAN_ADMIN_URL = `${window.location.origin}${window.location.pathname}`;
 const ADMIN_LOGIN_URL = `${window.location.origin}${window.location.pathname.replace("admin.html", "admin-login.html")}`;
-const AUTH_CALLBACK_GRACE_MS = 10000;
+const AUTH_CALLBACK_GRACE_MS = 15000;
 const projectStore = window.PARTI_PROJECT_STORE;
 const supabaseClient = window.PARTI_SUPABASE?.client;
 const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
 const baseProjects = projectStore?.getBaseProjects() || window.PARTI_BASE_PROJECTS || {};
-const authCallbackGraceUntil = hasAuthCallbackInUrl() ? Date.now() + AUTH_CALLBACK_GRACE_MS : 0;
+const authCallbackGraceUntil = Math.max(
+  hasAuthCallbackInUrl() ? Date.now() + AUTH_CALLBACK_GRACE_MS : 0,
+  getAuthPendingUntil()
+);
 
 let workingProjects = projectStore?.getMergedProjects() || JSON.parse(JSON.stringify(window.PARTI_PROJECTS || {}));
 let selectedProjectSlug = "";
@@ -161,6 +165,16 @@ function hasAuthCallbackInUrl() {
   return callbackKeys.some((key) => searchParams.has(key) || hashParams.has(key));
 }
 
+function getAuthPendingUntil() {
+  const pendingUntil = Number(window.sessionStorage.getItem(AUTH_PENDING_STORAGE_KEY) || 0);
+
+  return Number.isFinite(pendingUntil) ? pendingUntil : 0;
+}
+
+function clearAuthPendingState() {
+  window.sessionStorage.removeItem(AUTH_PENDING_STORAGE_KEY);
+}
+
 function shouldWaitForAuthCallback() {
   return Date.now() < authCallbackGraceUntil;
 }
@@ -172,6 +186,7 @@ function redirectToLoginAfterAuthGrace() {
     const { data } = await supabaseClient.auth.getSession();
 
     if (!data.session) {
+      clearAuthPendingState();
       window.location.replace(ADMIN_LOGIN_URL);
     }
   }, delay);
@@ -1135,6 +1150,7 @@ function initializeAdminPage() {
       currentSession = data.session || null;
       enforceAdminAccess(currentSession).then((isAllowed) => {
         if (isAllowed) {
+          clearAuthPendingState();
           cleanAdminUrl();
           updateAuthUi();
           return;
@@ -1159,6 +1175,7 @@ function initializeAdminPage() {
       const isAllowed = await enforceAdminAccess(currentSession);
 
       if (isAllowed) {
+        clearAuthPendingState();
         cleanAdminUrl();
         renderStatus("Logged in. Admin edits will now save into the live content store.");
         updateAuthUi();
