@@ -31,10 +31,12 @@ const adminAuthStatus = document.querySelector("#admin-auth-status");
 const THEME_STORAGE_KEY = "parti-theme";
 const CLEAN_ADMIN_URL = `${window.location.origin}${window.location.pathname}`;
 const ADMIN_LOGIN_URL = `${window.location.origin}${window.location.pathname.replace("admin.html", "admin-login.html")}`;
+const AUTH_CALLBACK_GRACE_MS = 10000;
 const projectStore = window.PARTI_PROJECT_STORE;
 const supabaseClient = window.PARTI_SUPABASE?.client;
 const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
 const baseProjects = projectStore?.getBaseProjects() || window.PARTI_BASE_PROJECTS || {};
+const authCallbackGraceUntil = hasAuthCallbackInUrl() ? Date.now() + AUTH_CALLBACK_GRACE_MS : 0;
 
 let workingProjects = projectStore?.getMergedProjects() || JSON.parse(JSON.stringify(window.PARTI_PROJECTS || {}));
 let selectedProjectSlug = "";
@@ -149,6 +151,30 @@ function renderAuthStatus(message) {
   if (adminAuthStatus) {
     adminAuthStatus.textContent = message;
   }
+}
+
+function hasAuthCallbackInUrl() {
+  const callbackKeys = ["code", "token_hash", "access_token", "refresh_token", "error", "error_code"];
+  const searchParams = new URLSearchParams(window.location.search);
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+
+  return callbackKeys.some((key) => searchParams.has(key) || hashParams.has(key));
+}
+
+function shouldWaitForAuthCallback() {
+  return Date.now() < authCallbackGraceUntil;
+}
+
+function redirectToLoginAfterAuthGrace() {
+  const delay = Math.max(authCallbackGraceUntil - Date.now(), 0) + 250;
+
+  window.setTimeout(async () => {
+    const { data } = await supabaseClient.auth.getSession();
+
+    if (!data.session) {
+      window.location.replace(ADMIN_LOGIN_URL);
+    }
+  }, delay);
 }
 
 function updateAuthUi() {
@@ -1114,6 +1140,12 @@ function initializeAdminPage() {
           return;
         }
 
+        if (!currentSession && shouldWaitForAuthCallback()) {
+          renderAuthStatus("Finishing Google sign-in...");
+          redirectToLoginAfterAuthGrace();
+          return;
+        }
+
         if (!currentSession) {
           window.location.replace(ADMIN_LOGIN_URL);
         }
@@ -1129,6 +1161,13 @@ function initializeAdminPage() {
       if (isAllowed) {
         cleanAdminUrl();
         renderStatus("Logged in. Admin edits will now save into the live content store.");
+        updateAuthUi();
+        return;
+      }
+
+      if (!currentSession && shouldWaitForAuthCallback()) {
+        renderAuthStatus("Finishing Google sign-in...");
+        redirectToLoginAfterAuthGrace();
         updateAuthUi();
         return;
       }
