@@ -11,6 +11,10 @@
   >
   <script>
     (() => {
+      if (window.sessionStorage.getItem("parti-page-transition") === "incoming") {
+        document.documentElement.classList.add("is-page-preparing");
+      }
+
       const storedTheme = window.localStorage.getItem("parti-theme");
       const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
       document.documentElement.setAttribute("data-theme", theme);
@@ -25,7 +29,7 @@
     onload="this.media='all'"
   >
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"></noscript>
-  <link rel="stylesheet" href="styles.css?v=20260528p">
+  <link rel="stylesheet" href="styles.css?v=20260608a">
 </head>
 <body>
   <div class="project-page-shell" data-theme="dark" id="project-page-shell">
@@ -105,7 +109,7 @@
   <script src="supabase-client.js?v=20260528a"></script>
   <script src="project-data.js?v=20260528b"></script>
   <script src="project-store.js?v=20260528a"></script>
-  <script src="transitions.js?v=20260528b"></script>
+  <script src="transitions.js?v=20260608a"></script>
   <script src="project-page.js?v=20260528g"></script>
 </body>
 </html>

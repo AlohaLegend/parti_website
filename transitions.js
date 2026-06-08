@@ -1,6 +1,9 @@
 (() => {
   const TRANSITIONING_CLASS = "is-page-transitioning";
+  const PREPARING_CLASS = "is-page-preparing";
+  const TRANSITION_STORAGE_KEY = "parti-page-transition";
   const TRANSITION_DELAY = 120;
+  const ENTER_DELAY = 220;
   let revealObserver = null;
 
   function isModifiedClick(event) {
@@ -37,10 +40,23 @@
   }
 
   function navigateWithTransition(url) {
+    window.sessionStorage.setItem(TRANSITION_STORAGE_KEY, "incoming");
     document.body.classList.add(TRANSITIONING_CLASS);
     window.setTimeout(() => {
       window.location.href = url;
     }, TRANSITION_DELAY);
+  }
+
+  function clearIncomingTransition() {
+    if (!document.documentElement.classList.contains(PREPARING_CLASS)) {
+      window.sessionStorage.removeItem(TRANSITION_STORAGE_KEY);
+      return;
+    }
+
+    window.setTimeout(() => {
+      document.documentElement.classList.remove(PREPARING_CLASS);
+      window.sessionStorage.removeItem(TRANSITION_STORAGE_KEY);
+    }, ENTER_DELAY);
   }
 
   function initializeRevealObserver() {
@@ -109,6 +125,7 @@
 
   window.addEventListener("pageshow", () => {
     document.body.classList.remove(TRANSITIONING_CLASS);
+    window.requestAnimationFrame(clearIncomingTransition);
   });
 
   if (document.readyState === "loading") {

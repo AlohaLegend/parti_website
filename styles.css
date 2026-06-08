@@ -47,7 +47,8 @@ body::after {
   transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-body.is-page-transitioning::after {
+body.is-page-transitioning::after,
+html.is-page-preparing body::after {
   opacity: 1;
 }
 
@@ -644,7 +645,9 @@ button {
 }
 
 body.is-page-transitioning .site-shell,
-body.is-page-transitioning .project-page-shell {
+body.is-page-transitioning .project-page-shell,
+html.is-page-preparing .site-shell,
+html.is-page-preparing .project-page-shell {
   opacity: 0.22;
   transform: translateY(18px) scale(0.995);
 }
