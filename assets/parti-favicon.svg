@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PARTI martini glass favicon">
+  <rect width="64" height="64" rx="10" fill="#050505"/>
+  <path
+    d="M15 14h34L32 34 15 14Z"
+    fill="none"
+    stroke="#a261f4"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M32 34v14M22 50h20"
+    fill="none"
+    stroke="#a261f4"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <circle cx="43" cy="19" r="5" fill="#eaff22"/>
+  <path
+    d="M37 23 49 13"
+    fill="none"
+    stroke="#eaff22"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
+</svg>
