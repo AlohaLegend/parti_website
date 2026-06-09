@@ -92,8 +92,6 @@ function createImageCard(projectId, index) {
   card.dataset.project = projectId;
   card.href = project.pageUrl;
   card.setAttribute("aria-label", `Open ${project.title} project`);
-  card.classList.add("reveal-item");
-  card.style.setProperty("--reveal-delay", `${Math.min(index, 10) * 60}ms`);
   card.style.setProperty("--drift-duration", `${14 + (index % 5) * 2}s`);
   card.style.setProperty("--drift-delay", `${(index % 6) * -0.9}s`);
 
@@ -593,12 +591,25 @@ function initializeCardVisibilityObserver() {
 }
 
 async function initializePortfolio() {
-  if (window.PARTI_PROJECT_STORE?.ready?.then) {
-    await window.PARTI_PROJECT_STORE.ready;
-  }
-
+  setTheme(getPreferredTheme(siteShell?.getAttribute("data-theme") || "dark"));
   projectContent = window.PARTI_PROJECT_STORE?.getMergedProjects?.() || window.PARTI_PROJECTS || {};
+  renderPortfolio();
 
+  if (window.PARTI_PROJECT_STORE?.ready?.then) {
+    window.PARTI_PROJECT_STORE.ready.then(() => {
+      const nextProjectContent = window.PARTI_PROJECT_STORE?.getMergedProjects?.() || window.PARTI_PROJECTS || {};
+
+      if (JSON.stringify(nextProjectContent) === JSON.stringify(projectContent)) {
+        return;
+      }
+
+      projectContent = nextProjectContent;
+      renderPortfolio();
+    });
+  }
+}
+
+function renderPortfolio() {
   const orderedProjects = getOrderedProjects();
   defaultProjectId = orderedProjects[0]?.slug || "marshalls-cbs";
 
@@ -612,7 +623,6 @@ async function initializePortfolio() {
 
   activeProjectId = null;
   activateProject(defaultProjectId, "right");
-  setTheme(getPreferredTheme(siteShell?.getAttribute("data-theme") || "dark"));
 }
 
 menuButton?.addEventListener("click", () => {
