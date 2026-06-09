@@ -35,6 +35,9 @@ let revealObserver = null;
 let rowScrollObserver = null;
 let cardVisibilityObserver = null;
 let isSyncingCardScroll = false;
+let worksScrollActivationFrame = null;
+let lastWorksPointer = null;
+let manifestGlobalListenersBound = false;
 
 function getOptimizedAssetPath(src, folder = "optimized") {
   if (typeof src !== "string" || !src.startsWith("assets/")) {
@@ -465,14 +468,73 @@ function clearHoverIntent() {
 
 function scheduleProjectActivation(projectId, source = "right") {
   clearHoverIntent();
+
+  if (source === "right") {
+    activateProject(projectId, source);
+    return;
+  }
+
   hoverIntentTimer = window.setTimeout(() => {
     activateProject(projectId, source);
     hoverIntentTimer = null;
   }, HOVER_INTENT_DELAY);
 }
 
+function activateProjectFromManifestElement(element) {
+  const entry = element?.closest?.(".work-entry");
+  const row = element?.closest?.(".work-row") || entry?.querySelector?.(".work-row");
+
+  if (row?.dataset.project) {
+    activateProject(row.dataset.project, "right");
+  }
+}
+
+function reconcileManifestHoverFromPoint(x, y) {
+  activateProjectFromManifestElement(document.elementFromPoint(x, y));
+}
+
+function isPointerInsideWorksPanel() {
+  if (!lastWorksPointer || !worksPanel) {
+    return false;
+  }
+
+  const rect = worksPanel.getBoundingClientRect();
+  return (
+    lastWorksPointer.x >= rect.left &&
+    lastWorksPointer.x <= rect.right &&
+    lastWorksPointer.y >= rect.top &&
+    lastWorksPointer.y <= rect.bottom
+  );
+}
+
+function scheduleManifestScrollReconcile() {
+  if (worksScrollActivationFrame) {
+    window.cancelAnimationFrame(worksScrollActivationFrame);
+  }
+
+  worksScrollActivationFrame = window.requestAnimationFrame(() => {
+    worksScrollActivationFrame = null;
+    const panelRect = worksPanel?.getBoundingClientRect();
+
+    if (!panelRect) {
+      return;
+    }
+
+    const x = lastWorksPointer?.x ?? panelRect.left + panelRect.width / 2;
+    const y = lastWorksPointer?.y ?? Math.min(Math.max(panelRect.top + panelRect.height / 2, panelRect.top + 12), panelRect.bottom - 12);
+
+    reconcileManifestHoverFromPoint(x, y);
+  });
+}
+
 function bindPortfolioInteractions() {
   rows.forEach((row) => {
+    const entry = rowEntries.get(row.dataset.project);
+
+    entry?.addEventListener("pointerenter", () => {
+      activateProject(row.dataset.project, "right");
+    });
+
     row.addEventListener("focus", () => {
       clearHoverIntent();
       activateProject(row.dataset.project, "right");
@@ -496,6 +558,19 @@ function bindPortfolioInteractions() {
     });
   });
 
+  if (!manifestGlobalListenersBound) {
+    worksPanel?.addEventListener("pointermove", (event) => {
+      lastWorksPointer = { x: event.clientX, y: event.clientY };
+
+      if (event.target.closest(".work-entry, .work-row")) {
+        activateProjectFromManifestElement(event.target);
+      }
+    }, { passive: true });
+
+    window.addEventListener("scroll", scheduleManifestScrollReconcile, { passive: true });
+    manifestGlobalListenersBound = true;
+  }
+
   cards.forEach((card) => {
     card.addEventListener("focus", () => {
       clearHoverIntent();
@@ -517,6 +592,10 @@ function initializeRowScrollObserver() {
   rowScrollObserver = new IntersectionObserver(
     (entries) => {
       if (window.scrollY < 24) {
+        return;
+      }
+
+      if (isPointerInsideWorksPanel()) {
         return;
       }
 
