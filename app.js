@@ -320,7 +320,7 @@ function setTheme(theme) {
   window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
 }
 
-function getPreferredTheme(defaultTheme = "dark") {
+function getPreferredTheme(defaultTheme = "light") {
   const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
   return storedTheme === "light" || storedTheme === "dark" ? storedTheme : defaultTheme;
 }
@@ -670,7 +670,7 @@ function initializeCardVisibilityObserver() {
 }
 
 async function initializePortfolio() {
-  setTheme(getPreferredTheme(siteShell?.getAttribute("data-theme") || "dark"));
+  setTheme(getPreferredTheme(siteShell?.getAttribute("data-theme") || "light"));
   projectContent = window.PARTI_PROJECT_STORE?.getMergedProjects?.() || window.PARTI_PROJECTS || {};
   renderPortfolio();
 

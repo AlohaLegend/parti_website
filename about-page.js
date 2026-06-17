@@ -31,7 +31,7 @@ function setAboutTheme(theme) {
   window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
 }
 
-function getPreferredTheme(defaultTheme = "dark") {
+function getPreferredTheme(defaultTheme = "light") {
   const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
   return storedTheme === "light" || storedTheme === "dark" ? storedTheme : defaultTheme;
 }
@@ -57,4 +57,4 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-setAboutTheme(getPreferredTheme(aboutPageShell?.getAttribute("data-theme") || "dark"));
+setAboutTheme(getPreferredTheme(aboutPageShell?.getAttribute("data-theme") || "light"));

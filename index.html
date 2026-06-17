@@ -25,7 +25,7 @@
       }
 
       const storedTheme = window.localStorage.getItem("parti-theme");
-      const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+      const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "light";
       document.documentElement.setAttribute("data-theme", theme);
     })();
   </script>
@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="styles.css?v=20260608a">
 </head>
 <body>
-  <div class="site-shell" data-theme="dark" id="site-shell">
+  <div class="site-shell" data-theme="light" id="site-shell">
     <header class="site-header">
       <button
         class="menu-button"
@@ -114,6 +114,6 @@
   <script src="project-data.js?v=20260528b"></script>
   <script src="project-store.js?v=20260528a"></script>
   <script src="transitions.js?v=20260608a"></script>
-  <script src="app.js?v=20260609b"></script>
+  <script src="app.js?v=20260616a"></script>
 </body>
 </html>

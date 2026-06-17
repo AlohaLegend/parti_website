@@ -16,7 +16,7 @@
       }
 
       const storedTheme = window.localStorage.getItem("parti-theme");
-      const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+      const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "light";
       document.documentElement.setAttribute("data-theme", theme);
     })();
   </script>
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="styles.css?v=20260608a">
 </head>
 <body>
-  <div class="project-page-shell" data-theme="dark" id="admin-login-shell">
+  <div class="project-page-shell" data-theme="light" id="admin-login-shell">
     <header class="site-header">
       <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
         <span></span>
@@ -79,6 +79,6 @@
   <script src="supabase-config.js?v=20260528b"></script>
   <script src="supabase-client.js?v=20260603a"></script>
   <script src="transitions.js?v=20260608a"></script>
-  <script src="admin-login.js?v=20260603a"></script>
+  <script src="admin-login.js?v=20260616a"></script>
 </body>
 </html>

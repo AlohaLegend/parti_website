@@ -16,7 +16,7 @@
       }
 
       const storedTheme = window.localStorage.getItem("parti-theme");
-      const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "dark";
+      const theme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "light";
       document.documentElement.setAttribute("data-theme", theme);
     })();
   </script>
@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="styles.css?v=20260608a">
 </head>
 <body>
-  <div class="project-page-shell" data-theme="dark" id="project-page-shell">
+  <div class="project-page-shell" data-theme="light" id="project-page-shell">
     <header class="site-header">
       <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
         <span></span>
@@ -110,6 +110,6 @@
   <script src="project-data.js?v=20260528b"></script>
   <script src="project-store.js?v=20260528a"></script>
   <script src="transitions.js?v=20260608a"></script>
-  <script src="project-page.js?v=20260528g"></script>
+  <script src="project-page.js?v=20260616a"></script>
 </body>
 </html>

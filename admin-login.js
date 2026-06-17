@@ -43,7 +43,7 @@ function setTheme(theme) {
   window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
 }
 
-function getPreferredTheme(defaultTheme = "dark") {
+function getPreferredTheme(defaultTheme = "light") {
   const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
   return storedTheme === "light" || storedTheme === "dark" ? storedTheme : defaultTheme;
 }
@@ -191,7 +191,7 @@ async function startGoogleLogin() {
 }
 
 async function initializeLoginPage() {
-  setTheme(getPreferredTheme(adminLoginShell?.getAttribute("data-theme") || "dark"));
+  setTheme(getPreferredTheme(adminLoginShell?.getAttribute("data-theme") || "light"));
 
   if (!isSupabaseConfigured || !supabaseClient) {
     renderAuthStatus("Supabase login is not configured yet. Add your project URL and anon key in supabase-config.js.");
