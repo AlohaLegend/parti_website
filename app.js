@@ -431,9 +431,10 @@ function scrollWorkEntryIntoView(entry) {
   });
 }
 
-function activateProject(projectId, source = "right") {
+function activateProject(projectId, source = "right", options = {}) {
   const activeId = projectContent[projectId] ? projectId : defaultProjectId;
   const hasChanged = activeId !== activeProjectId;
+  const shouldCenterCard = options.centerCard === true;
 
   if (hasChanged) {
     activeProjectId = activeId;
@@ -451,8 +452,10 @@ function activateProject(projectId, source = "right") {
     });
   }
 
-  if (source === "right") {
+  if (source === "right" && shouldCenterCard) {
     scheduleCardScroll(findCardForProject(activeId));
+  } else if (source === "right") {
+    clearCardScrollIntent();
   } else {
     clearCardScrollIntent();
     scrollWorkEntryIntoView(rowEntries.get(activeId));
@@ -537,7 +540,7 @@ function bindPortfolioInteractions() {
 
     row.addEventListener("focus", () => {
       clearHoverIntent();
-      activateProject(row.dataset.project, "right");
+      activateProject(row.dataset.project, "right", { centerCard: true });
     });
     row.addEventListener("pointerenter", () => {
       scheduleProjectActivation(row.dataset.project, "right");
