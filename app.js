@@ -338,7 +338,7 @@ function easeInOutCubic(progress) {
     : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 }
 
-function scrollCardIntoView(card) {
+function scrollCardIntoView(card, options = {}) {
   if (!card || !imageField) {
     return;
   }
@@ -347,10 +347,27 @@ function scrollCardIntoView(card) {
   const cardRect = card.getBoundingClientRect();
   const currentTop = imageField.scrollTop;
   const visibleHeight = imageField.clientHeight;
+  const revealPadding = options.revealPadding ?? 72;
   const cardOffsetTop = cardRect.top - fieldRect.top + currentTop;
-  const centeredTop = cardOffsetTop - (visibleHeight / 2) + (cardRect.height / 2);
   const maxScrollTop = Math.max(0, imageField.scrollHeight - visibleHeight);
-  const targetTop = Math.min(Math.max(0, centeredTop), maxScrollTop);
+  let targetTop = currentTop;
+
+  if (options.align === "center") {
+    targetTop = cardOffsetTop - (visibleHeight / 2) + (cardRect.height / 2);
+  } else {
+    const visibleTop = currentTop + revealPadding;
+    const visibleBottom = currentTop + visibleHeight - revealPadding;
+    const cardTop = cardOffsetTop;
+    const cardBottom = cardOffsetTop + cardRect.height;
+
+    if (cardTop < visibleTop) {
+      targetTop = cardTop - revealPadding;
+    } else if (cardBottom > visibleBottom) {
+      targetTop = cardBottom - visibleHeight + revealPadding;
+    }
+  }
+
+  targetTop = Math.min(Math.max(0, targetTop), maxScrollTop);
 
   if (Math.abs(targetTop - currentTop) < 6) {
     return;
@@ -397,7 +414,7 @@ function findCardForProject(projectId) {
   return cards.find((card) => card.dataset.project === projectId) || null;
 }
 
-function scheduleCardScroll(card) {
+function scheduleCardScroll(card, options = {}) {
   clearCardScrollIntent();
 
   if (!card) {
@@ -405,7 +422,7 @@ function scheduleCardScroll(card) {
   }
 
   cardScrollTimer = window.setTimeout(() => {
-    scrollCardIntoView(card);
+    scrollCardIntoView(card, options);
     cardScrollTimer = null;
   }, CARD_SCROLL_DELAY);
 }
@@ -453,9 +470,9 @@ function activateProject(projectId, source = "right", options = {}) {
   }
 
   if (source === "right" && shouldCenterCard) {
-    scheduleCardScroll(findCardForProject(activeId));
+    scheduleCardScroll(findCardForProject(activeId), { align: "center" });
   } else if (source === "right") {
-    clearCardScrollIntent();
+    scheduleCardScroll(findCardForProject(activeId), { align: "nearest" });
   } else {
     clearCardScrollIntent();
     scrollWorkEntryIntoView(rowEntries.get(activeId));
