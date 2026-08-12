@@ -25,6 +25,7 @@ const COLLAGE_BLUEPRINTS = [
   { shape: "square" }
 ];
 const MAX_COLLAGE_CARDS = 36;
+const DESKTOP_PORTFOLIO_QUERY = "(min-width: 781px)";
 let hoverIntentTimer = null;
 let cardScrollTimer = null;
 let cardScrollAnimationFrame = null;
@@ -38,6 +39,8 @@ let isSyncingCardScroll = false;
 let worksScrollActivationFrame = null;
 let lastWorksPointer = null;
 let manifestGlobalListenersBound = false;
+let desktopPortfolioMedia = null;
+let desktopPortfolioMediaListenerBound = false;
 
 function getOptimizedAssetPath(src, folder = "optimized") {
   if (typeof src !== "string" || !src.startsWith("assets/")) {
@@ -107,8 +110,9 @@ function createImageCard(projectId, index) {
   image.dataset.originalSrc = project.image;
   image.alt = project.imageAlt || `${project.title} project image`;
   image.decoding = "async";
-  image.loading = index < 4 ? "eager" : "lazy";
-  image.fetchPriority = index < 2 ? "high" : "auto";
+  const eagerImageCount = isDesktopPortfolioLayout() ? 4 : 8;
+  image.loading = index < eagerImageCount ? "eager" : "lazy";
+  image.fetchPriority = index < Math.min(4, eagerImageCount) ? "high" : "auto";
   image.style.objectPosition = project.leadCrop || "center center";
   image.addEventListener("error", () => {
     if (image.dataset.originalSrc && image.src !== image.dataset.originalSrc) {
@@ -120,6 +124,28 @@ function createImageCard(projectId, index) {
   card.appendChild(fill);
 
   return card;
+}
+
+function isDesktopPortfolioLayout() {
+  if (!desktopPortfolioMedia && typeof window.matchMedia === "function") {
+    desktopPortfolioMedia = window.matchMedia(DESKTOP_PORTFOLIO_QUERY);
+  }
+
+  return desktopPortfolioMedia ? desktopPortfolioMedia.matches : true;
+}
+
+function bindPortfolioMediaListener() {
+  if (desktopPortfolioMediaListenerBound || typeof window.matchMedia !== "function") {
+    return;
+  }
+
+  desktopPortfolioMedia = desktopPortfolioMedia || window.matchMedia(DESKTOP_PORTFOLIO_QUERY);
+  desktopPortfolioMedia.addEventListener?.("change", () => {
+    clearCardScrollIntent();
+    initializeRowScrollObserver();
+    initializeCardVisibilityObserver();
+  });
+  desktopPortfolioMediaListenerBound = true;
 }
 
 function getProjectTimestamp(project) {
@@ -343,6 +369,15 @@ function scrollCardIntoView(card, options = {}) {
     return;
   }
 
+  if (!isDesktopPortfolioLayout()) {
+    card.scrollIntoView({
+      inline: "center",
+      block: "nearest",
+      behavior: "smooth",
+    });
+    return;
+  }
+
   const fieldRect = imageField.getBoundingClientRect();
   const cardRect = card.getBoundingClientRect();
   const currentTop = imageField.scrollTop;
@@ -421,6 +456,11 @@ function scheduleCardScroll(card, options = {}) {
     return;
   }
 
+  if (!isDesktopPortfolioLayout()) {
+    scrollCardIntoView(card, options);
+    return;
+  }
+
   cardScrollTimer = window.setTimeout(() => {
     scrollCardIntoView(card, options);
     cardScrollTimer = null;
@@ -429,6 +469,10 @@ function scheduleCardScroll(card, options = {}) {
 
 function scrollWorkEntryIntoView(entry) {
   if (!entry) {
+    return;
+  }
+
+  if (!isDesktopPortfolioLayout()) {
     return;
   }
 
@@ -467,6 +511,11 @@ function activateProject(projectId, source = "right", options = {}) {
     cards.forEach((card) => {
       card.classList.toggle("is-active", card.dataset.project === activeId);
     });
+  }
+
+  if (!isDesktopPortfolioLayout()) {
+    clearCardScrollIntent();
+    return;
   }
 
   if (source === "right" && shouldCenterCard) {
@@ -510,6 +559,10 @@ function activateProjectFromManifestElement(element) {
 }
 
 function reconcileManifestHoverFromPoint(x, y) {
+  if (!isDesktopPortfolioLayout()) {
+    return;
+  }
+
   activateProjectFromManifestElement(document.elementFromPoint(x, y));
 }
 
@@ -552,6 +605,10 @@ function bindPortfolioInteractions() {
     const entry = rowEntries.get(row.dataset.project);
 
     entry?.addEventListener("pointerenter", () => {
+      if (!isDesktopPortfolioLayout()) {
+        return;
+      }
+
       activateProject(row.dataset.project, "right");
     });
 
@@ -560,6 +617,10 @@ function bindPortfolioInteractions() {
       activateProject(row.dataset.project, "right", { centerCard: true });
     });
     row.addEventListener("pointerenter", () => {
+      if (!isDesktopPortfolioLayout()) {
+        return;
+      }
+
       scheduleProjectActivation(row.dataset.project, "right");
     });
     row.addEventListener("click", (event) => {
@@ -580,6 +641,10 @@ function bindPortfolioInteractions() {
 
   if (!manifestGlobalListenersBound) {
     worksPanel?.addEventListener("pointermove", (event) => {
+      if (!isDesktopPortfolioLayout()) {
+        return;
+      }
+
       lastWorksPointer = { x: event.clientX, y: event.clientY };
 
       if (event.target.closest(".work-entry, .work-row")) {
@@ -597,6 +662,10 @@ function bindPortfolioInteractions() {
       activateProject(card.dataset.project, "left");
     });
     card.addEventListener("pointerenter", () => {
+      if (!isDesktopPortfolioLayout()) {
+        return;
+      }
+
       scheduleProjectActivation(card.dataset.project, "left");
     });
   });
@@ -605,7 +674,7 @@ function bindPortfolioInteractions() {
 function initializeRowScrollObserver() {
   rowScrollObserver?.disconnect();
 
-  if (!rows.length) {
+  if (!rows.length || !isDesktopPortfolioLayout()) {
     return;
   }
 
@@ -650,7 +719,7 @@ function initializeRowScrollObserver() {
 function initializeCardVisibilityObserver() {
   cardVisibilityObserver?.disconnect();
 
-  if (!imageField || !cards.length) {
+  if (!imageField || !cards.length || !isDesktopPortfolioLayout()) {
     return;
   }
 
@@ -719,6 +788,8 @@ function renderPortfolio() {
   bindPortfolioInteractions();
   initializeRowScrollObserver();
   initializeCardVisibilityObserver();
+
+  bindPortfolioMediaListener();
 
   activeProjectId = null;
   activateProject(defaultProjectId, "right");
