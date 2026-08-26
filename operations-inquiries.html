@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Inquiry Desk | PARTI Operations</title><meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260812a"><link rel="stylesheet" href="portal.css?v=20260826c">
+</head><body><div class="portal-shell" data-portal-shell data-theme="light">
+  <header class="portal-header"><p class="portal-header-note">PARTI operations</p><a class="brand-link" href="index.html"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a><button class="theme-toggle" data-theme-toggle type="button">Dark</button></header>
+  <main class="operations-main">
+    <section class="operations-topbar"><div class="operations-heading"><p class="portal-label">Client operating system</p><h1>Inquiry desk</h1></div><nav class="operations-nav" aria-label="Operations"><a href="operations-inquiries.html" aria-current="page">Inquiries</a><a href="operations-workback.html">Workbacks</a><a href="operations-roles.html">Roles + packages</a></nav></section>
+    <div class="operations-auth"><span data-auth-status>Checking admin access…</span><button class="portal-button portal-button-small" data-operations-logout type="button">Log out</button></div>
+    <div data-operations-content hidden>
+      <section class="metric-grid" id="inquiry-metrics" aria-label="Inquiry metrics"></section>
+      <section class="operations-toolbar"><input id="inquiry-search" type="search" placeholder="Search company, project, contact, location…"><select id="inquiry-status-filter"><option value="all">All statuses</option><option value="new">New</option><option value="reviewing">Reviewing</option><option value="discovery_recommended">Discovery recommended</option><option value="consultation_ready">Consultation ready</option><option value="not_ready">Not ready</option><option value="converted">Converted</option></select><button class="portal-button portal-button-small" id="export-inquiries" type="button">Export CSV</button><button class="portal-button portal-button-small" id="refresh-inquiries" type="button">Refresh</button></section>
+      <section class="operations-grid"><div class="inquiry-list" id="inquiry-list"></div><article class="inquiry-detail" id="inquiry-detail"><div class="empty-state"><p>Select an inquiry to review the brief and set the next step.</p></div></article></section>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script><script src="portal-shell.js?v=20260826a"></script><script src="operations-auth.js?v=20260826b"></script><script src="operations-inquiries.js?v=20260826a"></script>
+</body></html>

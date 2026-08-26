@@ -12,7 +12,15 @@ const adminAuthStatus = document.querySelector("#admin-auth-status");
 const THEME_STORAGE_KEY = "parti-theme";
 const AUTH_PENDING_STORAGE_KEY = "parti-auth-pending-until";
 const CLEAN_LOGIN_URL = `${window.location.origin}${window.location.pathname}`;
-const ADMIN_EDITOR_URL = `${window.location.origin}${window.location.pathname.replace("admin-login.html", "admin.html")}`;
+const ALLOWED_ADMIN_DESTINATIONS = new Set([
+  "admin.html",
+  "operations-inquiries.html",
+  "operations-workback.html",
+  "operations-roles.html",
+]);
+const requestedDestination = new URLSearchParams(window.location.search).get("next")?.split("/").pop() || "admin.html";
+const safeDestination = ALLOWED_ADMIN_DESTINATIONS.has(requestedDestination) ? requestedDestination : "admin.html";
+const ADMIN_EDITOR_URL = `${window.location.origin}${window.location.pathname.replace("admin-login.html", safeDestination)}`;
 const supabaseClient = window.PARTI_SUPABASE?.client;
 const supabaseConfig = window.PARTI_SUPABASE?.config || window.PARTI_SUPABASE_CONFIG || {};
 const isSupabaseConfigured = Boolean(window.PARTI_SUPABASE?.isConfigured && supabaseClient);
