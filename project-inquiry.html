@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Inquiry | PARTI</title>
+  <meta name="description" content="Tell PARTI about your experiential design, production, fabrication, launch, pop-up, or activation project.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260812a"><link rel="stylesheet" href="portal.css?v=20260826b">
+</head>
+<body>
+  <div class="portal-shell" data-portal-shell data-theme="light">
+    <header class="portal-header">
+      <p class="portal-header-note">Project inquiry</p>
+      <a class="brand-link" href="work-with-parti.html" aria-label="PARTI project portal"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a>
+      <button class="theme-toggle" data-theme-toggle type="button" aria-label="Toggle color theme">Dark</button>
+    </header>
+    <main class="portal-main inquiry-layout">
+      <aside class="inquiry-intro">
+        <p class="portal-eyebrow">Start a project</p>
+        <h1>Give us the shape of it.</h1>
+        <p class="portal-lead" style="margin-top:24px">This takes about six minutes. A clear budget range and target date help us recommend the strongest way to begin.</p>
+        <div class="inquiry-progress" aria-label="Inquiry progress">
+          <div class="inquiry-progress-item is-active" data-progress="0"><span>1</span>Contact</div>
+          <div class="inquiry-progress-item" data-progress="1"><span>2</span>Project</div>
+          <div class="inquiry-progress-item" data-progress="2"><span>3</span>Scope</div>
+          <div class="inquiry-progress-item" data-progress="3"><span>4</span>Readiness</div>
+          <div class="inquiry-progress-item" data-progress="4"><span>5</span>Review</div>
+        </div>
+      </aside>
+
+      <form class="inquiry-form" id="project-inquiry-form" novalidate>
+        <input class="honeypot" type="text" name="office_fax" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <section class="form-step is-active" data-step="0">
+          <div class="form-step-head"><p class="portal-label">01 / Contact</p><h2>Who are we building with?</h2><p>Tell us who should lead the first conversation on your side.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Name *</span><input name="contact_name" autocomplete="name" required maxlength="120"><small class="field-error"></small></label>
+            <label class="form-field"><span>Work email *</span><input name="email" type="email" autocomplete="email" required maxlength="180"><small class="field-error"></small></label>
+            <label class="form-field"><span>Company / organization *</span><input name="company" autocomplete="organization" required maxlength="160"><small class="field-error"></small></label>
+            <label class="form-field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" maxlength="40"><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Company website or social profile</span><input name="website" type="url" inputmode="url" placeholder="https://"><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><a class="portal-button" href="work-with-parti.html">Back to overview</a><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="1">
+          <div class="form-step-head"><p class="portal-label">02 / Project</p><h2>What are we making?</h2><p>Give us the working version. It does not need to be perfectly packaged yet.</p></div>
+          <div class="form-grid">
+            <label class="form-field form-field-wide"><span>Project name or working title *</span><input name="project_name" required maxlength="180"><small class="field-error"></small></label>
+            <label class="form-field"><span>Project type *</span><select name="project_type" required><option value="">Select one</option><option>Brand activation</option><option>Pop-up / retail experience</option><option>Product launch</option><option>Film / TV premiere</option><option>Press wall / scenic moment</option><option>Festival / cultural event</option><option>Hospitality / brand dinner</option><option>Touring / modular activation</option><option>Fabrication-only scope</option><option>Other experiential project</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>City / location *</span><input name="location" required maxlength="180" placeholder="City, venue, or TBD"><small class="field-error"></small></label>
+            <label class="form-field"><span>Target event or install date</span><input name="event_date" type="date"><small class="field-help">Leave blank if the date is not set.</small><small class="field-error"></small></label>
+            <label class="form-field"><span>Timing flexibility</span><select name="timing_flexibility"><option value="fixed">The date is fixed</option><option value="somewhat_flexible">Some flexibility</option><option value="not_set">Date is not set</option></select></label>
+            <label class="form-field form-field-wide"><span>The brief *</span><textarea name="brief" required maxlength="4000" placeholder="What is the experience, who is it for, and what should it feel like?"></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="2">
+          <div class="form-step-head"><p class="portal-label">03 / Scope</p><h2>Where should PARTI step in?</h2><p>Select everything that feels relevant. We will shape the final team around the actual project.</p></div>
+          <fieldset class="form-field form-field-wide" style="border:0;padding:0;margin:0"><legend class="form-legend">Services needed *</legend>
+            <div class="choice-grid" data-checkbox-group="services">
+              <label class="choice-card"><input type="checkbox" name="services" value="Strategy + creative direction"><span><strong>Strategy + creative direction</strong><small>Experience concept, audience, story, mood, and guest journey.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Experiential / spatial design"><span><strong>Experiential / spatial design</strong><small>Environment, layout, visual language, renders, and design development.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Production design + technical"><span><strong>Production design + technical</strong><small>Drawings, materials, detailing, feasibility, and build planning.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Fabrication"><span><strong>Fabrication</strong><small>Custom scenic, objects, structures, press walls, and branded elements.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Project management"><span><strong>Project management</strong><small>Schedule, budget, vendors, approvals, logistics, and team coordination.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Install + run of show"><span><strong>Install + run of show</strong><small>Load-in, on-site oversight, live execution, strike, and closeout.</small></span></label>
+            </div><small class="field-error" data-group-error="services"></small>
+          </fieldset>
+          <div class="form-grid" style="margin-top:24px">
+            <label class="form-field form-field-wide"><span>What would make this a success?</span><textarea name="success_definition" maxlength="2200" placeholder="The guest response, business outcome, creative ambition, or moment that matters most."></textarea></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="3">
+          <div class="form-step-head"><p class="portal-label">04 / Readiness</p><h2>What is real today?</h2><p>There is no wrong stage. This helps us distinguish a focused discovery engagement from a project ready to enter development or production.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Working total project budget *</span><select name="budget_range" required><option value="">Select a range</option><option value="under_50">Under $50,000</option><option value="50_100">$50,000–$100,000</option><option value="100_250">$100,000–$250,000</option><option value="250_500">$250,000–$500,000</option><option value="500_plus">$500,000+</option><option value="tbd">Not established yet</option></select><small class="field-help">Include design, production, fabrication, venue, vendors, and execution where applicable.</small><small class="field-error"></small></label>
+            <label class="form-field"><span>Budget status *</span><select name="budget_approved" required><option value="">Select one</option><option value="approved">Approved</option><option value="range_approved">Working range approved</option><option value="seeking_approval">Seeking approval</option><option value="unknown">Not established</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Current project stage *</span><select name="project_stage" required><option value="">Select one</option><option value="early_idea">Early idea / need strategy</option><option value="brief_ready">Brief is ready</option><option value="creative_started">Creative has started</option><option value="design_approved">Design is approved</option><option value="production_ready">Ready for production / fabrication</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>How did you find PARTI? *</span><select name="source" required><option value="">Select one</option><option value="instagram">Instagram</option><option value="referral">Referral</option><option value="returning_client">Returning client</option><option value="website">Website / search</option><option value="collaborator">Agency / production partner</option><option value="other">Other</option></select><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Who approves creative, budget, and production?</span><textarea name="decision_process" maxlength="1800" placeholder="Share the client team, agency partners, decision makers, or approval path already in place."></textarea></label>
+            <label class="form-field form-field-wide"><span>Anything else we should know?</span><textarea name="source_detail" maxlength="1800" placeholder="Referral name, existing partners, venue realities, procurement needs, or helpful context."></textarea></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Review inquiry</button></div>
+        </section>
+
+        <section class="form-step" data-step="4">
+          <div class="form-step-head"><p class="portal-label">05 / Review</p><h2>One last look.</h2><p>Review the project snapshot below. Submitting sends it securely to the PARTI team for a fit and timing review.</p></div>
+          <div class="detail-grid" id="inquiry-review"></div>
+          <label class="choice-card" style="display:block;margin-top:22px"><input type="checkbox" name="consent" required><span><strong>I confirm this information is accurate.</strong><small>PARTI may contact me about this project using the information provided. This is an inquiry, not a project booking or fee agreement.</small></span></label>
+          <small class="field-error" data-consent-error></small>
+          <p class="form-status" id="inquiry-status" role="status" aria-live="polite"></p>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-accent" type="submit">Send to PARTI</button></div>
+        </section>
+      </form>
+    </main>
+    <footer class="portal-footer"><span>Private preview — not linked from the PARTI website</span><span>Your draft is saved on this device until submitted.</span></footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script>
+  <script src="portal-shell.js?v=20260826a"></script><script src="project-inquiry.js?v=20260826a"></script>
+</body>
+</html>
