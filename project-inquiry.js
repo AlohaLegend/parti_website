@@ -172,6 +172,15 @@
     };
   }
 
+  function createReferenceCode() {
+    const now = new Date();
+    const date = `${String(now.getUTCFullYear()).slice(-2)}${String(now.getUTCMonth() + 1).padStart(2, "0")}${String(now.getUTCDate()).padStart(2, "0")}`;
+    const bytes = new Uint8Array(3);
+    window.crypto.getRandomValues(bytes);
+    const suffix = [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("").toUpperCase();
+    return `PARTI-${date}-${suffix}`;
+  }
+
   async function submitInquiry(event) {
     event.preventDefault();
     if (submitting || !validateStep(currentStep)) return;
@@ -202,8 +211,9 @@
 
     const data = dataFromForm();
     const scored = scoreInquiry(data);
-    const payload = { ...data, fit_score: scored.score, recommended_path: scored.recommended, attribution: attribution() };
-    const { data: created, error } = await client.from("inquiries").insert(payload).select("reference_code").single();
+    const referenceCode = createReferenceCode();
+    const payload = { ...data, reference_code: referenceCode, fit_score: scored.score, recommended_path: scored.recommended, attribution: attribution() };
+    const { error } = await client.from("inquiries").insert(payload);
 
     if (error) {
       submitting = false;
@@ -214,7 +224,7 @@
     }
 
     window.localStorage.removeItem(draftKey);
-    window.sessionStorage.setItem("parti-inquiry-reference", created.reference_code || "Submission received");
+    window.sessionStorage.setItem("parti-inquiry-reference", referenceCode);
     setStatus("Received. Opening your confirmation…", "success");
     window.location.assign("inquiry-received.html");
   }
