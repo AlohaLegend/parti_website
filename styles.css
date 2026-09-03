@@ -5,6 +5,7 @@
   --line: rgba(255, 255, 255, 0.62);
   --surface: rgba(255, 255, 255, 0.04);
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.26);
+  --parti-purple: #a95cf3;
   --transition: 260ms ease;
 }
 
@@ -137,8 +138,8 @@ button {
 }
 
 .header-logo-image {
-  width: min(170px, 18vw);
-  min-width: 118px;
+  width: min(194px, 20vw);
+  min-width: 132px;
 }
 
 .site-header {
@@ -213,6 +214,46 @@ button {
 
 .brand-link {
   justify-self: center;
+}
+
+.header-brand-stack {
+  display: grid;
+  justify-items: center;
+  justify-self: center;
+  gap: 10px;
+}
+
+.header-brand-stack .brand-link {
+  justify-self: auto;
+}
+
+.header-inquiry-cta {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--parti-purple);
+  background: var(--parti-purple);
+  padding: 8px 13px;
+  color: #111111;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: transform 160ms ease, box-shadow 180ms ease;
+}
+
+.header-inquiry-cta:hover,
+.header-inquiry-cta:focus-visible {
+  box-shadow: 0 8px 24px rgba(169, 92, 243, 0.22);
+  transform: translateY(-2px);
+}
+
+.header-inquiry-cta:active {
+  transform: translateY(1px);
 }
 
 .site-menu {
@@ -1708,7 +1749,17 @@ html.is-page-preparing .project-page-shell {
   }
 
   .header-logo-image {
-    width: 124px;
+    width: 140px;
+  }
+
+  .header-brand-stack {
+    gap: 8px;
+  }
+
+  .header-inquiry-cta {
+    min-height: 31px;
+    padding: 7px 9px;
+    font-size: 0.56rem;
   }
 
   .image-field {

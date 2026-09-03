@@ -9,7 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260812a"><link rel="stylesheet" href="portal.css?v=20260826b">
+  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20260903a">
 </head>
 <body>
   <div class="portal-shell" data-portal-shell data-theme="light">
@@ -80,13 +80,14 @@
         <section class="form-step" data-step="3">
           <div class="form-step-head"><p class="portal-label">04 / Readiness</p><h2>What is real today?</h2><p>There is no wrong stage. This helps us distinguish a focused discovery engagement from a project ready to enter development or production.</p></div>
           <div class="form-grid">
-            <label class="form-field"><span>Working total project budget *</span><select name="budget_range" required><option value="">Select a range</option><option value="under_50">Under $50,000</option><option value="50_100">$50,000–$100,000</option><option value="100_250">$100,000–$250,000</option><option value="250_500">$250,000–$500,000</option><option value="500_plus">$500,000+</option><option value="tbd">Not established yet</option></select><small class="field-help">Include design, production, fabrication, venue, vendors, and execution where applicable.</small><small class="field-error"></small></label>
+            <label class="form-field"><span>Working total project budget *</span><select name="budget_range" required><option value="">Select a range</option><option value="under_100">Under $100,000</option><option value="100_250">$100,000–$250,000</option><option value="250_500">$250,000–$500,000</option><option value="500_1m">$500,000–$1,000,000</option><option value="1m_plus">$1,000,000+</option><option value="tbd">Not established yet</option></select><small class="field-help">Include design, production, fabrication, venue, vendors, and execution where applicable.</small><small class="field-error"></small></label>
             <label class="form-field"><span>Budget status *</span><select name="budget_approved" required><option value="">Select one</option><option value="approved">Approved</option><option value="range_approved">Working range approved</option><option value="seeking_approval">Seeking approval</option><option value="unknown">Not established</option></select><small class="field-error"></small></label>
             <label class="form-field"><span>Current project stage *</span><select name="project_stage" required><option value="">Select one</option><option value="early_idea">Early idea / need strategy</option><option value="brief_ready">Brief is ready</option><option value="creative_started">Creative has started</option><option value="design_approved">Design is approved</option><option value="production_ready">Ready for production / fabrication</option></select><small class="field-error"></small></label>
             <label class="form-field"><span>How did you find PARTI? *</span><select name="source" required><option value="">Select one</option><option value="instagram">Instagram</option><option value="referral">Referral</option><option value="returning_client">Returning client</option><option value="website">Website / search</option><option value="collaborator">Agency / production partner</option><option value="other">Other</option></select><small class="field-error"></small></label>
             <label class="form-field form-field-wide"><span>Who approves creative, budget, and production?</span><textarea name="decision_process" maxlength="1800" placeholder="Share the client team, agency partners, decision makers, or approval path already in place."></textarea></label>
             <label class="form-field form-field-wide"><span>Anything else we should know?</span><textarea name="source_detail" maxlength="1800" placeholder="Referral name, existing partners, venue realities, procurement needs, or helpful context."></textarea></label>
           </div>
+          <label class="choice-card partnership-choice"><input type="checkbox" name="partnership_interest"><span><strong>Keep us in mind for future event partnerships.</strong><small>Our business would like to hear about sponsorship, product placement, collaborative programming, or opportunities to be featured at future PARTI-produced events.</small></span></label>
           <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Review inquiry</button></div>
         </section>
 
@@ -100,10 +101,10 @@
         </section>
       </form>
     </main>
-    <footer class="portal-footer"><span>Private preview — not linked from the PARTI website</span><span>Your draft is saved on this device until submitted.</span></footer>
+    <footer class="portal-footer"><span>Secure project inquiry</span><span>Your draft is saved on this device until submitted.</span></footer>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script>
-  <script src="portal-shell.js?v=20260826a"></script><script src="project-inquiry.js?v=20260826a"></script>
+  <script src="portal-shell.js?v=20260826a"></script><script src="project-inquiry.js?v=20260903a"></script>
 </body>
 </html>

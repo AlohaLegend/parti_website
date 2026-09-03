@@ -206,6 +206,8 @@
 .choice-card span small { color: var(--muted); line-height: 1.4; }
 .choice-card input:checked + span { border-color: var(--portal-accent); background: var(--portal-accent-soft); }
 .choice-card input:focus-visible + span { outline: 2px solid var(--portal-accent); outline-offset: 2px; }
+.partnership-choice { display: block; margin-top: 24px; }
+.partnership-choice span { border-color: color-mix(in srgb, var(--portal-accent) 58%, var(--line)); }
 
 .form-actions { display: flex; justify-content: space-between; gap: 14px; margin-top: 38px; padding-top: 22px; border-top: 1px solid var(--line); }
 .form-status { margin: 18px 0 0; color: var(--muted); line-height: 1.5; }

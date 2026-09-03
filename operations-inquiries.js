@@ -9,7 +9,7 @@
   const filter = document.querySelector("#inquiry-status-filter");
 
   const statusLabels = { new: "New", reviewing: "Reviewing", discovery_recommended: "Discovery recommended", consultation_ready: "Consultation ready", not_ready: "Not ready", converted: "Converted" };
-  const budgetLabels = { under_50: "Under $50,000", "50_100": "$50,000–$100,000", "100_250": "$100,000–$250,000", "250_500": "$250,000–$500,000", "500_plus": "$500,000+", tbd: "Not established" };
+  const budgetLabels = { under_50: "Under $50,000", "50_100": "$50,000–$100,000", under_100: "Under $100,000", "100_250": "$100,000–$250,000", "250_500": "$250,000–$500,000", "500_1m": "$500,000–$1,000,000", "1m_plus": "$1,000,000+", "500_plus": "$500,000+", tbd: "Not established" };
   const stageLabels = { early_idea: "Early idea / strategy", brief_ready: "Brief ready", creative_started: "Creative started", design_approved: "Design approved", production_ready: "Production ready" };
 
   function escapeHtml(value) { const div = document.createElement("div"); div.textContent = String(value ?? ""); return div.innerHTML; }
@@ -58,7 +58,7 @@
       <div class="detail-grid">
         ${item("Project type", inquiry.project_type)}${item("Location", inquiry.location)}${item("Target date", formatDate(inquiry.event_date))}${item("Timing", String(inquiry.timing_flexibility || "").replaceAll("_", " "))}
         ${item("Budget", budgetLabels[inquiry.budget_range])}${item("Budget status", String(inquiry.budget_approved || "").replaceAll("_", " "))}${item("Current stage", stageLabels[inquiry.project_stage])}${item("Fit signal", `${inquiry.fit_score ?? "—"} / 100 · ${recommended}`)}
-        ${item("Services", (inquiry.services || []).join(" · "), true)}${item("Brief", inquiry.brief, true)}${item("Success looks like", inquiry.success_definition, true)}${item("Decision path", inquiry.decision_process, true)}${item("Source", `${String(inquiry.source || "").replaceAll("_", " ")}${inquiry.source_detail ? ` — ${inquiry.source_detail}` : ""}`, true)}
+        ${item("Services", (inquiry.services || []).join(" · "), true)}${item("Brief", inquiry.brief, true)}${item("Success looks like", inquiry.success_definition, true)}${item("Decision path", inquiry.decision_process, true)}${inquiry.partnership_interest ? item("Future event partnerships", "Interested in sponsorship, placement, programming, or featured-partner opportunities", true) : ""}${item("Source", `${String(inquiry.source || "").replaceAll("_", " ")}${inquiry.source_detail ? ` — ${inquiry.source_detail}` : ""}`, true)}
       </div>
       <div class="detail-controls">
         <label class="form-field"><span>Pipeline status</span><select id="detail-status">${Object.entries(statusLabels).map(([value,label]) => `<option value="${value}" ${inquiry.status === value ? "selected" : ""}>${label}</option>`).join("")}</select></label>
@@ -83,7 +83,7 @@
   function renderAll() { renderMetrics(); renderList(); renderDetail(); }
 
   function exportCsv() {
-    const headers = ["reference_code","submitted_at","status","fit_score","recommended_path","company","contact_name","email","phone","project_name","project_type","location","event_date","budget_range","budget_approved","project_stage","services","brief","internal_notes"];
+    const headers = ["reference_code","submitted_at","status","fit_score","recommended_path","company","contact_name","email","phone","website","project_name","project_type","location","event_date","timing_flexibility","budget_range","budget_approved","project_stage","services","brief","success_definition","decision_process","partnership_interest","source","source_detail","internal_notes"];
     const quote = (value) => `"${String(value ?? "").replaceAll('"','""')}"`;
     const csv = [headers.join(","), ...filtered().map((row) => headers.map((key) => quote(Array.isArray(row[key]) ? row[key].join(" | ") : row[key])).join(","))].join("\n");
     const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); link.download = `parti-inquiries-${new Date().toISOString().slice(0,10)}.csv`; link.click(); URL.revokeObjectURL(link.href);

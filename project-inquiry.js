@@ -16,11 +16,12 @@
     project_name: "Project", project_type: "Project type", location: "Location",
     event_date: "Target date", timing_flexibility: "Timing", budget_range: "Budget",
     budget_approved: "Budget status", project_stage: "Current stage", source: "Source",
-    brief: "Brief", success_definition: "Success looks like", decision_process: "Approvals"
+    brief: "Brief", success_definition: "Success looks like", decision_process: "Approvals",
+    partnership_interest: "Future event partnerships"
   };
   const displayValues = {
-    under_50: "Under $50,000", "50_100": "$50,000–$100,000", "100_250": "$100,000–$250,000",
-    "250_500": "$250,000–$500,000", "500_plus": "$500,000+", tbd: "Not established yet",
+    under_100: "Under $100,000", "100_250": "$100,000–$250,000", "250_500": "$250,000–$500,000",
+    "500_1m": "$500,000–$1,000,000", "1m_plus": "$1,000,000+", tbd: "Not established yet",
     approved: "Approved", range_approved: "Working range approved", seeking_approval: "Seeking approval",
     unknown: "Not established", early_idea: "Early idea / need strategy", brief_ready: "Brief is ready",
     creative_started: "Creative has started", design_approved: "Design is approved",
@@ -54,7 +55,8 @@
       project_stage: String(raw.get("project_stage") || ""),
       source: String(raw.get("source") || ""),
       decision_process: String(raw.get("decision_process") || "").trim() || null,
-      source_detail: String(raw.get("source_detail") || "").trim() || null
+      source_detail: String(raw.get("source_detail") || "").trim() || null,
+      partnership_interest: raw.get("partnership_interest") === "on"
     };
   }
 
@@ -72,6 +74,10 @@
         return;
       }
       const field = form.elements.namedItem(name);
+      if (field && field.type === "checkbox" && typeof value === "boolean") {
+        field.checked = value;
+        return;
+      }
       if (field && typeof value === "string") field.value = value;
     });
   }
@@ -126,11 +132,12 @@
       ["budget_range", displayValues[data.budget_range]], ["budget_approved", displayValues[data.budget_approved]],
       ["project_stage", displayValues[data.project_stage]], ["source", data.source.replaceAll("_", " ")],
       ["services", data.services.join(" · ")], ["brief", data.brief],
-      ["success_definition", data.success_definition], ["decision_process", data.decision_process]
+      ["success_definition", data.success_definition], ["decision_process", data.decision_process],
+      ["partnership_interest", data.partnership_interest ? "Interested" : null]
     ].filter(([, value]) => value);
 
     review.innerHTML = entries.map(([key, value]) => `
-      <div class="detail-item ${["brief", "success_definition", "decision_process", "services"].includes(key) ? "detail-item-wide" : ""}">
+      <div class="detail-item ${["brief", "success_definition", "decision_process", "services", "partnership_interest"].includes(key) ? "detail-item-wide" : ""}">
         <span>${labels[key] || key.replaceAll("_", " ")}</span><p>${escapeHtml(value)}</p>
       </div>`).join("");
   }
@@ -142,7 +149,7 @@
   }
 
   function scoreInquiry(data) {
-    const budgetScores = { under_50: 6, "50_100": 16, "100_250": 26, "250_500": 32, "500_plus": 36, tbd: 4 };
+    const budgetScores = { under_100: 14, "100_250": 24, "250_500": 31, "500_1m": 35, "1m_plus": 38, tbd: 4 };
     const approvalScores = { approved: 18, range_approved: 14, seeking_approval: 6, unknown: 0 };
     const stageScores = { early_idea: 7, brief_ready: 14, creative_started: 16, design_approved: 18, production_ready: 18 };
     let score = (budgetScores[data.budget_range] || 0) + (approvalScores[data.budget_approved] || 0) + (stageScores[data.project_stage] || 0);
@@ -152,7 +159,7 @@
       score += days >= 42 ? 10 : days >= 21 ? 4 : -8;
     } else score += 4;
     score = Math.max(0, Math.min(100, score));
-    const recommended = ["tbd", "under_50"].includes(data.budget_range) || ["unknown", "seeking_approval"].includes(data.budget_approved) || data.project_stage === "early_idea"
+    const recommended = data.budget_range === "tbd" || ["unknown", "seeking_approval"].includes(data.budget_approved) || data.project_stage === "early_idea"
       ? "discovery_recommended" : score >= 68 ? "consultation_ready" : "manual_review";
     return { score, recommended };
   }

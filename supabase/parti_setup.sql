@@ -141,6 +141,7 @@ create table if not exists public.inquiries (
   decision_process text check (decision_process is null or char_length(decision_process) <= 1800),
   source text not null,
   source_detail text check (source_detail is null or char_length(source_detail) <= 1800),
+  partnership_interest boolean not null default false,
   attribution jsonb not null default '{}'::jsonb,
   fit_score integer not null default 0 check (fit_score between 0 and 100),
   recommended_path text not null default 'manual_review',
@@ -149,6 +150,9 @@ create table if not exists public.inquiries (
   submitted_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
 );
+
+alter table public.inquiries
+  add column if not exists partnership_interest boolean not null default false;
 
 create index if not exists inquiries_submitted_at_idx on public.inquiries (submitted_at desc);
 create index if not exists inquiries_status_idx on public.inquiries (status);
