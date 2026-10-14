@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Independent Talent Profile | PARTI</title>
+  <meta name="description" content="Share your independent creative, production, fabrication, and event services with PARTI.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014a">
+</head>
+<body>
+  <div class="portal-shell" data-portal-shell data-theme="light">
+    <header class="portal-header">
+      <p class="portal-header-note">Independent talent profile</p>
+      <a class="brand-link" href="contractor-onboarding.html" aria-label="PARTI independent talent profile"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a>
+      <button class="theme-toggle" data-theme-toggle type="button" aria-label="Toggle color theme">Dark</button>
+    </header>
+
+    <main class="portal-main inquiry-layout">
+      <aside class="inquiry-intro">
+        <p class="portal-eyebrow">Join the PARTI network</p>
+        <h1>Bring your craft.</h1>
+        <p class="portal-lead" style="margin-top:24px">Tell us how you work, what you make, and what it costs to bring you onto a project. This profile takes about eight minutes.</p>
+        <div class="intake-note"><strong>Before you begin</strong><p>This is a talent and vendor intake, not a job application, offer, assignment, or contractor agreement. Do not enter a Social Security number, tax ID, banking details, driver license number, or other identity documents here.</p></div>
+        <div class="inquiry-progress" aria-label="Profile progress">
+          <div class="inquiry-progress-item is-active" data-progress="0"><span>1</span>Profile</div>
+          <div class="inquiry-progress-item" data-progress="1"><span>2</span>Craft</div>
+          <div class="inquiry-progress-item" data-progress="2"><span>3</span>Rates</div>
+          <div class="inquiry-progress-item" data-progress="3"><span>4</span>Business</div>
+          <div class="inquiry-progress-item" data-progress="4"><span>5</span>Readiness</div>
+          <div class="inquiry-progress-item" data-progress="5"><span>6</span>Review</div>
+        </div>
+      </aside>
+
+      <form class="inquiry-form" id="contractor-onboarding-form" novalidate>
+        <input class="honeypot" type="text" name="office_fax" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <section class="form-step is-active" data-step="0">
+          <div class="form-step-head"><p class="portal-label">01 / Profile</p><h2>Who are we meeting?</h2><p>Use the contact information you use for your independent business.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Legal name *</span><input name="legal_name" autocomplete="name" required maxlength="140"><small class="field-help">Needed later to match vendor and tax records.</small><small class="field-error"></small></label>
+            <label class="form-field"><span>Preferred name</span><input name="preferred_name" maxlength="100"><small class="field-error"></small></label>
+            <label class="form-field"><span>Email *</span><input name="email" type="email" autocomplete="email" required maxlength="180"><small class="field-error"></small></label>
+            <label class="form-field"><span>Phone *</span><input name="phone" type="tel" autocomplete="tel" required maxlength="40"><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Home base *</span><input name="home_base" required maxlength="180" placeholder="City, state, and region you normally serve"><small class="field-error"></small></label>
+            <label class="form-field"><span>Business or studio name</span><input name="business_name" autocomplete="organization" maxlength="180"><small class="field-error"></small></label>
+            <label class="form-field"><span>Business structure *</span><select name="entity_type" required><option value="">Select one</option><option value="sole_proprietor">Sole proprietor</option><option value="single_member_llc">Single-member LLC</option><option value="llc">LLC</option><option value="partnership">Partnership</option><option value="corporation">Corporation</option><option value="other">Other established business</option><option value="not_established">I have not established a business</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Website</span><input name="website" type="url" inputmode="url" placeholder="https://"><small class="field-error"></small></label>
+            <label class="form-field"><span>Portfolio link</span><input name="portfolio_url" type="url" inputmode="url" placeholder="https://"><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Professional social profile</span><input name="social_url" type="url" inputmode="url" placeholder="https://"><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><span></span><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="1">
+          <div class="form-step-head"><p class="portal-label">02 / Craft</p><h2>What do you bring?</h2><p>Choose the work you independently offer and describe the level at which you operate.</p></div>
+          <div class="form-grid">
+            <label class="form-field form-field-wide"><span>Primary role or specialty *</span><input name="primary_role" required maxlength="160" placeholder="Production designer, fabricator, producer, installer…"><small class="field-error"></small></label>
+            <label class="form-field"><span>Years working professionally *</span><select name="years_experience" required><option value="">Select one</option><option value="under_2">Under 2 years</option><option value="2_4">2 to 4 years</option><option value="5_9">5 to 9 years</option><option value="10_plus">10+ years</option></select><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset"><legend class="form-legend">Services offered *</legend>
+            <div class="choice-grid" data-checkbox-group="services">
+              <label class="choice-card"><input type="checkbox" name="services" value="Creative direction + design"><span><strong>Creative direction + design</strong><small>Concept, spatial, graphics, renders, styling.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Production management"><span><strong>Production management</strong><small>Budgets, schedules, vendors, permits, logistics.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Technical design + drafting"><span><strong>Technical design + drafting</strong><small>CAD, engineering coordination, shop drawings.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Fabrication + scenic"><span><strong>Fabrication + scenic</strong><small>Carpentry, metal, paint, finish, branded builds.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Install + strike"><span><strong>Install + strike</strong><small>Site builds, load-in, show support, breakdown.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Event operations"><span><strong>Event operations</strong><small>Run of show, guest flow, staffing, backstage.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Logistics + transportation"><span><strong>Logistics + transportation</strong><small>Trucking, pickups, deliveries, inventory.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Photo + video"><span><strong>Photo + video</strong><small>Event capture, content, editing, documentation.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Floral + styling"><span><strong>Floral + styling</strong><small>Floral, tablescape, props, set dressing.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Hospitality + talent"><span><strong>Hospitality + talent</strong><small>Brand ambassadors, talent, front of house.</small></span></label>
+              <label class="choice-card"><input type="checkbox" name="services" value="Other"><span><strong>Other specialist service</strong><small>Tell us in your experience summary.</small></span></label>
+            </div><small class="field-error" data-group-error="services"></small>
+          </fieldset>
+          <div class="form-grid form-section-gap">
+            <label class="form-field form-field-wide"><span>Experience summary *</span><textarea name="experience_summary" required minlength="40" maxlength="4000" placeholder="What do you own on a project, what scale have you handled, and what are you especially good at?"></textarea><small class="field-help">Minimum 40 characters.</small><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Selected clients, projects, or recent work</span><textarea name="notable_work" maxlength="2500" placeholder="Names, links, responsibilities, scale, or outcomes."></textarea><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset"><legend class="form-legend">Markets you can serve *</legend><div class="choice-grid compact-choice-grid" data-checkbox-group="markets">
+            <label class="choice-card"><input type="checkbox" name="markets" value="Los Angeles"><span><strong>Los Angeles</strong></span></label><label class="choice-card"><input type="checkbox" name="markets" value="Southern California"><span><strong>Southern California</strong></span></label><label class="choice-card"><input type="checkbox" name="markets" value="Nationwide travel"><span><strong>Nationwide travel</strong></span></label><label class="choice-card"><input type="checkbox" name="markets" value="Remote"><span><strong>Remote</strong></span></label>
+          </div><small class="field-error" data-group-error="markets"></small></fieldset>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="2">
+          <div class="form-step-head"><p class="portal-label">03 / Rates</p><h2>How do you price?</h2><p>Share your normal starting point. Rates are for planning only and are not accepted until a written project agreement is signed.</p></div>
+          <fieldset class="form-field form-field-wide fieldset-reset"><legend class="form-legend">Rate structures offered *</legend><div class="choice-grid compact-choice-grid" data-checkbox-group="rate_types">
+            <label class="choice-card"><input type="checkbox" name="rate_types" value="hourly"><span><strong>Hourly</strong></span></label><label class="choice-card"><input type="checkbox" name="rate_types" value="day"><span><strong>Day rate</strong></span></label><label class="choice-card"><input type="checkbox" name="rate_types" value="weekly"><span><strong>Weekly</strong></span></label><label class="choice-card"><input type="checkbox" name="rate_types" value="project"><span><strong>Project fee</strong></span></label>
+          </div><small class="field-error" data-group-error="rate_types"></small></fieldset>
+          <div class="form-grid form-section-gap">
+            <label class="form-field"><span>Hourly rate</span><div class="money-input"><span>$</span><input name="hourly_rate" type="number" inputmode="decimal" min="0" max="10000" step="1" placeholder="0"></div><small class="field-error"></small></label>
+            <label class="form-field"><span>Day rate</span><div class="money-input"><span>$</span><input name="day_rate" type="number" inputmode="decimal" min="0" max="100000" step="1" placeholder="0"></div><small class="field-help">Include your standard number of hours below.</small><small class="field-error"></small></label>
+            <label class="form-field"><span>Hours included in day rate</span><input name="day_hours" type="number" inputmode="numeric" min="1" max="24" step="1" placeholder="10"><small class="field-error"></small></label>
+            <label class="form-field"><span>Minimum call</span><input name="minimum_call" maxlength="80" placeholder="4 hours, half-day, one day…"><small class="field-error"></small></label>
+            <label class="form-field"><span>Overtime approach</span><input name="overtime_terms" maxlength="180" placeholder="After 10 hours, 1.5x…"><small class="field-error"></small></label>
+            <label class="form-field"><span>Travel day rate</span><div class="money-input"><span>$</span><input name="travel_rate" type="number" inputmode="decimal" min="0" max="100000" step="1" placeholder="0"></div><small class="field-error"></small></label>
+            <label class="form-field"><span>Standard invoice terms *</span><select name="payment_terms" required><option value="">Select one</option><option value="due_on_receipt">Due on receipt</option><option value="net_7">Net 7</option><option value="net_15">Net 15</option><option value="net_30">Net 30</option><option value="milestone">Milestone / project schedule</option><option value="other">Other</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Rates negotiable by scope? *</span><select name="rates_negotiable" required><option value="">Select one</option><option value="yes">Yes</option><option value="limited">Within defined limits</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Expenses, rentals, or pricing notes</span><textarea name="rate_notes" maxlength="1800" placeholder="Mileage, per diem, materials, assistants, kit fees, equipment rentals, deposits…"></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="3">
+          <div class="form-step-head"><p class="portal-label">04 / Business</p><h2>How independently do you operate?</h2><p>These questions help PARTI evaluate the correct engagement path. Your answers do not determine legal classification by themselves.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Do you currently offer these services to other clients? *</span><select name="other_clients" required><option value="">Select one</option><option value="yes_active">Yes, currently</option><option value="yes_available">Yes, and I am available to</option><option value="not_currently">Not currently</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Can you accept or decline individual PARTI projects? *</span><select name="can_decline" required><option value="">Select one</option><option value="yes">Yes</option><option value="limited">With limitations</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Can you negotiate scope and rates for each project? *</span><select name="can_negotiate" required><option value="">Select one</option><option value="yes">Yes</option><option value="limited">Within limits</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Do you advertise or maintain a public professional presence? *</span><select name="advertises" required><option value="">Select one</option><option value="yes">Yes</option><option value="informal">Informally / referrals</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Do you normally provide your own tools and equipment? *</span><select name="own_tools" required><option value="">Select one</option><option value="yes">Yes</option><option value="mixed">A mix, depending on scope</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Can you hire or use qualified assistants for an approved scope? *</span><select name="can_hire" required><option value="">Select one</option><option value="yes">Yes</option><option value="approval_needed">Only with client approval</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Business license / registration where required *</span><select name="business_registration" required><option value="">Select one</option><option value="current">Current</option><option value="not_required">Not required for my work/location</option><option value="in_progress">In progress</option><option value="none">None</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Where is work usually performed? *</span><select name="work_location" required><option value="">Select one</option><option value="own_location">My own shop / studio / office</option><option value="project_sites">Client and event sites</option><option value="mixed">A mix of my location and project sites</option><option value="parti_location">Primarily at PARTI</option></select><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Tools, vehicles, software, or specialist equipment you provide</span><textarea name="equipment" maxlength="2500" placeholder="List only what is relevant to the services you offer. Do not include license plate or driver license numbers."></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="legal-callout"><strong>Why we ask</strong><p>California generally starts from the presumption that a worker is an employee unless the applicable legal test is satisfied. A signed form, invoice, LLC, or 1099 does not decide status. PARTI must review the real scope, control, business independence, and working arrangement before engagement.</p></div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="4">
+          <div class="form-step-head"><p class="portal-label">05 / Readiness</p><h2>Can we put you on a live site?</h2><p>Share current availability, coverage, and safety readiness. Documents are requested securely only after review.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Earliest availability *</span><input name="available_from" type="date" required><small class="field-error"></small></label>
+            <label class="form-field"><span>Typical scheduling lead time *</span><select name="lead_time" required><option value="">Select one</option><option value="same_week">Same week</option><option value="one_week">1 week</option><option value="two_weeks">2 weeks</option><option value="month_plus">1 month or more</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Night / weekend availability *</span><select name="nights_weekends" required><option value="">Select one</option><option value="yes">Yes</option><option value="sometimes">Sometimes</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Travel availability *</span><select name="travel_availability" required><option value="">Select one</option><option value="local_only">Local only</option><option value="regional">Regional / drive market</option><option value="domestic">Domestic travel</option><option value="international">Domestic + international</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>General liability insurance *</span><select name="general_liability" required><option value="">Select one</option><option value="current">Current and can provide COI</option><option value="can_obtain">Can obtain for a project</option><option value="not_applicable">Not normally applicable to my service</option><option value="none">No coverage</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Workers' compensation *</span><select name="workers_comp" required><option value="">Select one</option><option value="current">Current coverage</option><option value="exempt_no_employees">No employees / I believe I am exempt</option><option value="can_obtain">Can obtain if required</option><option value="unsure">Unsure</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Will you drive for project work? *</span><select name="driving" required><option value="">Select one</option><option value="yes_commercial">Yes, with applicable commercial coverage</option><option value="yes_personal">Yes, personal vehicle only</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Can you provide a completed W-9 through a secure channel if engaged? *</span><select name="w9_ready" required><option value="">Select one</option><option value="yes">Yes</option><option value="need_guidance">I need guidance</option><option value="not_us_person">I am not a U.S. person / need the correct tax form</option></select><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset"><legend class="form-legend">Current training and credentials</legend><div class="choice-grid">
+            <label class="choice-card"><input type="checkbox" name="safety_credentials" value="OSHA 10"><span><strong>OSHA 10</strong></span></label><label class="choice-card"><input type="checkbox" name="safety_credentials" value="OSHA 30"><span><strong>OSHA 30</strong></span></label><label class="choice-card"><input type="checkbox" name="safety_credentials" value="Forklift"><span><strong>Forklift</strong></span></label><label class="choice-card"><input type="checkbox" name="safety_credentials" value="Aerial lift"><span><strong>Aerial lift</strong></span></label><label class="choice-card"><input type="checkbox" name="safety_credentials" value="First aid / CPR"><span><strong>First aid / CPR</strong></span></label><label class="choice-card"><input type="checkbox" name="safety_credentials" value="Food handler"><span><strong>Food handler</strong></span></label><label class="choice-card"><input type="checkbox" name="safety_credentials" value="Other"><span><strong>Other</strong></span></label><label class="choice-card"><input type="checkbox" name="safety_credentials" value="None"><span><strong>None</strong></span></label>
+          </div></fieldset>
+          <div class="form-grid form-section-gap">
+            <label class="form-field"><span>Professional reference name</span><input name="reference_name" maxlength="140"><small class="field-error"></small></label>
+            <label class="form-field"><span>Reference email or phone</span><input name="reference_contact" maxlength="180"><small class="field-help">Confirm they agreed to be listed before sharing their information.</small><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Relationship / project context</span><input name="reference_context" maxlength="300"><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Availability constraints or anything else PARTI should know</span><textarea name="additional_notes" maxlength="2500"></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Review profile</button></div>
+        </section>
+
+        <section class="form-step" data-step="5">
+          <div class="form-step-head"><p class="portal-label">06 / Review</p><h2>One clear profile.</h2><p>Review the summary, then read the notices before sending.</p></div>
+          <div class="detail-grid" id="contractor-review"></div>
+          <details class="notice-panel" open><summary>Notice at collection and privacy</summary><div><p>PARTI collects the identity and contact information, business details, experience, rates, availability, insurance and safety readiness, and reference information entered here. We use it to evaluate potential vendors and independent talent, contact you about possible projects, manage compliance and onboarding, prevent fraud, and maintain business records.</p><p>PARTI does not sell this information or share it for cross-context behavioral advertising. Profiles that do not lead to an active engagement are intended to be retained for up to 24 months, unless a longer period is required for a dispute, security, or legal obligation. If engaged, relevant information may become part of PARTI's vendor, tax, safety, insurance, and project records and follow the applicable retention period. Contact <a href="mailto:hello@letsparti.co">hello@letsparti.co</a> with a privacy request.</p></div></details>
+          <details class="notice-panel"><summary>Independent relationship notice</summary><div><p>This intake does not create an employment relationship, independent contractor relationship, promise of work, exclusivity obligation, or binding rate. Any project requires a separate written scope that identifies deliverables, payment amount or rate, payment due date, and other project terms.</p><p>Legal status depends on applicable law and the actual working relationship. Nothing in this intake asks you to waive rights, benefits, unemployment claims, workers' compensation rights, safety protections, or the right to raise a classification concern.</p></div></details>
+          <label class="choice-card acknowledgement-card"><input type="checkbox" name="accuracy_consent" required><span><strong>I confirm that my profile is accurate.</strong><small>I am authorized to share the information entered, including any reference details, and PARTI may contact me about potential project work.</small></span></label>
+          <label class="choice-card acknowledgement-card"><input type="checkbox" name="notice_consent" required><span><strong>I reviewed the notices above.</strong><small>I understand that submitting this profile is not an offer, booking, contractor agreement, or waiver of legal rights.</small></span></label>
+          <small class="field-error" data-consent-error></small>
+          <p class="form-status" id="contractor-status" role="status" aria-live="polite"></p>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-accent" type="submit">Send profile to PARTI</button></div>
+        </section>
+      </form>
+    </main>
+    <footer class="portal-footer"><span>PARTI independent talent network</span><span>Secure intake · no tax or banking data</span></footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script>
+  <script src="portal-shell.js?v=20260826a"></script><script src="contractor-onboarding.js?v=20261014a"></script>
+</body>
+</html>

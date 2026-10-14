@@ -209,6 +209,36 @@
 .partnership-choice { display: block; margin-top: 24px; }
 .partnership-choice span { border-color: color-mix(in srgb, var(--portal-accent) 58%, var(--line)); }
 
+.intake-note,
+.legal-callout,
+.review-flag-panel {
+  margin-top: 26px;
+  border: 1px solid color-mix(in srgb, var(--portal-accent) 58%, var(--line));
+  background: var(--portal-accent-soft);
+  padding: 16px;
+}
+.intake-note strong,
+.legal-callout strong { display: block; margin-bottom: 7px; font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.intake-note p,
+.legal-callout p,
+.review-flag-panel p { margin: 0; color: var(--muted); font-size: 0.82rem; line-height: 1.58; }
+.fieldset-reset { border: 0; padding: 0; margin: 0; }
+.form-section-gap { margin-top: 24px; }
+.compact-choice-grid { grid-template-columns: repeat(4, 1fr); }
+.compact-choice-grid .choice-card span { display: grid; min-height: 64px; align-items: center; }
+.money-input { display: grid; grid-template-columns: auto 1fr; align-items: center; border-bottom: 1px solid var(--line); }
+.money-input > span { color: var(--muted); }
+.money-input input { border: 0; }
+.notice-panel { margin-top: 14px; border: 1px solid var(--line); }
+.notice-panel summary { padding: 15px 16px; cursor: pointer; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.notice-panel > div { border-top: 1px solid var(--line); padding: 2px 16px 16px; }
+.notice-panel p { color: var(--muted); font-size: 0.84rem; line-height: 1.65; }
+.notice-panel a { color: inherit; }
+.acknowledgement-card { display: block; margin-top: 14px; }
+.review-flag-panel { margin: 24px 0 0; }
+.review-flag-panel ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); font-size: 0.82rem; line-height: 1.65; }
+.review-flag-panel.is-clear { border-color: var(--portal-success); background: color-mix(in srgb, var(--portal-success) 8%, transparent); }
+
 .form-actions { display: flex; justify-content: space-between; gap: 14px; margin-top: 38px; padding-top: 22px; border-top: 1px solid var(--line); }
 .form-status { margin: 18px 0 0; color: var(--muted); line-height: 1.5; }
 .form-status[data-tone="error"], [data-auth-status][data-tone="error"] { color: var(--portal-danger); }
@@ -307,6 +337,7 @@
   .metric:nth-child(2) { border-right: 0; }
   .metric:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
   .package-grid { grid-template-columns: 1fr; }
+  .compact-choice-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 680px) {
@@ -321,6 +352,7 @@
   .stage-card { min-height: 300px; }
   .portal-callout { grid-template-columns: 1fr; }
   .choice-grid { grid-template-columns: 1fr; }
+  .compact-choice-grid { grid-template-columns: 1fr; }
   .form-field-wide { grid-column: auto; }
   .form-actions { flex-direction: column-reverse; }
   .form-actions .portal-button { width: 100%; }
