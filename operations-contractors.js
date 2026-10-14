@@ -57,6 +57,7 @@
     detail.innerHTML = `<div class="detail-header"><div><p class="portal-label">${escapeHtml(profile.reference_code)}</p><h2>${escapeHtml(profile.preferred_name || profile.legal_name)}</h2><p class="detail-copy">${escapeHtml(profile.primary_role)} · <a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a> · ${escapeHtml(profile.phone)}</p></div><span class="status-pill" data-status="${escapeHtml(profile.status)}">${escapeHtml(statusLabels[profile.status] || profile.status)}</span></div>
       ${flags}<div class="detail-grid">
       ${item("Legal name", profile.legal_name)}${item("Business", `${profile.business_name || "Personal name"} · ${format(profile.entity_type)}`)}${item("Home base", profile.home_base)}${item("Experience", format(profile.years_experience))}
+      ${item("Worked with PARTI", profile.worked_with_parti ? `Yes${profile.parti_capacity ? ` · ${profile.parti_capacity}` : ""}` : "No")}
       ${item("Website", profile.website)}${item("Portfolio", profile.portfolio_url)}${item("Markets", (profile.markets || []).join(" · "), true)}${item("Services", (profile.services || []).join(" · "), true)}
       ${item("Experience summary", profile.experience_summary, true)}${item("Selected work", profile.notable_work, true)}${item("Rate structures", (profile.rate_types || []).map(format).join(" · "))}${item("Rates", rateSummary || rates.notes)}
       ${item("Payment terms", format(rates.payment_terms))}${item("Rates negotiable", format(rates.rates_negotiable))}${item("Rate notes", rates.notes, true)}
@@ -78,7 +79,7 @@
   }
 
   function exportCsv() {
-    const headers = ["reference_code","submitted_at","status","classification_status","completeness_score","review_flags","legal_name","preferred_name","email","phone","home_base","business_name","entity_type","primary_role","services","years_experience","markets","rate_types","rates","availability","business_independence","insurance","safety_credentials","equipment","reference_contact","additional_notes","internal_notes"];
+    const headers = ["reference_code","submitted_at","status","classification_status","completeness_score","review_flags","legal_name","preferred_name","email","phone","home_base","business_name","entity_type","worked_with_parti","parti_capacity","primary_role","services","years_experience","markets","rate_types","rates","availability","business_independence","insurance","safety_credentials","equipment","reference_contact","additional_notes","internal_notes"];
     const quote = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
     const csv = [headers.join(","), ...filtered().map((row) => headers.map((key) => quote(Array.isArray(row[key]) ? row[key].join(" | ") : typeof row[key] === "object" && row[key] ? JSON.stringify(row[key]) : row[key])).join(","))].join("\n");
     const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); link.download = `parti-talent-network-${new Date().toISOString().slice(0, 10)}.csv`; link.click(); URL.revokeObjectURL(link.href);

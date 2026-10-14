@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Employee Candidates | PARTI Operations</title><meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014c">
+</head><body><div class="portal-shell" data-portal-shell data-theme="light">
+  <header class="portal-header"><p class="portal-header-note">PARTI operations</p><a class="brand-link" href="index.html"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a><button class="theme-toggle" data-theme-toggle type="button">Dark</button></header>
+  <main class="operations-main">
+    <section class="operations-topbar"><div class="operations-heading"><p class="portal-label">People + roles</p><h1>Employee candidates</h1></div><nav class="operations-nav" aria-label="Operations"><a href="operations-inquiries.html">Inquiries</a><a href="operations-contractors.html">Talent</a><a href="operations-employees.html" aria-current="page">Employees</a><a href="operations-workback.html">Workbacks</a><a href="operations-roles.html">Roles + packages</a></nav></section>
+    <div class="operations-auth"><span data-auth-status>Checking admin access...</span><button class="portal-button portal-button-small" data-operations-logout type="button">Log out</button></div>
+    <div data-operations-content hidden>
+      <details class="operations-panel link-builder" open><summary>Build a role-specific candidate link</summary><p class="detail-copy">Adam's required role briefing appears before the candidate questions. Only enter approved current terms. Do not present future benefits as guaranteed.</p>
+        <form id="employee-link-builder" class="form-grid">
+          <label class="form-field"><span>Role title *</span><input name="role" required maxlength="180"></label>
+          <label class="form-field"><span>Reports to *</span><input name="reports_to" required maxlength="180"></label>
+          <label class="form-field form-field-wide"><span>Essential responsibilities *</span><textarea name="responsibilities" required maxlength="3000"></textarea></label>
+          <label class="form-field"><span>Work location *</span><input name="work_location" required maxlength="500"></label>
+          <label class="form-field"><span>Expected schedule *</span><input name="schedule" required maxlength="500"></label>
+          <label class="form-field"><span>Approved compensation range *</span><input name="pay" required maxlength="500" placeholder="Example: $70,000 to $85,000 annual"></label>
+          <label class="form-field"><span>Benefits currently available *</span><textarea name="benefits" required maxlength="1800" placeholder="Use None currently offered if that is the approved answer."></textarea></label>
+          <div class="form-field form-field-wide"><span>Shareable link</span><output class="generated-link" id="employee-generated-link">Complete every approved role detail to generate the link.</output><div class="portal-actions"><button class="portal-button portal-button-primary" id="copy-employee-link" type="button" disabled>Copy link</button><a class="portal-button" id="preview-employee-link" href="employee-intake.html" target="_blank" rel="noopener">Preview blank intake</a></div><p class="form-status" id="link-builder-status" role="status"></p></div>
+        </form>
+      </details>
+      <section class="metric-grid" id="employee-metrics" aria-label="Candidate intake metrics"></section>
+      <section class="operations-toolbar"><input id="employee-search" type="search" placeholder="Search candidate, role, location, or reference..."><select id="employee-status-filter"><option value="all">All statuses</option><option value="new">New</option><option value="reviewing">Reviewing</option><option value="needs_info">Needs information</option><option value="terms_review">Terms review</option><option value="offer_ready">Offer ready</option><option value="hold">Hold</option><option value="closed">Closed</option></select><button class="portal-button portal-button-small" id="export-employees" type="button">Export CSV</button><button class="portal-button portal-button-small" id="refresh-employees" type="button">Refresh</button></section>
+      <section class="operations-grid"><div class="inquiry-list" id="employee-list"></div><article class="inquiry-detail" id="employee-detail"><div class="empty-state"><p>Select a candidate intake to review role fit, requests, and next steps.</p></div></article></section>
+    </div>
+  </main>
+</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script><script src="portal-shell.js?v=20260826a"></script><script src="operations-auth.js?v=20260826b"></script><script src="operations-employees.js?v=20261014a"></script></body></html>

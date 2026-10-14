@@ -238,6 +238,13 @@
 .review-flag-panel { margin: 24px 0 0; }
 .review-flag-panel ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); font-size: 0.82rem; line-height: 1.65; }
 .review-flag-panel.is-clear { border-color: var(--portal-success); background: color-mix(in srgb, var(--portal-success) 8%, transparent); }
+.role-briefing { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; border: 1px solid var(--line); background: var(--line); }
+.role-briefing-item { min-height: 110px; background: var(--bg); padding: 16px; }
+.role-briefing-item:nth-child(-n+2) { grid-column: 1 / -1; }
+.role-briefing-item span { display: block; margin-bottom: 12px; color: var(--muted); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.role-briefing-item p { margin: 0; white-space: pre-wrap; line-height: 1.55; }
+.role-briefing-item.is-missing { background: color-mix(in srgb, var(--portal-warning) 7%, var(--bg)); }
+.role-warning { border-color: var(--portal-warning); }
 
 .form-actions { display: flex; justify-content: space-between; gap: 14px; margin-top: 38px; padding-top: 22px; border-top: 1px solid var(--line); }
 .form-status { margin: 18px 0 0; color: var(--muted); line-height: 1.5; }
@@ -299,6 +306,18 @@
 .detail-item p { margin: 0; white-space: pre-wrap; line-height: 1.55; }
 .detail-controls { display: grid; gap: 14px; margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px; }
 .detail-controls textarea { width: 100%; min-height: 120px; border: 1px solid var(--line); background: transparent; padding: 12px; color: var(--fg); font: inherit; }
+.detail-controls input,
+.detail-controls select { width: 100%; min-height: 44px; border: 1px solid var(--line); background: transparent; padding: 10px 12px; color: var(--fg); font: inherit; }
+.detail-section-title { margin: 34px 0 12px; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.detail-copy { color: var(--muted); line-height: 1.55; }
+.detail-copy a { color: inherit; }
+.link-builder { padding: 0; }
+.link-builder > summary { padding: 18px 20px; cursor: pointer; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.link-builder > p,
+.link-builder > form { margin: 0 20px 20px; }
+.link-builder .form-field input,
+.link-builder .form-field textarea { border: 1px solid var(--line); padding: 11px; }
+.generated-link { display: block; min-height: 54px; overflow-wrap: anywhere; border: 1px solid var(--line); padding: 12px; color: var(--muted); font-size: 0.78rem; line-height: 1.5; }
 
 .planner-layout { display: grid; grid-template-columns: minmax(280px, 0.38fr) minmax(0, 1fr); gap: 20px; }
 .operations-panel { min-width: 0; border: 1px solid var(--line); padding: 20px; }
@@ -346,7 +365,7 @@
   .portal-header-note { font-size: 0.55rem; }
   .header-logo-image { min-width: 96px; width: 112px; }
   .portal-hero h1, .inquiry-intro h1, .operations-heading h1 { letter-spacing: -0.055em; }
-  .portal-stat-strip, .stage-grid, .fit-grid, .form-grid, .detail-grid, .next-grid { grid-template-columns: 1fr; }
+  .portal-stat-strip, .stage-grid, .fit-grid, .form-grid, .detail-grid, .next-grid, .role-briefing { grid-template-columns: 1fr; }
   .portal-stat, .stage-card, .fit-card, .next-card { border-right: 0; border-bottom: 1px solid var(--line); }
   .portal-stat:last-child, .stage-card:last-child, .fit-card:last-child, .next-card:last-child { border-bottom: 0; }
   .stage-card { min-height: 300px; }
@@ -361,6 +380,7 @@
   .metric { border-right: 0; border-bottom: 1px solid var(--line); }
   .metric:last-child { border-bottom: 0; }
   .detail-item-wide { grid-column: auto; }
+  .role-briefing-item:nth-child(-n+2) { grid-column: auto; }
   .timeline-row { grid-template-columns: 82px 14px 1fr; }
   .timeline-row > :last-child { grid-column: 3; }
   .operations-topbar { display: grid; }

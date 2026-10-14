@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careers at PARTI | Candidate Intake</title>
+  <meta name="description" content="Share your experience, priorities, and working preferences for an employee opportunity with PARTI.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014c">
+</head>
+<body>
+  <div class="portal-shell" data-portal-shell data-theme="light">
+    <header class="portal-header">
+      <p class="portal-header-note">Careers at PARTI</p>
+      <a class="brand-link" href="employee-intake.html" aria-label="PARTI careers intake"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a>
+      <button class="theme-toggle" data-theme-toggle type="button" aria-label="Toggle color theme">Dark</button>
+    </header>
+
+    <main class="portal-main inquiry-layout">
+      <aside class="inquiry-intro">
+        <p class="portal-eyebrow">Candidate conversation</p>
+        <h1>Do your best work.</h1>
+        <p class="portal-lead" style="margin-top:24px">Help build what is next. This intake gives PARTI and you a clear view of the role, expectations, priorities, and possible terms before anyone prepares an offer.</p>
+        <div class="intake-note"><strong>Important</strong><p>This is not an offer, employment agreement, benefit guarantee, or waiver. Do not enter a Social Security number, bank information, medical information, identity document, or criminal history here.</p></div>
+        <div class="inquiry-progress" aria-label="Candidate intake progress">
+          <div class="inquiry-progress-item is-active" data-progress="0"><span>1</span>Role + contact</div>
+          <div class="inquiry-progress-item" data-progress="1"><span>2</span>Contribution</div>
+          <div class="inquiry-progress-item" data-progress="2"><span>3</span>Priorities</div>
+          <div class="inquiry-progress-item" data-progress="3"><span>4</span>Working terms</div>
+          <div class="inquiry-progress-item" data-progress="4"><span>5</span>Decision</div>
+          <div class="inquiry-progress-item" data-progress="5"><span>6</span>Review</div>
+        </div>
+      </aside>
+
+      <form class="inquiry-form" id="employee-intake-form" novalidate>
+        <input class="honeypot" type="text" name="office_fax" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <section class="form-step is-active" data-step="0">
+          <div class="form-step-head"><p class="portal-label">01 / Role + contact</p><h2>Start with the same picture.</h2><p>Review the role details PARTI shared before answering. If anything is missing or inaccurate, note it below.</p></div>
+          <section class="role-briefing" id="role-briefing" aria-label="Role briefing"></section>
+          <div class="legal-callout role-warning" id="role-warning" hidden><strong>Role details need attention</strong><p>PARTI has not supplied every required role detail in this link. You can save a draft, but ask PARTI for the missing approved information before relying on the role or compensation details.</p></div>
+          <div class="form-grid form-section-gap">
+            <label class="form-field"><span>Legal name *</span><input name="legal_name" autocomplete="name" required maxlength="140"><small class="field-error"></small></label>
+            <label class="form-field"><span>Preferred name</span><input name="preferred_name" maxlength="100"><small class="field-error"></small></label>
+            <label class="form-field"><span>Personal email *</span><input name="email" type="email" autocomplete="email" required maxlength="180"><small class="field-error"></small></label>
+            <label class="form-field"><span>Phone *</span><input name="phone" type="tel" autocomplete="tel" required maxlength="40"><small class="field-error"></small></label>
+            <label class="form-field"><span>City and location *</span><input name="location" required maxlength="180"><small class="field-error"></small></label>
+            <label class="form-field"><span>Portfolio or LinkedIn</span><input name="profile_url" type="url" inputmode="url" placeholder="https://" maxlength="500"><small class="field-error"></small></label>
+            <label class="form-field"><span>Role you are discussing *</span><input name="role_title" required maxlength="180"><small class="field-error"></small></label>
+            <label class="form-field"><span>Opportunity type *</span><select name="employment_type" required><option value="">Select one</option><option value="full_time">Full-time</option><option value="part_time">Part-time</option><option value="either">Either</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Have you worked with PARTI before? *</span><select name="worked_with_parti" required><option value="">Select one</option><option value="yes">Yes</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>If yes, in what capacity?</span><input name="parti_capacity" maxlength="500"><small class="field-error"></small></label>
+            <label class="form-field"><span>Realistic start date *</span><input name="start_date" type="date" required><small class="field-error"></small></label>
+            <label class="form-field"><span>Role briefing questions or corrections</span><textarea name="role_questions" maxlength="2000" placeholder="Anything unclear about the responsibilities, reporting line, schedule, pay range, or current benefits?"></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><span></span><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="1">
+          <div class="form-step-head"><p class="portal-label">02 / Contribution + growth</p><h2>What can you own?</h2><p>Give us a practical view of your first 90 days, your strongest work, and the support that helps you perform.</p></div>
+          <div class="form-grid">
+            <label class="form-field form-field-wide"><span>Responsibilities you can confidently own from day one *</span><textarea name="day_one_ownership" required minlength="40" maxlength="4000"></textarea><small class="field-help">Minimum 40 characters.</small><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Support, onboarding, or development that would help you succeed *</span><textarea name="support_needed" required minlength="30" maxlength="3000"></textarea><small class="field-help">Minimum 30 characters.</small><small class="field-error"></small></label>
+            <label class="form-field"><span>Areas you want to grow</span><textarea name="growth_areas" maxlength="2500"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>What should success look like after 90 days? *</span><textarea name="success_90_days" required minlength="30" maxlength="3000"></textarea><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Representative work *</span><textarea name="representative_work" required minlength="30" maxlength="3500" placeholder="Projects, links, responsibilities, scale, and outcomes."></textarea><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset form-section-gap"><legend class="form-legend">Environments where you do your best work *</legend><div class="choice-grid" data-checkbox-group="work_environments">
+            <label class="choice-card"><input type="checkbox" name="work_environments" value="Clear priorities"><span><strong>Clear priorities</strong></span></label><label class="choice-card"><input type="checkbox" name="work_environments" value="High autonomy"><span><strong>High autonomy</strong></span></label><label class="choice-card"><input type="checkbox" name="work_environments" value="Close collaboration"><span><strong>Close collaboration</strong></span></label><label class="choice-card"><input type="checkbox" name="work_environments" value="Fast cadence"><span><strong>Fast cadence</strong></span></label><label class="choice-card"><input type="checkbox" name="work_environments" value="Structured process"><span><strong>Structured process</strong></span></label><label class="choice-card"><input type="checkbox" name="work_environments" value="Client-facing"><span><strong>Client-facing</strong></span></label><label class="choice-card"><input type="checkbox" name="work_environments" value="Field and onsite"><span><strong>Field and onsite</strong></span></label><label class="choice-card"><input type="checkbox" name="work_environments" value="Other"><span><strong>Other</strong></span></label>
+          </div><small class="field-error" data-group-error="work_environments"></small></fieldset>
+          <div class="form-grid form-section-gap">
+            <label class="form-field"><span>Management and feedback practices that help you *</span><textarea name="feedback_preferences" required minlength="20" maxlength="2500"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Responsibility you hope to hold in 2 to 3 years</span><textarea name="future_responsibility" maxlength="2500"></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="2">
+          <div class="form-step-head"><p class="portal-label">03 / Compensation + priorities</p><h2>What matters most?</h2><p>Share your desired structure and current priorities. PARTI will review requests internally before any formal terms are prepared.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Compensation preference *</span><select name="compensation_type" required><option value="">Select one</option><option value="salary">Annual salary</option><option value="hourly">Hourly</option><option value="discuss_range">Discuss after reviewing the approved range</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Desired base compensation</span><input name="desired_compensation" maxlength="180" placeholder="Example: $78,000 or $38/hour"><small class="field-help">Do not provide salary history.</small><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset form-section-gap"><legend class="form-legend">Top priorities, select up to 5 *</legend><div class="choice-grid compact-choice-grid" data-checkbox-group="priorities" data-max="5">
+            <label class="choice-card"><input type="checkbox" name="priorities" value="Base compensation"><span><strong>Base compensation</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Bonus"><span><strong>Bonus</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Commission"><span><strong>Commission</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Health coverage"><span><strong>Health coverage</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Dental and vision"><span><strong>Dental + vision</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Retirement"><span><strong>Retirement</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Paid time off"><span><strong>Paid time off</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Paid holidays"><span><strong>Paid holidays</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Flexible schedule"><span><strong>Flexible schedule</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Remote or hybrid"><span><strong>Remote or hybrid</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Travel"><span><strong>Travel</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Professional development"><span><strong>Development</strong></span></label><label class="choice-card"><input type="checkbox" name="priorities" value="Long-term incentive"><span><strong>Long-term incentive</strong></span></label>
+          </div><small class="field-error" data-group-error="priorities"></small></fieldset>
+          <div class="form-grid form-section-gap">
+            <label class="form-field"><span>Essential now *</span><textarea name="essential_now" required minlength="10" maxlength="1800"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Negotiable now</span><textarea name="negotiable_now" maxlength="1800"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Could be reviewed later</span><textarea name="review_later" maxlength="1800"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Structures you prefer or dislike</span><textarea name="structure_preferences" maxlength="2200"></textarea><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset form-section-gap"><legend class="form-legend">Incentives that feel meaningful</legend><div class="choice-grid compact-choice-grid">
+            <label class="choice-card"><input type="checkbox" name="incentive_targets" value="New client"><span><strong>New client</strong></span></label><label class="choice-card"><input type="checkbox" name="incentive_targets" value="Revenue"><span><strong>Revenue</strong></span></label><label class="choice-card"><input type="checkbox" name="incentive_targets" value="Profitability"><span><strong>Profitability</strong></span></label><label class="choice-card"><input type="checkbox" name="incentive_targets" value="Repeat business"><span><strong>Repeat business</strong></span></label><label class="choice-card"><input type="checkbox" name="incentive_targets" value="Account growth"><span><strong>Account growth</strong></span></label><label class="choice-card"><input type="checkbox" name="incentive_targets" value="Team performance"><span><strong>Team performance</strong></span></label><label class="choice-card"><input type="checkbox" name="incentive_targets" value="Company performance"><span><strong>Company performance</strong></span></label><label class="choice-card"><input type="checkbox" name="incentive_targets" value="Other"><span><strong>Other</strong></span></label>
+          </div></fieldset>
+          <label class="form-field form-section-gap"><span>Long-term incentive goals</span><textarea name="long_term_goals" maxlength="2200"></textarea><small class="field-error"></small></label>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="3">
+          <div class="form-step-head"><p class="portal-label">04 / Working conditions</p><h2>Make the work workable.</h2><p>Describe the conditions, travel, timing, and equipment that affect your ability to perform the role.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Preferred work arrangement *</span><select name="work_arrangement" required><option value="">Select one</option><option value="studio_office">Studio or office</option><option value="hybrid">Hybrid</option><option value="remote">Remote</option><option value="role_dependent">Role-dependent</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Travel comfort *</span><select name="travel_comfort" required><option value="">Select one</option><option value="none">No travel</option><option value="occasional">Occasional</option><option value="regular">Regular</option><option value="extensive">Extensive</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Nights and weekends *</span><select name="nights_weekends" required><option value="">Select one</option><option value="yes">Comfortable when the role requires it</option><option value="limited">Limited availability</option><option value="no">Not available</option><option value="discuss">Discuss based on schedule</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Schedule constraints</span><textarea name="schedule_constraints" maxlength="2200"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Equipment or workspace PARTI should provide</span><textarea name="equipment_needed" maxlength="2200"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Current professional commitments</span><textarea name="current_commitments" maxlength="2200" placeholder="Only commitments that could affect this role."></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Agreement that may affect this role? *</span><select name="restrictive_agreement" required><option value="">Select one</option><option value="no">No</option><option value="yes">Yes</option><option value="unsure">Unsure</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>High-level description only</span><textarea name="agreement_summary" maxlength="1800" placeholder="Do not upload or paste confidential agreements."></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-step="4">
+          <div class="form-step-head"><p class="portal-label">05 / Timing + next steps</p><h2>What gets to a clear decision?</h2><p>Help PARTI understand your decision criteria and how to handle a package that cannot meet every request.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>What would make you say yes? *</span><textarea name="say_yes" required minlength="20" maxlength="2800"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>What would make you decline? *</span><textarea name="decline_reasons" required minlength="20" maxlength="2800"></textarea><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Questions you need answered before accepting</span><textarea name="acceptance_questions" maxlength="2800"></textarea><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset form-section-gap"><legend class="form-legend">If PARTI cannot meet every term, what should we consider? *</legend><div class="choice-grid" data-checkbox-group="alternatives">
+            <label class="choice-card"><input type="checkbox" name="alternatives" value="Revised package"><span><strong>Revised package</strong></span></label><label class="choice-card"><input type="checkbox" name="alternatives" value="Different role or scope"><span><strong>Different role or scope</strong></span></label><label class="choice-card"><input type="checkbox" name="alternatives" value="Future review date"><span><strong>Future review date</strong></span></label><label class="choice-card"><input type="checkbox" name="alternatives" value="Revisit with a funded opening"><span><strong>Funded opening later</strong></span></label><label class="choice-card"><input type="checkbox" name="alternatives" value="No alternative"><span><strong>No alternative</strong></span></label>
+          </div><small class="field-error" data-group-error="alternatives"></small></fieldset>
+          <div class="form-grid form-section-gap">
+            <label class="form-field"><span>Decision deadline</span><input name="decision_deadline" type="date"><small class="field-error"></small></label>
+            <label class="form-field"><span>Sensitive item better discussed live? *</span><select name="sensitive_live" required><option value="">Select one</option><option value="no">No</option><option value="yes">Yes</option></select><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Anything else PARTI should know before proposing terms?</span><textarea name="additional_context" maxlength="3000"></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-primary" type="button" data-next>Review intake</button></div>
+        </section>
+
+        <section class="form-step" data-step="5">
+          <div class="form-step-head"><p class="portal-label">06 / Review</p><h2>One shared record.</h2><p>Review your answers, then confirm the scope of this intake before sending it to PARTI.</p></div>
+          <div class="detail-grid" id="employee-review"></div>
+          <details class="notice-panel" open><summary>Candidate privacy notice</summary><div><p>PARTI collects the contact, experience, compensation preference, working condition, scheduling, and decision information entered here to evaluate a possible employment relationship, communicate with you, plan a role, prevent misuse, and maintain business records.</p><p>Do not submit sensitive identity, medical, demographic, banking, tax, or criminal-history information. Candidate records that do not lead to employment are intended to be retained for up to 24 months unless a longer period is required by law, security, or a dispute. Contact <a href="mailto:hello@letsparti.co">hello@letsparti.co</a> with a privacy request.</p></div></details>
+          <details class="notice-panel"><summary>No offer or guarantee</summary><div><p>This intake is for discussion and internal review only. It is not an offer, employment agreement, guarantee of any benefit or incentive, promise of work, or waiver of any right. Only a later written offer approved by PARTI can state proposed employment terms.</p></div></details>
+          <label class="choice-card acknowledgement-card"><input type="checkbox" name="accuracy_consent" required><span><strong>I confirm that my responses are accurate.</strong><small>I understand PARTI may contact me to discuss this opportunity.</small></span></label>
+          <label class="choice-card acknowledgement-card"><input type="checkbox" name="notice_consent" required><span><strong>I reviewed the notices above.</strong><small>I understand this intake is not an offer, agreement, benefit guarantee, or waiver.</small></span></label>
+          <small class="field-error" data-consent-error></small>
+          <p class="form-status" id="employee-status" role="status" aria-live="polite"></p>
+          <div class="form-actions"><button class="portal-button" type="button" data-back>Back</button><button class="portal-button portal-button-accent" type="submit">Send intake to PARTI</button></div>
+        </section>
+      </form>
+    </main>
+    <footer class="portal-footer"><span>PARTI candidate intake</span><span>Direct link only · no sensitive identity data</span></footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script>
+  <script src="portal-shell.js?v=20260826a"></script><script src="employee-intake.js?v=20261014a"></script>
+</body>
+</html>

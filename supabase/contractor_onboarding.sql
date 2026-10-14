@@ -13,6 +13,8 @@ create table if not exists public.contractor_profiles (
   website text check (website is null or char_length(website) <= 500),
   portfolio_url text check (portfolio_url is null or char_length(portfolio_url) <= 500),
   social_url text check (social_url is null or char_length(social_url) <= 500),
+  worked_with_parti boolean not null default false,
+  parti_capacity text check (parti_capacity is null or char_length(parti_capacity) <= 500),
   primary_role text not null check (char_length(primary_role) between 1 and 160),
   services text[] not null default '{}',
   years_experience text not null,
@@ -37,6 +39,10 @@ create table if not exists public.contractor_profiles (
   submitted_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
 );
+
+alter table public.contractor_profiles
+  add column if not exists worked_with_parti boolean not null default false,
+  add column if not exists parti_capacity text check (parti_capacity is null or char_length(parti_capacity) <= 500);
 
 create index if not exists contractor_profiles_submitted_at_idx on public.contractor_profiles (submitted_at desc);
 create index if not exists contractor_profiles_status_idx on public.contractor_profiles (status);

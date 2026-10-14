@@ -32,6 +32,7 @@
       email: text(raw, "email").toLowerCase(), phone: text(raw, "phone"), home_base: text(raw, "home_base"),
       business_name: nullable(text(raw, "business_name")), entity_type: text(raw, "entity_type"),
       website: nullable(text(raw, "website")), portfolio_url: nullable(text(raw, "portfolio_url")), social_url: nullable(text(raw, "social_url")),
+      worked_with_parti: text(raw, "worked_with_parti") === "yes", parti_capacity: nullable(text(raw, "parti_capacity")),
       primary_role: text(raw, "primary_role"), services: raw.getAll("services").map(String),
       years_experience: text(raw, "years_experience"), experience_summary: text(raw, "experience_summary"),
       notable_work: nullable(text(raw, "notable_work")), markets: raw.getAll("markets").map(String),
@@ -109,6 +110,12 @@
       if (data.rate_types.every((type) => ["weekly", "project"].includes(type)) && !data.rates.notes) { fieldError(notes, "Describe your weekly or project pricing."); valid = false; }
     }
 
+    if (index === 0) {
+      const workedWithParti = form.elements.namedItem("worked_with_parti");
+      const capacity = form.elements.namedItem("parti_capacity");
+      if (workedWithParti.value === "yes" && !capacity.value.trim()) { fieldError(capacity, "Tell us how you worked with PARTI."); valid = false; }
+    }
+
     if (index === 4) {
       const data = dataFromForm();
       const referenceName = form.elements.namedItem("reference_name");
@@ -127,7 +134,8 @@
     if (!data) return;
     const flattened = { ...data, ...data.rates, ...data.availability, ...data.business_independence, ...data.insurance,
       reference_name: data.reference_contact?.name, reference_contact: data.reference_contact?.contact,
-      reference_context: data.reference_contact?.context, rate_notes: data.rates?.notes };
+      reference_context: data.reference_contact?.context, rate_notes: data.rates?.notes,
+      worked_with_parti: data.worked_with_parti ? "yes" : "no" };
     ["services", "markets", "rate_types", "safety_credentials"].forEach((name) => {
       const selected = Array.isArray(data[name]) ? data[name] : [];
       form.querySelectorAll(`input[name="${name}"]`).forEach((field) => { field.checked = selected.includes(field.value); });
@@ -148,6 +156,7 @@
     const entries = [
       ["Name", data.preferred_name ? `${data.legal_name} · ${data.preferred_name}` : data.legal_name], ["Email", data.email],
       ["Phone", data.phone], ["Home base", data.home_base], ["Business", `${data.business_name || "Personal name"} · ${display(data.entity_type)}`],
+      ["Prior PARTI work", data.worked_with_parti ? data.parti_capacity : "No"],
       ["Primary role", data.primary_role], ["Experience", display(data.years_experience)], ["Markets", data.markets.join(" · ")],
       ["Services", data.services.join(" · "), true], ["Experience summary", data.experience_summary, true], ["Selected work", data.notable_work, true],
       ["Rate structures", data.rate_types.map(display).join(" · ")], ["Rates", rates || data.rates.notes],

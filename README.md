@@ -26,6 +26,9 @@ New portfolio-style website build for PARTI, based on the mockup deck and expand
 - `contractor-onboarding.html`: direct-link independent talent intake
 - `operations-contractors.html`: authenticated talent review desk
 - `CONTRACTOR_ONBOARDING.md`: deployment, privacy, classification, and onboarding notes
+- `employee-intake.html`: direct-link employee candidate intake with a role briefing
+- `operations-employees.html`: authenticated candidate review and role-link builder
+- `WORKFORCE_INTAKE.md`: Adam guideline mapping, intentional exceptions, and deployment notes
 
 ## Publish
 
