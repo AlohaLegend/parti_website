@@ -10,6 +10,10 @@
   const copyLink = document.querySelector("#copy-employee-link");
   const previewLink = document.querySelector("#preview-employee-link");
   const linkStatus = document.querySelector("#link-builder-status");
+  const payBasis = linkBuilder.elements.namedItem("pay_basis");
+  const payInput = linkBuilder.elements.namedItem("pay");
+  const payLabel = document.querySelector("#employee-pay-label");
+  const payHelp = document.querySelector("#employee-pay-help");
   let client = window.PARTI_SUPABASE?.client;
   let candidates = [];
   let selectedId = null;
@@ -63,7 +67,7 @@
     const roleNotice = missing.length ? `<div class="review-flag-panel"><p class="portal-label">Role details incomplete</p><ul>${missing.map((entry) => `<li>${escapeHtml(entry)}</li>`).join("")}</ul></div>` : '<div class="review-flag-panel is-clear"><p>The candidate received the complete role details.</p></div>';
     detail.innerHTML = `<div class="detail-header"><div><p class="portal-label">${escapeHtml(candidate.reference_code)}</p><h2>${escapeHtml(candidate.preferred_name || candidate.legal_name)}</h2><p class="detail-copy">${escapeHtml(candidate.role_title)} · <a href="mailto:${escapeHtml(candidate.email)}">${escapeHtml(candidate.email)}</a> · ${escapeHtml(candidate.phone)}</p></div><span class="status-pill" data-status="${escapeHtml(candidate.status)}">${escapeHtml(statusLabels[candidate.status] || candidate.status)}</span></div>
       ${roleNotice}<h3 class="detail-section-title">Role details shown to candidate</h3><div class="detail-grid">
-      ${item("Role", role.title || candidate.role_title)}${item("Reports to", role.reports_to)}${item("Work location", role.location)}${item("Expected schedule", role.schedule)}${item("Approved compensation range", role.pay_range)}${item("Benefits currently available", role.benefits)}${item("Essential responsibilities", role.responsibilities, true)}${item("Candidate questions or corrections", candidate.role_questions, true)}</div>
+      ${item("Role", role.title || candidate.role_title)}${item("Reports to", role.reports_to)}${item("Work location", role.location)}${item("Expected schedule", role.schedule)}${item("Approved pay range", role.pay_range)}${item("Benefits currently available", role.benefits)}${item("Essential responsibilities", role.responsibilities, true)}${item("Candidate questions or corrections", candidate.role_questions, true)}</div>
       <h3 class="detail-section-title">Contact + opportunity</h3><div class="detail-grid">${item("Legal name", candidate.legal_name)}${item("Location", candidate.location)}${item("Profile link", candidate.profile_url)}${item("Opportunity type", format(candidate.employment_type))}${item("Worked with PARTI", candidate.worked_with_parti ? `Yes${candidate.parti_capacity ? ` · ${candidate.parti_capacity}` : ""}` : "No")}${item("Realistic start date", dateOnly(candidate.start_date))}</div>
       <h3 class="detail-section-title">Contribution + growth</h3><div class="detail-grid">${item("Day-one ownership", contribution.day_one_ownership, true)}${item("Support needed", contribution.support_needed, true)}${item("Growth areas", contribution.growth_areas)}${item("90-day success", contribution.success_90_days)}${item("Representative work", contribution.representative_work, true)}${item("Preferred environments", joined(contribution.work_environments), true)}${item("Feedback preferences", contribution.feedback_preferences)}${item("2 to 3 year responsibility", contribution.future_responsibility)}</div>
       <h3 class="detail-section-title">Compensation + priorities</h3><div class="detail-grid">${item("Compensation preference", `${format(compensation.type)}${compensation.desired ? ` · ${compensation.desired}` : ""}`)}${item("Top priorities", joined(compensation.priorities), true)}${item("Essential now", compensation.essential_now, true)}${item("Negotiable", compensation.negotiable_now)}${item("Review later", compensation.review_later)}${item("Preferred or disliked structures", compensation.structure_preferences, true)}${item("Meaningful incentive targets", joined(compensation.incentive_targets), true)}${item("Long-term incentive goals", compensation.long_term_goals, true)}</div>
@@ -96,11 +100,21 @@
   function updateGeneratedLink() {
     const raw = new FormData(linkBuilder);
     const values = Object.fromEntries([...raw.entries()].map(([key, value]) => [key, String(value).trim()]));
+    const basis = values.pay_basis || "hourly";
+    const payValue = values.pay && !/\b(hour|hourly|annual|annually|year|yearly|salary)\b/i.test(values.pay) ? `${values.pay} ${basis === "annual" ? "annual" : "per hour"}` : values.pay;
     const complete = [...linkBuilder.querySelectorAll("[required]")].every((field) => field.value.trim());
     if (!complete) { currentGeneratedLink = ""; generatedLink.textContent = "Complete every approved role detail to generate the link."; copyLink.disabled = true; previewLink.href = "employee-intake.html"; return; }
     const url = new URL("employee-intake.html", location.href);
-    Object.entries(values).forEach(([key, value]) => url.searchParams.set(key, value));
+    Object.entries(values).forEach(([key, value]) => { if (key !== "pay_basis") url.searchParams.set(key, key === "pay" ? payValue : value); });
     currentGeneratedLink = url.href; generatedLink.textContent = currentGeneratedLink; copyLink.disabled = false; previewLink.href = currentGeneratedLink;
+  }
+
+  function updatePayFormat() {
+    const annual = payBasis.value === "annual";
+    payLabel.textContent = annual ? "Approved annual range *" : "Approved hourly range *";
+    payInput.placeholder = annual ? "Example: $75,000 to $90,000" : "Example: $35 to $45";
+    payHelp.textContent = annual ? "Shown to the candidate as “annual.”" : "Shown to the candidate as “per hour.”";
+    updateGeneratedLink();
   }
 
   async function copyGeneratedLink() {
@@ -117,7 +131,7 @@
   }
 
   function renderAll() { renderMetrics(); renderList(); renderDetail(); }
-  linkBuilder.addEventListener("input", updateGeneratedLink); copyLink.addEventListener("click", copyGeneratedLink); updateGeneratedLink();
+  linkBuilder.addEventListener("input", updateGeneratedLink); payBasis.addEventListener("change", updatePayFormat); copyLink.addEventListener("click", copyGeneratedLink); updatePayFormat();
   search.addEventListener("input", renderList); filter.addEventListener("change", renderList); document.querySelector("#refresh-employees").addEventListener("click", loadCandidates); document.querySelector("#export-employees").addEventListener("click", exportCsv);
   window.addEventListener("parti:operations-ready", (event) => { client = event.detail.client; loadCandidates(); });
 })();

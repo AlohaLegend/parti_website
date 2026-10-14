@@ -34,7 +34,7 @@
   };
   const roleFields = [
     ["Role", "title"], ["Essential responsibilities", "responsibilities"], ["Reports to", "reports_to"],
-    ["Work location", "location"], ["Expected schedule", "schedule"], ["Approved compensation range", "pay_range"],
+    ["Work location", "location"], ["Expected schedule", "schedule"], ["Approved pay range", "pay_range"],
     ["Benefits currently available", "benefits"]
   ];
   const missingRoleFields = roleFields.filter(([, key]) => !roleSnapshot[key]).map(([label]) => label);

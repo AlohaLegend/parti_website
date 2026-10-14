@@ -18,7 +18,8 @@
           <label class="form-field form-field-wide"><span>Essential responsibilities *</span><textarea name="responsibilities" required maxlength="3000"></textarea></label>
           <label class="form-field"><span>Work location *</span><input name="work_location" required maxlength="500"></label>
           <label class="form-field"><span>Expected schedule *</span><input name="schedule" required maxlength="500"></label>
-          <label class="form-field"><span>Approved compensation range *</span><input name="pay" required maxlength="500" placeholder="Example: $70,000 to $85,000 annual"></label>
+          <label class="form-field"><span>Compensation format *</span><select name="pay_basis" required><option value="hourly" selected>Hourly</option><option value="annual">Annual</option></select></label>
+          <label class="form-field"><span id="employee-pay-label">Approved hourly range *</span><input name="pay" required maxlength="500" placeholder="Example: $35 to $45" aria-describedby="employee-pay-help"><small class="field-help" id="employee-pay-help">Shown to the candidate as “per hour.”</small></label>
           <label class="form-field"><span>Benefits currently available *</span><textarea name="benefits" required maxlength="1800" placeholder="Use None currently offered if that is the approved answer."></textarea></label>
           <div class="form-field form-field-wide"><span>Shareable link</span><output class="generated-link" id="employee-generated-link">Complete every approved role detail to generate the link.</output><div class="portal-actions"><button class="portal-button portal-button-primary" id="copy-employee-link" type="button" disabled>Copy link</button><a class="portal-button" id="preview-employee-link" href="employee-intake.html" target="_blank" rel="noopener">Preview blank intake</a></div><p class="form-status" id="link-builder-status" role="status"></p></div>
         </form>
@@ -28,4 +29,4 @@
       <section class="operations-grid"><div class="inquiry-list" id="employee-list"></div><article class="inquiry-detail" id="employee-detail"><div class="empty-state"><p>Select a candidate intake to review role fit, requests, and next steps.</p></div></article></section>
     </div>
   </main>
-</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script><script src="portal-shell.js?v=20260826a"></script><script src="operations-auth.js?v=20260826b"></script><script src="operations-employees.js?v=20261014c"></script></body></html>
+</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script><script src="portal-shell.js?v=20260826a"></script><script src="operations-auth.js?v=20260826b"></script><script src="operations-employees.js?v=20261014d"></script></body></html>
