@@ -131,7 +131,9 @@
   }
 
   function renderAll() { renderMetrics(); renderList(); renderDetail(); }
-  linkBuilder.addEventListener("input", updateGeneratedLink); payBasis.addEventListener("change", updatePayFormat); copyLink.addEventListener("click", copyGeneratedLink); updatePayFormat();
+  linkBuilder.addEventListener("input", updateGeneratedLink);
+  payBasis.addEventListener("change", () => { payInput.value = ""; updatePayFormat(); payInput.focus(); });
+  copyLink.addEventListener("click", copyGeneratedLink); updatePayFormat();
   search.addEventListener("input", renderList); filter.addEventListener("change", renderList); document.querySelector("#refresh-employees").addEventListener("click", loadCandidates); document.querySelector("#export-employees").addEventListener("click", exportCsv);
   window.addEventListener("parti:operations-ready", (event) => { client = event.detail.client; loadCandidates(); });
 })();
