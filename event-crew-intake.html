@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Crew Intake | PARTI</title>
+  <meta name="description" content="Join PARTI's event crew network for shift-based production and guest experience work.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014e">
+</head>
+<body>
+  <div class="portal-shell" data-portal-shell data-theme="light">
+    <header class="portal-header">
+      <p class="portal-header-note">Work with PARTI</p>
+      <a class="brand-link" href="employee-intake.html" aria-label="PARTI people intake"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a>
+      <button class="theme-toggle" data-theme-toggle type="button" aria-label="Toggle color theme">Dark</button>
+    </header>
+
+    <main class="portal-main inquiry-layout">
+      <aside class="inquiry-intro">
+        <p class="portal-eyebrow">Event crew</p>
+        <h1>Make the moment happen.</h1>
+        <p class="portal-lead" style="margin-top:24px">A shorter intake for shift-based event work. Tell us what you can do, when you are available, and the rate that works for you.</p>
+        <div class="intake-note"><strong>Important</strong><p>This is not a job offer, shift assignment, employment agreement, benefit guarantee, or waiver. PARTI confirms the role, rate, location, schedule, payroll setup, and any eligibility details before a shift. Do not enter medical, tax, banking, identity, or criminal-history information here.</p></div>
+        <div class="inquiry-progress" aria-label="Event crew intake progress">
+          <div class="inquiry-progress-item is-active" data-crew-progress="0"><span>1</span>Contact + roles</div>
+          <div class="inquiry-progress-item" data-crew-progress="1"><span>2</span>Experience + availability</div>
+          <div class="inquiry-progress-item" data-crew-progress="2"><span>3</span>Rate + readiness</div>
+          <div class="inquiry-progress-item" data-crew-progress="3"><span>4</span>Review</div>
+        </div>
+      </aside>
+
+      <form class="inquiry-form" id="event-crew-form" novalidate>
+        <input class="honeypot" type="text" name="office_fax" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <section class="form-step is-active" data-crew-step="0">
+          <div class="form-step-head"><p class="portal-label">01 / Contact + crew roles</p><h2>What should we call you for?</h2><p>Choose every crew role you can confidently perform. PARTI will confirm the exact assignment before each shift.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Legal name *</span><input name="legal_name" autocomplete="name" required maxlength="140"><small class="field-error"></small></label>
+            <label class="form-field"><span>Preferred name</span><input name="preferred_name" maxlength="100"><small class="field-error"></small></label>
+            <label class="form-field"><span>Personal email *</span><input name="email" type="email" autocomplete="email" required maxlength="180"><small class="field-error"></small></label>
+            <label class="form-field"><span>Phone *</span><input name="phone" type="tel" autocomplete="tel" required maxlength="40"><small class="field-error"></small></label>
+            <label class="form-field"><span>Home base *</span><input name="location" required maxlength="180" placeholder="City, state"><small class="field-error"></small></label>
+            <label class="form-field"><span>Portfolio, LinkedIn, or work examples</span><input name="profile_url" type="url" inputmode="url" placeholder="https://" maxlength="500"><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset form-section-gap"><legend class="form-legend">Crew roles you can perform *</legend><div class="choice-grid" data-checkbox-group="crew_roles">
+            <label class="choice-card"><input type="checkbox" name="crew_roles" value="Production assistant"><span><strong>Production assistant</strong><small>Run-of-show support, errands, checklists, and coordination.</small></span></label>
+            <label class="choice-card"><input type="checkbox" name="crew_roles" value="Load-in and strike"><span><strong>Load-in + strike</strong><small>Unloading, setup, breakdown, packing, and site reset.</small></span></label>
+            <label class="choice-card"><input type="checkbox" name="crew_roles" value="Guest experience"><span><strong>Guest experience</strong><small>Check-in, wayfinding, brand support, and attendee flow.</small></span></label>
+            <label class="choice-card"><input type="checkbox" name="crew_roles" value="Runner and driver"><span><strong>Runner + driver</strong><small>Local pickups, deliveries, supply runs, and team support.</small></span></label>
+            <label class="choice-card"><input type="checkbox" name="crew_roles" value="Fabrication and install support"><span><strong>Fabrication + install</strong><small>Shop, scenic, install, or hands-on build support.</small></span></label>
+            <label class="choice-card"><input type="checkbox" name="crew_roles" value="Photo and video support"><span><strong>Photo + video support</strong><small>Capture support, media handling, or content assistance.</small></span></label>
+            <label class="choice-card"><input type="checkbox" name="crew_roles" value="Other"><span><strong>Other</strong><small>Tell us about another event-ready skill below.</small></span></label>
+          </div><small class="field-error" data-group-error="crew_roles"></small></fieldset>
+          <div class="form-grid form-section-gap">
+            <label class="form-field"><span>Other crew skill</span><input name="other_role" maxlength="300"><small class="field-error"></small></label>
+            <label class="form-field"><span>Have you worked with PARTI before? *</span><select name="worked_with_parti" required><option value="">Select one</option><option value="yes">Yes</option><option value="no">No</option></select><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>If yes, on which project or in what capacity?</span><input name="parti_capacity" maxlength="500"><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><a class="portal-button" href="employee-intake.html">Change path</a><button class="portal-button portal-button-primary" type="button" data-crew-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-crew-step="1">
+          <div class="form-step-head"><p class="portal-label">02 / Experience + availability</p><h2>When can we count on you?</h2><p>Keep it practical. We need enough context to match you to the right shifts without making you complete a full employment questionnaire.</p></div>
+          <div class="form-grid">
+            <label class="form-field form-field-wide"><span>Relevant event, production, hospitality, retail, or build experience *</span><textarea name="experience_summary" required minlength="40" maxlength="3000" placeholder="Tell us what you have done, your responsibilities, and the kinds of environments you know."></textarea><small class="field-help">Minimum 40 characters.</small><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Recent project or example</span><textarea name="recent_project" maxlength="2000" placeholder="A brief example of a shift, event, build, or guest experience you supported."></textarea><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>General availability for the next 8 weeks *</span><textarea name="availability" required minlength="20" maxlength="2000" placeholder="Typical weekdays, weekends, daytime, evenings, blackout dates, or known travel."></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Earliest available date *</span><input name="start_date" type="date" required><small class="field-error"></small></label>
+            <label class="form-field"><span>Minimum notice you usually need *</span><select name="lead_time" required><option value="">Select one</option><option value="same_day">Same day when available</option><option value="one_day">At least 1 day</option><option value="three_days">At least 3 days</option><option value="one_week">At least 1 week</option><option value="schedule_dependent">Depends on the schedule</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Nights and weekends *</span><select name="nights_weekends" required><option value="">Select one</option><option value="comfortable">Comfortable when a shift requires it</option><option value="limited">Limited availability</option><option value="discuss">Discuss per project</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Travel comfort *</span><select name="travel_comfort" required><option value="">Select one</option><option value="local">Los Angeles area</option><option value="regional">Regional or overnight</option><option value="national">Domestic travel</option><option value="discuss">Discuss per project</option></select><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-crew-back>Back</button><button class="portal-button portal-button-primary" type="button" data-crew-next>Continue</button></div>
+        </section>
+
+        <section class="form-step" data-crew-step="2">
+          <div class="form-step-head"><p class="portal-label">03 / Rate + readiness</p><h2>Make the shift workable.</h2><p>Share your normal hourly expectations and logistics. PARTI confirms the approved rate, hours, legally required overtime treatment, worksite, and scope before any assignment.</p></div>
+          <div class="form-grid">
+            <label class="form-field"><span>Desired hourly rate *</span><input name="hourly_rate" required maxlength="120" placeholder="Example: $30/hour"><small class="field-error"></small></label>
+            <label class="form-field"><span>Preferred minimum call *</span><select name="minimum_call" required><option value="">Select one</option><option value="4 hours">4 hours</option><option value="6 hours">6 hours</option><option value="8 hours">8 hours</option><option value="Flexible">Flexible</option></select><small class="field-error"></small></label>
+            <label class="form-field"><span>Reliable transportation for local shifts? *</span><select name="transportation" required><option value="">Select one</option><option value="yes">Yes</option><option value="no">No</option><option value="discuss">Depends on the location</option></select><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Scheduling, travel, or parking notes</span><textarea name="rate_notes" maxlength="1800" placeholder="Anything PARTI should confirm before you accept a shift."></textarea><small class="field-error"></small></label>
+          </div>
+          <fieldset class="form-field form-field-wide fieldset-reset form-section-gap"><legend class="form-legend">Current certifications or useful credentials</legend><div class="choice-grid compact-choice-grid">
+            <label class="choice-card"><input type="checkbox" name="certifications" value="First aid or CPR"><span><strong>First aid / CPR</strong></span></label>
+            <label class="choice-card"><input type="checkbox" name="certifications" value="OSHA 10 or 30"><span><strong>OSHA 10 / 30</strong></span></label>
+            <label class="choice-card"><input type="checkbox" name="certifications" value="Forklift or lift operator"><span><strong>Lift operator</strong></span></label>
+            <label class="choice-card"><input type="checkbox" name="certifications" value="Food handler"><span><strong>Food handler</strong></span></label>
+            <label class="choice-card"><input type="checkbox" name="certifications" value="Valid driver license"><span><strong>Driver license</strong></span></label>
+            <label class="choice-card"><input type="checkbox" name="certifications" value="None listed"><span><strong>None listed</strong></span></label>
+          </div></fieldset>
+          <div class="form-grid form-section-gap">
+            <label class="form-field form-field-wide"><span>Can you perform the essential requirements of the crew work you selected, with or without reasonable accommodation? *</span><select name="essential_requirements" required><option value="">Select one</option><option value="yes">Yes</option><option value="discuss">I need to discuss the specific requirements</option></select><small class="field-help">Do not describe a medical condition here. PARTI can discuss a reasonable accommodation separately.</small><small class="field-error"></small></label>
+            <label class="form-field"><span>Tools, equipment, or workwear you regularly use</span><textarea name="equipment" maxlength="1500" placeholder="Do not assume you must provide required safety equipment."></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>What makes a crew booking workable for you? *</span><textarea name="say_yes" required minlength="20" maxlength="1800" placeholder="Rate, notice, schedule, travel, role clarity, or other essentials."></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>What would make you decline a shift?</span><textarea name="decline_reasons" maxlength="1800"></textarea><small class="field-error"></small></label>
+            <label class="form-field"><span>Anything else PARTI should know?</span><textarea name="additional_context" maxlength="1800"></textarea><small class="field-error"></small></label>
+          </div>
+          <div class="form-actions"><button class="portal-button" type="button" data-crew-back>Back</button><button class="portal-button portal-button-primary" type="button" data-crew-next>Review intake</button></div>
+        </section>
+
+        <section class="form-step" data-crew-step="3">
+          <div class="form-step-head"><p class="portal-label">04 / Review</p><h2>One clear crew profile.</h2><p>Review the information PARTI will use to consider you for future event shifts.</p></div>
+          <div class="detail-grid" id="event-crew-review"></div>
+          <details class="notice-panel" open><summary>Crew intake notice</summary><div><p>PARTI collects the contact, experience, availability, rate expectation, travel, transportation, work-readiness, and scheduling information entered here to evaluate possible event crew work and communicate about potential shifts.</p><p>This intake does not promise employment, hours, a shift, a particular rate, or benefits. A specific assignment exists only after PARTI confirms its scope, rate, schedule, location, payroll details, and other required information. Contact <a href="mailto:hello@letsparti.co">hello@letsparti.co</a> with a privacy request.</p></div></details>
+          <label class="choice-card acknowledgement-card"><input type="checkbox" name="accuracy_consent" required><span><strong>I confirm that my responses are accurate.</strong><small>I understand PARTI may contact me about possible crew work.</small></span></label>
+          <label class="choice-card acknowledgement-card"><input type="checkbox" name="notice_consent" required><span><strong>I reviewed the notice above.</strong><small>I understand this intake is not an offer, guaranteed shift, agreement, benefit guarantee, or waiver.</small></span></label>
+          <small class="field-error" data-consent-error></small>
+          <p class="form-status" id="event-crew-status" role="status" aria-live="polite"></p>
+          <div class="form-actions"><button class="portal-button" type="button" data-crew-back>Back</button><button class="portal-button portal-button-accent" type="submit">Send crew profile to PARTI</button></div>
+        </section>
+      </form>
+    </main>
+    <footer class="portal-footer"><span>PARTI event crew intake</span><span>Short profile · shift-specific confirmation</span></footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script>
+  <script src="portal-shell.js?v=20260826a"></script><script src="event-crew-intake.js?v=20261014a"></script>
+</body>
+</html>

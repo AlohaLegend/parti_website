@@ -62,6 +62,14 @@
     return url.href;
   }
 
+  function eventCrewUrl() {
+    const url = new URL("event-crew-intake.html", location.href);
+    params.forEach((value, key) => {
+      if (key.startsWith("utm_") || key === "ref") url.searchParams.set(key, value);
+    });
+    return url.href;
+  }
+
   function showEmployeeIntake() {
     pathSelector.hidden = true;
     form.hidden = false;
@@ -83,7 +91,7 @@
     progress.hidden = true;
     eyebrow.textContent = "People intake";
     heading.textContent = "Find your path.";
-    lead.textContent = "Start in one place. Tell us whether you are discussing an employee role or offering independent project services, and we will show only the questions that apply.";
+    lead.textContent = "Start in one place. Choose an ongoing employee role, event crew work, or independent project services, and we will show only the questions that apply.";
     notice.innerHTML = "<strong>Important</strong><p>This intake is not an offer, booking, employment agreement, contractor agreement, benefit guarantee, or waiver. Do not enter tax IDs, bank information, medical information, identity documents, or criminal history here.</p>";
     params.delete("relationship");
     history.replaceState(null, "", `${location.pathname}${params.toString() ? `?${params.toString()}` : ""}`);
@@ -246,7 +254,7 @@
     const payload = { ...dataFromForm(), reference_code: referenceCode, attribution: attribution() };
     const { error } = await client.from("employee_intakes").insert(payload);
     if (error) { submitting = false; button.disabled = false; button.textContent = "Send intake to PARTI"; setStatus("We could not send the intake yet. Your draft is still saved on this device. Please try again.", "error"); return; }
-    localStorage.removeItem(draftKey); localStorage.setItem(submittedKey, String(Date.now())); sessionStorage.setItem("parti-employee-reference", referenceCode);
+    localStorage.removeItem(draftKey); localStorage.setItem(submittedKey, String(Date.now())); sessionStorage.setItem("parti-employee-reference", referenceCode); sessionStorage.removeItem("parti-intake-track");
     setStatus("Received. Opening your confirmation...", "success"); location.assign("employee-received.html");
   }
 
@@ -272,12 +280,14 @@
     if (!selected) { pathError.textContent = "Choose the closest working relationship to continue."; document.querySelector('input[name="intake_path"]')?.focus(); return; }
     pathError.textContent = "";
     if (selected === "contractor") { location.assign(contractorUrl()); return; }
+    if (selected === "event_crew") { location.assign(eventCrewUrl()); return; }
     showEmployeeIntake();
   });
   document.querySelectorAll('input[name="intake_path"]').forEach((field) => field.addEventListener("change", () => { pathError.textContent = ""; }));
   const today = new Date().toISOString().slice(0, 10); form.elements.namedItem("start_date").min = today; form.elements.namedItem("decision_deadline").min = today;
   renderRoleBriefing(); restoreDraft();
   if (params.get("relationship") === "contractor") location.replace(contractorUrl());
+  else if (params.get("relationship") === "event_crew") location.replace(eventCrewUrl());
   else if (params.get("relationship") === "employee" || hasRoleBrief) showEmployeeIntake();
   else showPathSelector();
 })();
