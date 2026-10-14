@@ -11,8 +11,9 @@
 
   const statusLabels = { new: "New", reviewing: "Reviewing", needs_info: "Needs information", eligible_pool: "Eligible pool", hold: "Hold", engaged: "Engaged", declined: "Declined" };
   const classificationLabels = { unreviewed: "Unreviewed", contractor_candidate: "Contractor candidate", employee_review: "Employee path review", counsel_review: "Counsel review" };
+  const valueLabels = { under_2: "Under 2 years", "2_4": "2 to 4 years", "5_9": "5 to 9 years", "10_plus": "10+ years", yes_multiple: "Yes, multiple clients", yes_one: "Yes, one client", not_currently: "Not currently", one_week: "1 week", two_weeks: "2 weeks", month_plus: "1 month or more", yes_domestic: "Yes, domestic travel", yes_international: "Yes, international travel", not_applicable: "Not applicable", sole_proprietor: "Sole proprietor", single_member_llc: "Single-member LLC", due_on_receipt: "Due on receipt", net_7: "Net 7", net_15: "Net 15", net_30: "Net 30" };
   const escapeHtml = (value) => { const node = document.createElement("div"); node.textContent = String(value ?? ""); return node.innerHTML; };
-  const format = (value) => String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+  const format = (value) => valueLabels[value] || String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
   const money = (value) => value == null || value === "" ? null : new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
   const timestamp = (value) => value ? new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : "";
   const dateOnly = (value) => value ? new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeZone: "UTC" }).format(new Date(`${value}T00:00:00Z`)) : "Not set";

@@ -17,8 +17,9 @@
 
   const statusLabels = { new: "New", reviewing: "Reviewing", needs_info: "Needs information", terms_review: "Terms review", offer_ready: "Offer ready", hold: "Hold", closed: "Closed" };
   const decisionLabels = { unreviewed: "Unreviewed", approved_now: "Approved now", review_later: "Review later", not_approved: "Not approved" };
+  const valueLabels = { full_time: "Full-time", part_time: "Part-time", role_dependent: "Role-dependent", studio_office: "Studio or office" };
   const escapeHtml = (value) => { const node = document.createElement("div"); node.textContent = String(value ?? ""); return node.innerHTML; };
-  const format = (value) => String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+  const format = (value) => valueLabels[value] || String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
   const timestamp = (value) => value ? new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : "";
   const dateOnly = (value) => value ? new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeZone: "UTC" }).format(new Date(`${value}T00:00:00Z`)) : "Not set";
   const item = (label, value, wide = false) => value === null || value === undefined || value === "" ? "" : `<div class="detail-item ${wide ? "detail-item-wide" : ""}"><span>${escapeHtml(label)}</span><p>${escapeHtml(value)}</p></div>`;
