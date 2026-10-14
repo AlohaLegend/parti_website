@@ -3,19 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Independent Talent Profile | PARTI</title>
+  <title>Work with PARTI | Independent Project Intake</title>
   <meta name="description" content="Share your independent creative, production, fabrication, and event services with PARTI.">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014a">
+  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014d">
+  <script>
+    (function () {
+      const params = new URLSearchParams(location.search);
+      if (params.get("unified") === "1") return;
+      const url = new URL("employee-intake.html", location.href);
+      params.forEach((value, key) => { if (key.startsWith("utm_") || key === "ref") url.searchParams.set(key, value); });
+      url.searchParams.set("relationship", "contractor");
+      location.replace(url.href);
+    })();
+  </script>
 </head>
 <body>
   <div class="portal-shell" data-portal-shell data-theme="light">
     <header class="portal-header">
-      <p class="portal-header-note">Independent talent profile</p>
-      <a class="brand-link" href="contractor-onboarding.html" aria-label="PARTI independent talent profile"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a>
+      <p class="portal-header-note">Work with PARTI</p>
+      <a class="brand-link" href="employee-intake.html" aria-label="PARTI people intake"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a>
       <button class="theme-toggle" data-theme-toggle type="button" aria-label="Toggle color theme">Dark</button>
     </header>
 
@@ -25,6 +35,7 @@
         <h1>Bring your craft.</h1>
         <p class="portal-lead" style="margin-top:24px">Tell us how you work, what you make, and what it costs to bring you onto a project. This profile takes about eight minutes.</p>
         <div class="intake-note"><strong>Before you begin</strong><p>This is a talent and vendor intake, not a job application, offer, assignment, or contractor agreement. Do not enter a Social Security number, tax ID, banking details, driver license number, or other identity documents here.</p></div>
+        <div class="portal-actions"><a class="portal-button portal-button-small" href="employee-intake.html">Change path</a></div>
         <div class="inquiry-progress" aria-label="Profile progress">
           <div class="inquiry-progress-item is-active" data-progress="0"><span>1</span>Profile</div>
           <div class="inquiry-progress-item" data-progress="1"><span>2</span>Craft</div>
@@ -161,10 +172,10 @@
         </section>
       </form>
     </main>
-    <footer class="portal-footer"><span>PARTI independent talent network</span><span>Secure intake · no tax or banking data</span></footer>
+    <footer class="portal-footer"><span>PARTI people intake · independent project path</span><span>Secure intake · no tax or banking data</span></footer>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script>
-  <script src="portal-shell.js?v=20260826a"></script><script src="contractor-onboarding.js?v=20261014a"></script>
+  <script src="portal-shell.js?v=20260826a"></script><script src="contractor-onboarding.js?v=20261014b"></script>
 </body>
 </html>

@@ -2,7 +2,8 @@
 
 ## Routes
 
-- Public direct link: `contractor-onboarding.html`
+- Public entry link: `employee-intake.html`
+- Independent project branch: `contractor-onboarding.html?unified=1`, reached after the person chooses that path
 - Confirmation: `contractor-received.html`
 - Protected team review: `operations-contractors.html`
 

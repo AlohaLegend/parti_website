@@ -192,7 +192,7 @@
     return { score: Math.min(100, score), flags };
   }
 
-  function attribution() { const params = new URLSearchParams(location.search); return { source: params.get("utm_source"), campaign: params.get("utm_campaign"), referrer: document.referrer || null, landing_url: location.href }; }
+  function attribution() { const params = new URLSearchParams(location.search); return { source: params.get("utm_source"), campaign: params.get("utm_campaign"), referrer: document.referrer || null, landing_url: location.href, relationship_interest: "contractor" }; }
   function createReferenceCode() { const now = new Date(); const date = `${String(now.getUTCFullYear()).slice(-2)}${String(now.getUTCMonth() + 1).padStart(2, "0")}${String(now.getUTCDate()).padStart(2, "0")}`; const bytes = new Uint8Array(3); crypto.getRandomValues(bytes); return `CREW-${date}-${[...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("").toUpperCase()}`; }
 
   function updateProgress() {

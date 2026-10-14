@@ -11,7 +11,7 @@ New portfolio-style website build for PARTI, based on the mockup deck and expand
 - Local case-study pages for legacy and recent projects
 - Shared project data layer for homepage and project pages
 - Publicly sourced logos, project imagery, and copy pulled into the local build
-- Unlinked client inquiry and independent talent intake workflows with protected internal review desks
+- Unlinked client inquiry and unified people intake workflows with protected internal review desks
 
 ## Local structure
 
@@ -23,10 +23,10 @@ New portfolio-style website build for PARTI, based on the mockup deck and expand
 - `project-page.js`: project-page rendering and interactions
 - `project-data.js`: shared project content and gallery data
 - `assets/`: local images used by the site
-- `contractor-onboarding.html`: direct-link independent talent intake
+- `contractor-onboarding.html`: independent project branch reached from the unified people intake
 - `operations-contractors.html`: authenticated talent review desk
 - `CONTRACTOR_ONBOARDING.md`: deployment, privacy, classification, and onboarding notes
-- `employee-intake.html`: direct-link employee candidate intake with a role briefing
+- `employee-intake.html`: the single shareable people intake link, with employee and independent project paths
 - `operations-employees.html`: authenticated candidate review and role-link builder
 - `WORKFORCE_INTAKE.md`: Adam guideline mapping, intentional exceptions, and deployment notes
 

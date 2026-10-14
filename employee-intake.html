@@ -3,29 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Careers at PARTI | Candidate Intake</title>
-  <meta name="description" content="Share your experience, priorities, and working preferences for an employee opportunity with PARTI.">
+  <title>Work with PARTI | People Intake</title>
+  <meta name="description" content="Share your experience, working preferences, and the way you would like to work with PARTI.">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014c">
+  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014d">
 </head>
 <body>
   <div class="portal-shell" data-portal-shell data-theme="light">
     <header class="portal-header">
-      <p class="portal-header-note">Careers at PARTI</p>
-      <a class="brand-link" href="employee-intake.html" aria-label="PARTI careers intake"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a>
+      <p class="portal-header-note">Work with PARTI</p>
+      <a class="brand-link" href="employee-intake.html" aria-label="PARTI people intake"><img class="logo-image header-logo-image" src="assets/parti-logo-purple.png" alt="PARTI"></a>
       <button class="theme-toggle" data-theme-toggle type="button" aria-label="Toggle color theme">Dark</button>
     </header>
 
     <main class="portal-main inquiry-layout">
       <aside class="inquiry-intro">
-        <p class="portal-eyebrow">Candidate conversation</p>
-        <h1>Do your best work.</h1>
-        <p class="portal-lead" style="margin-top:24px">Help build what is next. This intake gives PARTI and you a clear view of the role, expectations, priorities, and possible terms before anyone prepares an offer.</p>
-        <div class="intake-note"><strong>Important</strong><p>This is not an offer, employment agreement, benefit guarantee, or waiver. Do not enter a Social Security number, bank information, medical information, identity document, or criminal history here.</p></div>
-        <div class="inquiry-progress" aria-label="Candidate intake progress">
+        <p class="portal-eyebrow" id="intake-eyebrow">People intake</p>
+        <h1 id="intake-heading">Find your path.</h1>
+        <p class="portal-lead" id="intake-lead" style="margin-top:24px">Start in one place. Tell us whether you are discussing an employee role or offering independent project services, and we will show only the questions that apply.</p>
+        <div class="intake-note" id="intake-notice"><strong>Important</strong><p>This intake is not an offer, booking, employment agreement, contractor agreement, benefit guarantee, or waiver. Do not enter tax IDs, bank information, medical information, identity documents, or criminal history here.</p></div>
+        <div class="inquiry-progress" id="employee-progress" aria-label="Employee intake progress" hidden>
           <div class="inquiry-progress-item is-active" data-progress="0"><span>1</span>Role + contact</div>
           <div class="inquiry-progress-item" data-progress="1"><span>2</span>Contribution</div>
           <div class="inquiry-progress-item" data-progress="2"><span>3</span>Priorities</div>
@@ -35,7 +35,18 @@
         </div>
       </aside>
 
-      <form class="inquiry-form" id="employee-intake-form" novalidate>
+      <section class="intake-path-selector" id="intake-path-selector" aria-labelledby="path-heading">
+        <div class="form-step-head"><p class="portal-label">One intake · two paths</p><h2 id="path-heading">How would you like to work with PARTI?</h2><p>Choose the closest fit. The team keeps employee conversations and independent project work separate behind the scenes so the right terms and protections apply.</p></div>
+        <div class="path-choice-grid" role="radiogroup" aria-label="How you want to work with PARTI">
+          <label class="choice-card path-choice"><input type="radio" name="intake_path" value="employee"><span><strong>Employee role</strong><small>An ongoing full-time or part-time position working within the PARTI team.</small></span></label>
+          <label class="choice-card path-choice"><input type="radio" name="intake_path" value="contractor"><span><strong>Independent project work</strong><small>You offer your own services, rates, and business setup for defined projects.</small></span></label>
+        </div>
+        <details class="notice-panel path-guidance"><summary>Not sure which one fits?</summary><div><p>Choose employee role if you are discussing an ongoing position as part of PARTI's team. Choose independent project work if you operate your own business and PARTI may hire you for defined scopes. If the relationship is still unclear, ask your PARTI contact before submitting so neither side guesses at classification.</p></div></details>
+        <p class="field-error" id="path-error" role="alert"></p>
+        <div class="form-actions"><span></span><button class="portal-button portal-button-primary" id="start-intake" type="button">Start intake</button></div>
+      </section>
+
+      <form class="inquiry-form" id="employee-intake-form" novalidate hidden>
         <input class="honeypot" type="text" name="office_fax" tabindex="-1" autocomplete="off" aria-hidden="true">
 
         <section class="form-step is-active" data-step="0">
@@ -56,7 +67,7 @@
             <label class="form-field"><span>Realistic start date *</span><input name="start_date" type="date" required><small class="field-error"></small></label>
             <label class="form-field"><span>Role briefing questions or corrections</span><textarea name="role_questions" maxlength="2000" placeholder="Anything unclear about the responsibilities, reporting line, schedule, pay range, or current benefits?"></textarea><small class="field-error"></small></label>
           </div>
-          <div class="form-actions"><span></span><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
+          <div class="form-actions"><button class="portal-button" type="button" data-change-path>Change path</button><button class="portal-button portal-button-primary" type="button" data-next>Continue</button></div>
         </section>
 
         <section class="form-step" data-step="1">
@@ -146,10 +157,10 @@
         </section>
       </form>
     </main>
-    <footer class="portal-footer"><span>PARTI candidate intake</span><span>Direct link only · no sensitive identity data</span></footer>
+    <footer class="portal-footer"><span>PARTI people intake</span><span>One link · secure role-specific questions</span></footer>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script>
-  <script src="portal-shell.js?v=20260826a"></script><script src="employee-intake.js?v=20261014a"></script>
+  <script src="portal-shell.js?v=20260826a"></script><script src="employee-intake.js?v=20261014b"></script>
 </body>
 </html>

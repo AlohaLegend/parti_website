@@ -9,6 +9,14 @@
   const status = document.querySelector("#employee-status");
   const briefing = document.querySelector("#role-briefing");
   const warning = document.querySelector("#role-warning");
+  const pathSelector = document.querySelector("#intake-path-selector");
+  const startIntake = document.querySelector("#start-intake");
+  const pathError = document.querySelector("#path-error");
+  const progress = document.querySelector("#employee-progress");
+  const eyebrow = document.querySelector("#intake-eyebrow");
+  const heading = document.querySelector("#intake-heading");
+  const lead = document.querySelector("#intake-lead");
+  const notice = document.querySelector("#intake-notice");
   const draftKey = "parti-employee-intake-draft-v1";
   const submittedKey = "parti-employee-intake-last-submit";
   let currentStep = 0;
@@ -30,6 +38,7 @@
     ["Benefits currently available", "benefits"]
   ];
   const missingRoleFields = roleFields.filter(([, key]) => !roleSnapshot[key]).map(([label]) => label);
+  const hasRoleBrief = roleFields.some(([, key]) => roleSnapshot[key]);
 
   const displayValues = {
     full_time: "Full-time", part_time: "Part-time", either: "Either", salary: "Annual salary", hourly: "Hourly",
@@ -43,6 +52,43 @@
   const list = (raw, name) => raw.getAll(name).map(String);
   const display = (value) => displayValues[value] || String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
   const escapeHtml = (value) => { const node = document.createElement("div"); node.textContent = String(value ?? ""); return node.innerHTML; };
+
+  function contractorUrl() {
+    const url = new URL("contractor-onboarding.html", location.href);
+    params.forEach((value, key) => {
+      if (key.startsWith("utm_") || key === "ref") url.searchParams.set(key, value);
+    });
+    url.searchParams.set("unified", "1");
+    return url.href;
+  }
+
+  function showEmployeeIntake() {
+    pathSelector.hidden = true;
+    form.hidden = false;
+    progress.hidden = false;
+    eyebrow.textContent = "Employee conversation";
+    heading.textContent = "Do your best work.";
+    lead.textContent = "Help build what is next. This intake gives PARTI and you a clear view of the role, expectations, priorities, and possible terms before anyone prepares an offer.";
+    notice.innerHTML = "<strong>Important</strong><p>This is not an offer, employment agreement, benefit guarantee, or waiver. Do not enter a Social Security number, bank information, medical information, identity document, or criminal history here.</p>";
+    params.set("relationship", "employee");
+    history.replaceState(null, "", `${location.pathname}?${params.toString()}`);
+    updateProgress();
+    form.querySelector("input:not([type='hidden']), select, textarea")?.focus();
+  }
+
+  function showPathSelector() {
+    currentStep = 0;
+    pathSelector.hidden = false;
+    form.hidden = true;
+    progress.hidden = true;
+    eyebrow.textContent = "People intake";
+    heading.textContent = "Find your path.";
+    lead.textContent = "Start in one place. Tell us whether you are discussing an employee role or offering independent project services, and we will show only the questions that apply.";
+    notice.innerHTML = "<strong>Important</strong><p>This intake is not an offer, booking, employment agreement, contractor agreement, benefit guarantee, or waiver. Do not enter tax IDs, bank information, medical information, identity documents, or criminal history here.</p>";
+    params.delete("relationship");
+    history.replaceState(null, "", `${location.pathname}${params.toString() ? `?${params.toString()}` : ""}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function renderRoleBriefing() {
     briefing.innerHTML = roleFields.map(([label, key]) => {
@@ -181,7 +227,7 @@
     if (currentStep === steps.length - 1) renderReview();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  function attribution() { return { source: params.get("utm_source"), campaign: params.get("utm_campaign"), referrer: document.referrer || null, landing_url: location.href }; }
+  function attribution() { return { source: params.get("utm_source"), campaign: params.get("utm_campaign"), referrer: document.referrer || null, landing_url: location.href, relationship_interest: "employee" }; }
   function createReferenceCode() { const now = new Date(); const date = `${String(now.getUTCFullYear()).slice(-2)}${String(now.getUTCMonth() + 1).padStart(2, "0")}${String(now.getUTCDate()).padStart(2, "0")}`; const bytes = new Uint8Array(3); crypto.getRandomValues(bytes); return `CAREER-${date}-${[...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("").toUpperCase()}`; }
 
   async function submitIntake(event) {
@@ -220,6 +266,18 @@
   form.addEventListener("submit", submitIntake);
   form.querySelectorAll("[data-next]").forEach((button) => button.addEventListener("click", () => { if (!validateStep(currentStep)) return; currentStep = Math.min(currentStep + 1, steps.length - 1); updateProgress(); saveDraft(); }));
   form.querySelectorAll("[data-back]").forEach((button) => button.addEventListener("click", () => { currentStep = Math.max(currentStep - 1, 0); updateProgress(); }));
+  form.querySelectorAll("[data-change-path]").forEach((button) => button.addEventListener("click", showPathSelector));
+  startIntake.addEventListener("click", () => {
+    const selected = document.querySelector('input[name="intake_path"]:checked')?.value;
+    if (!selected) { pathError.textContent = "Choose the closest working relationship to continue."; document.querySelector('input[name="intake_path"]')?.focus(); return; }
+    pathError.textContent = "";
+    if (selected === "contractor") { location.assign(contractorUrl()); return; }
+    showEmployeeIntake();
+  });
+  document.querySelectorAll('input[name="intake_path"]').forEach((field) => field.addEventListener("change", () => { pathError.textContent = ""; }));
   const today = new Date().toISOString().slice(0, 10); form.elements.namedItem("start_date").min = today; form.elements.namedItem("decision_deadline").min = today;
-  renderRoleBriefing(); restoreDraft(); updateProgress();
+  renderRoleBriefing(); restoreDraft();
+  if (params.get("relationship") === "contractor") location.replace(contractorUrl());
+  else if (params.get("relationship") === "employee" || hasRoleBrief) showEmployeeIntake();
+  else showPathSelector();
 })();

@@ -166,6 +166,12 @@
 .inquiry-progress-item.is-complete span { background: var(--portal-accent); border-color: var(--portal-accent); color: #111; }
 
 .inquiry-form { border: 1px solid var(--line); }
+.intake-path-selector { border: 1px solid var(--line); padding: clamp(22px, 4vw, 52px); }
+.path-choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.path-choice span { min-height: 150px; padding: 22px; }
+.path-choice span strong { margin-bottom: 12px; font-size: clamp(1.15rem, 2vw, 1.6rem); text-transform: uppercase; }
+.path-choice span small { display: block; font-size: 0.88rem; line-height: 1.55; }
+.path-guidance { margin-top: 18px; }
 .form-step { display: none; padding: clamp(22px, 4vw, 52px); }
 .form-step.is-active { display: block; animation: formIn 340ms ease both; }
 @keyframes formIn { from { opacity: 0; transform: translateY(12px); } }
@@ -346,6 +352,7 @@
 @media (max-width: 980px) {
   .portal-hero, .inquiry-layout, .planner-layout { grid-template-columns: 1fr; }
   .inquiry-intro { position: static; }
+  .inquiry-layout:has(.intake-path-selector:not([hidden])) .inquiry-intro { display: none; }
   .portal-section-heading { grid-template-columns: 1fr; }
   .stage-grid { grid-template-columns: repeat(2, 1fr); }
   .stage-card:nth-child(2) { border-right: 0; }
@@ -365,7 +372,7 @@
   .portal-header-note { font-size: 0.55rem; }
   .header-logo-image { min-width: 96px; width: 112px; }
   .portal-hero h1, .inquiry-intro h1, .operations-heading h1 { letter-spacing: -0.055em; }
-  .portal-stat-strip, .stage-grid, .fit-grid, .form-grid, .detail-grid, .next-grid, .role-briefing { grid-template-columns: 1fr; }
+  .portal-stat-strip, .stage-grid, .fit-grid, .form-grid, .detail-grid, .next-grid, .role-briefing, .path-choice-grid { grid-template-columns: 1fr; }
   .portal-stat, .stage-card, .fit-card, .next-card { border-right: 0; border-bottom: 1px solid var(--line); }
   .portal-stat:last-child, .stage-card:last-child, .fit-card:last-child, .next-card:last-child { border-bottom: 0; }
   .stage-card { min-height: 300px; }

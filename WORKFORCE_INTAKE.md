@@ -2,12 +2,12 @@
 
 ## Routes
 
-- Independent talent: `contractor-onboarding.html`
-- Employee candidate: `employee-intake.html`
+- Single shareable people intake: `employee-intake.html`
+- Independent project branch: `contractor-onboarding.html?unified=1` (entered through the single people intake)
 - Talent review: `operations-contractors.html`
 - Employee review and role-link builder: `operations-employees.html`
 
-All four routes are absent from public homepage navigation. Public intake pages use `noindex`, `nofollow`, and `noarchive`. Anyone with a direct link can open an intake. Operations routes require an authenticated user on the existing PARTI admin allowlist.
+All routes are absent from public homepage navigation. Public intake pages use `noindex`, `nofollow`, and `noarchive`. PARTI only needs to share `employee-intake.html`. It first asks whether the person is discussing an employee role or independent project work, then routes them to the correct questions. Operations routes require an authenticated user on the existing PARTI admin allowlist.
 
 ## Adam guideline coverage
 
@@ -26,7 +26,7 @@ The internal link builder requires each briefing field before it creates a share
 
 ## Intentional differences
 
-- Employee and contractor flows remain separate. Salary, benefit, career-development, and employee-management questions are not copied into the contractor form because doing so could blur the classification boundary. The contractor form keeps project rates, business independence, insurance, and safety readiness.
+- The public entry point is unified, but employee and contractor questions and records remain separate. Salary, benefit, career-development, and employee-management questions are not copied into the contractor path because doing so could blur the classification boundary. The contractor path keeps project rates, business independence, insurance, and safety readiness.
 - The employee form does not ask for salary history. It asks only for desired compensation or lets the candidate wait for the approved range.
 - No pre-offer intake asks about criminal history, medical or disability information, demographics, Social Security or tax numbers, banking, or identity documents.
 - Full-time, part-time, and either are branches in one employee form until Adam's separate part-time question bank is reviewed. This avoids maintaining two inconsistent versions before the second source exists.
