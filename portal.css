@@ -240,6 +240,10 @@
 .conditional-panel-head h3 { margin: 6px 0 8px; font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: 500; text-transform: uppercase; }
 .conditional-panel-head p:last-child { max-width: 760px; margin: 0; color: var(--muted); font-size: 0.84rem; line-height: 1.55; }
 .medical-boundary-note { margin: 4px 0 0; border-top: 1px solid var(--line); padding-top: 14px; }
+.demo-mode-banner { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; border: 1px solid var(--portal-accent); background: var(--portal-accent-soft); padding: 14px 16px; font-size: 0.78rem; line-height: 1.5; }
+.demo-mode-banner[hidden] { display: none; }
+.demo-mode-banner strong { flex: 0 0 auto; text-transform: uppercase; letter-spacing: 0.08em; }
+.demo-mode-banner span { color: var(--muted); }
 .compact-choice-grid { grid-template-columns: repeat(4, 1fr); }
 .compact-choice-grid .choice-card span { display: grid; min-height: 64px; align-items: center; }
 .money-input { display: grid; grid-template-columns: auto 1fr; align-items: center; border-bottom: 1px solid var(--line); }

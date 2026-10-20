@@ -8,6 +8,7 @@
   const review = document.querySelector("#event-crew-review");
   const status = document.querySelector("#event-crew-status");
   const params = new URLSearchParams(location.search);
+  const demoMode = params.get("demo") === "1";
   const draftKey = "parti-event-crew-intake-draft-v1";
   const submittedKey = "parti-event-crew-last-submit";
   let currentStep = 0;
@@ -98,6 +99,7 @@
   }
 
   function validateStep(index) {
+    if (demoMode) return true;
     const step = steps[index];
     let valid = true;
     step.querySelectorAll("input[required], select[required], textarea[required]").forEach((field) => {
@@ -130,6 +132,7 @@
   }
 
   function saveDraftComplete() {
+    if (demoMode) return;
     try {
       const raw = Object.fromEntries(new FormData(form).entries());
       raw.crew_roles = [...form.querySelectorAll('input[name="crew_roles"]:checked')].map((field) => field.value);
@@ -139,6 +142,7 @@
   }
 
   function restoreDraft() {
+    if (demoMode) return;
     let data;
     try { data = JSON.parse(localStorage.getItem(draftKey) || "null"); } catch (_error) { return; }
     if (!data) return;
@@ -159,16 +163,16 @@
     const working = data.working_conditions;
     const entries = [
       ["Crew member", data.preferred_name ? `${data.legal_name} · ${data.preferred_name}` : data.legal_name],
-      ["Contact", `${data.email} · ${data.phone}`], ["Home base", data.location],
+      ["Contact", `${data.email} · ${data.phone}`], ["Home base", data.location, true],
       ["Crew roles", working.crew_roles.join(" · "), true], ["Experience", data.contribution.day_one_ownership, true],
       ["Availability", data.contribution.support_needed, true], ["Earliest date", data.start_date],
       ["Notice needed", display(working.lead_time)], ["Nights + weekends", display(data.working_conditions.nights_weekends)],
       ["Travel", display(data.working_conditions.travel_comfort)], ["Transportation", display(working.transportation)],
       ["5-ton driving", working.driver_5_ton ? display(working.driver_5_ton) : null], ["Personal vehicle for runs", working.personal_vehicle ? display(working.personal_vehicle) : null],
       ["Desired hourly rate", data.compensation.desired],
-      ["Minimum call", working.minimum_call], ["Certifications", working.certifications.join(" · "), true],
+      ["Minimum call", working.minimum_call], ["Certifications", working.certifications.join(" · ")],
       ["50 lb shift task", working.lift_50 ? display(working.lift_50) : null], ["Hand-tool proficiency", working.hand_tool_proficiency ? display(working.hand_tool_proficiency) : null],
-      ["Hand tools", working.hand_tools_detail, true], ["Essential requirements", display(working.essential_requirements)], ["Booking essentials", data.decision_factors.say_yes, true],
+      ["Hand tools", working.hand_tools_detail, true], ["Essential requirements", display(working.essential_requirements), true], ["Booking essentials", data.decision_factors.say_yes, true],
       ["Additional context", data.decision_factors.additional_context, true]
     ].filter(([, value]) => value);
     review.innerHTML = entries.map(([label, value, wide]) => `<div class="detail-item ${wide ? "detail-item-wide" : ""}"><span>${escapeHtml(label)}</span><p>${escapeHtml(value)}</p></div>`).join("");
@@ -190,6 +194,7 @@
 
   async function submitIntake(event) {
     event.preventDefault();
+    if (demoMode) { status.textContent = "Presentation mode is view-only. Nothing was submitted."; status.dataset.tone = "success"; return; }
     if (submitting || !validateStep(currentStep)) return;
     const consents = [form.elements.namedItem("accuracy_consent"), form.elements.namedItem("notice_consent")];
     const consentError = form.querySelector("[data-consent-error]");
@@ -229,5 +234,26 @@
   form.querySelectorAll("[data-crew-next]").forEach((button) => button.addEventListener("click", () => { if (!validateStep(currentStep)) return; currentStep = Math.min(currentStep + 1, steps.length - 1); updateProgress(); saveDraftComplete(); }));
   form.querySelectorAll("[data-crew-back]").forEach((button) => button.addEventListener("click", () => { currentStep = Math.max(currentStep - 1, 0); updateProgress(); }));
   const today = new Date().toISOString().slice(0, 10); form.elements.namedItem("start_date").min = today;
-  restoreDraft(); syncConditionalQuestions(); updateProgress();
+  function loadDemoProfile() {
+    const values = {
+      legal_name: "Alex Rivera", preferred_name: "Alex", email: "alex.rivera@example.com", phone: "555-013-2026", location: "Los Angeles, CA",
+      worked_with_parti: "no", experience_summary: "Five years supporting live events, pop-ups, production runs, guest check-in, load-in, and strike operations.",
+      recent_project: "Supported a three-day brand pop-up with load-in, product runs, guest flow, daily resets, and final strike.",
+      availability: "Available weekdays and weekends with three days notice. Flexible for early calls and evening strike shifts.", start_date: today,
+      lead_time: "three_days", nights_weekends: "comfortable", travel_comfort: "local", hourly_rate: "$32/hour", minimum_call: "6 hours",
+      transportation: "yes", driver_5_ton: "experienced", personal_vehicle: "yes", lift_50: "yes", hand_tool_proficiency: "tool_comfortable",
+      hand_tools_detail: "Drill, impact driver, socket set, utility knife, and staple gun", essential_requirements: "yes",
+      equipment: "Basic black workwear, work gloves, and common hand tools", say_yes: "Clear call time, scope, onsite lead, hourly rate, parking, and checkout instructions.",
+      decline_reasons: "Unclear scope, unsafe work conditions, or a major last-minute schedule change."
+    };
+    Object.entries(values).forEach(([name, value]) => { const field = form.elements.namedItem(name); if (field) field.value = value; });
+    ["Production assistant", "Load-in and strike", "Runner and driver"].forEach((value) => { const field = form.querySelector(`input[name="crew_roles"][value="${value}"]`); if (field) field.checked = true; });
+    ["First aid or CPR", "Valid driver license"].forEach((value) => { const field = form.querySelector(`input[name="certifications"][value="${value}"]`); if (field) field.checked = true; });
+    form.querySelector("[data-demo-banner]").hidden = false;
+    const submit = form.querySelector('button[type="submit"]');
+    submit.textContent = "Presentation mode · no submission";
+    submit.setAttribute("aria-disabled", "true");
+  }
+  if (demoMode) loadDemoProfile(); else restoreDraft();
+  syncConditionalQuestions(); updateProgress();
 })();
