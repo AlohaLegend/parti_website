@@ -16,10 +16,10 @@ The event crew path is intentionally shorter than the ongoing employee intake. I
 
 1. Contact information and crew roles the person can confidently perform.
 2. Relevant experience, an optional recent example, eight-week availability, earliest start, notice needed, nights and weekends, and travel comfort.
-3. Hourly rate expectations, minimum call, transportation, scheduling or travel notes, current certifications, essential-work readiness, normal tools or workwear, and the conditions that make a booking workable.
+3. Hourly rate expectations, minimum call, transportation, scheduling or travel notes, current certifications, role-specific driving and vehicle readiness, 50 lb load-in/build task readiness, hand-tool proficiency, normal tools or workwear, and the conditions that make a booking workable.
 4. A final review and acknowledgement that the profile is not an offer or guaranteed shift.
 
-Event crew profiles use the existing insert-only employee intake table and are marked with `relationship_interest: event_crew`. The protected Employee Candidates desk labels them as event crew, provides an Event crew filter, and presents crew-specific availability, rate, logistics, and readiness fields. No emergency contact, identity, banking, tax, medical, or criminal-history information is collected at this stage.
+Event crew profiles use the existing insert-only employee intake table and are marked with `relationship_interest: event_crew`. The protected Employee Candidates desk labels them as event crew, provides an Event crew filter, and presents crew-specific availability, rate, logistics, driving, vehicle, lifting-task, and hand-tool readiness fields. No emergency contact, identity, banking, tax, medical, allergy, or criminal-history information is collected at this stage. Dietary restrictions and accommodation details are deferred until a shift is confirmed and can be collected through a private assignment-specific process.
 
 ## Adam guideline coverage
 

@@ -209,10 +209,12 @@
 .choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .choice-card { position: relative; }
 .choice-card input { position: absolute; opacity: 0; pointer-events: none; }
-.choice-card span { display: block; min-height: 100%; border: 1px solid var(--line); padding: 16px; cursor: pointer; transition: background 160ms ease, border-color 160ms ease; }
+.choice-card span { position: relative; display: block; min-height: 100%; border: 1px solid var(--line); padding: 16px 48px 16px 16px; cursor: pointer; transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+.choice-card span::after { content: "✓"; position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--line); border-radius: 50%; color: transparent; font-size: 0.84rem; font-weight: 700; transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease; }
 .choice-card span strong { display: block; margin-bottom: 5px; font-weight: 600; }
 .choice-card span small { color: var(--muted); line-height: 1.4; }
-.choice-card input:checked + span { border-color: var(--portal-accent); background: var(--portal-accent-soft); }
+.choice-card input:checked + span { border-color: var(--portal-accent); background: var(--portal-accent-soft); box-shadow: inset 0 0 0 2px var(--portal-accent); transform: translateY(-1px); }
+.choice-card input:checked + span::after { border-color: var(--portal-accent); background: var(--portal-accent); color: #111; transform: scale(1.05); }
 .choice-card input:focus-visible + span { outline: 2px solid var(--portal-accent); outline-offset: 2px; }
 .partnership-choice { display: block; margin-top: 24px; }
 .partnership-choice span { border-color: color-mix(in srgb, var(--portal-accent) 58%, var(--line)); }
@@ -232,6 +234,12 @@
 .review-flag-panel p { margin: 0; color: var(--muted); font-size: 0.82rem; line-height: 1.58; }
 .fieldset-reset { border: 0; padding: 0; margin: 0; }
 .form-section-gap { margin-top: 24px; }
+.conditional-panel { border: 1px solid color-mix(in srgb, var(--portal-accent) 42%, var(--line)); background: color-mix(in srgb, var(--portal-accent-soft) 48%, var(--bg)); padding: clamp(18px, 3vw, 28px); }
+.conditional-panel[hidden] { display: none; }
+.conditional-panel-head { margin-bottom: 22px; }
+.conditional-panel-head h3 { margin: 6px 0 8px; font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: 500; text-transform: uppercase; }
+.conditional-panel-head p:last-child { max-width: 760px; margin: 0; color: var(--muted); font-size: 0.84rem; line-height: 1.55; }
+.medical-boundary-note { margin: 4px 0 0; border-top: 1px solid var(--line); padding-top: 14px; }
 .compact-choice-grid { grid-template-columns: repeat(4, 1fr); }
 .compact-choice-grid .choice-card span { display: grid; min-height: 64px; align-items: center; }
 .money-input { display: grid; grid-template-columns: auto 1fr; align-items: center; border-bottom: 1px solid var(--line); }

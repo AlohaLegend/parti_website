@@ -20,7 +20,8 @@
   const display = (value) => ({
     same_day: "Same day when available", one_day: "At least 1 day", three_days: "At least 3 days", one_week: "At least 1 week",
     schedule_dependent: "Depends on the schedule", comfortable: "Comfortable when a shift requires it", yes: "Yes", no: "No", limited: "Limited availability", discuss: "Discuss per project",
-    local: "Los Angeles area", regional: "Regional or overnight", national: "Domestic travel"
+    local: "Los Angeles area", regional: "Regional or overnight", national: "Domestic travel", experienced: "Yes, relevant experience", training_needed: "Potentially, with orientation or training",
+    sometimes: "Sometimes, depending on the run", task_details: "Needs specific task details", role_details: "Needs specific shift details", none: "No regular experience", basic: "Basic, supervised use", tool_comfortable: "Comfortable with common install tools", advanced: "Advanced, independent build and install work"
   }[value] || String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase()));
 
   function dataFromForm() {
@@ -61,14 +62,32 @@
         current_commitments: `Notice: ${display(text(raw, "lead_time"))} · Transportation: ${display(text(raw, "transportation"))}`,
         restrictive_agreement: "no", agreement_summary: null,
         crew_roles: roles, certifications: list(raw, "certifications"), lead_time: text(raw, "lead_time"), transportation: text(raw, "transportation"),
-        essential_requirements: text(raw, "essential_requirements"), minimum_call: minimumCall
+        essential_requirements: text(raw, "essential_requirements"), minimum_call: minimumCall,
+        driver_5_ton: nullable(text(raw, "driver_5_ton")), personal_vehicle: nullable(text(raw, "personal_vehicle")),
+        lift_50: nullable(text(raw, "lift_50")), hand_tool_proficiency: nullable(text(raw, "hand_tool_proficiency")),
+        hand_tools_detail: nullable(text(raw, "hand_tools_detail"))
       },
       decision_factors: {
         say_yes: sayYes, decline_reasons: nullable(text(raw, "decline_reasons")), acceptance_questions: null,
-        alternatives: ["Future crew shift"], decision_deadline: null, sensitive_live: text(raw, "essential_requirements") === "discuss" ? "yes" : "no",
+        alternatives: ["Future crew shift"], decision_deadline: null, sensitive_live: "no",
         additional_context: nullable(text(raw, "additional_context"))
       }
     };
+  }
+
+  function setConditionalSection(section, visible) {
+    section.hidden = !visible;
+    section.querySelectorAll("input, select, textarea").forEach((field) => {
+      field.disabled = !visible;
+      field.required = visible && field.hasAttribute("data-required");
+      if (!visible) fieldError(field, "");
+    });
+  }
+
+  function syncConditionalQuestions() {
+    const roles = [...form.querySelectorAll('input[name="crew_roles"]:checked')].map((field) => field.value);
+    setConditionalSection(form.querySelector("[data-driver-details]"), roles.includes("Runner and driver"));
+    setConditionalSection(form.querySelector("[data-build-readiness]"), roles.some((role) => ["Load-in and strike", "Fabrication and install support"].includes(role)));
   }
 
   function fieldError(field, message) {
@@ -145,9 +164,11 @@
       ["Availability", data.contribution.support_needed, true], ["Earliest date", data.start_date],
       ["Notice needed", display(working.lead_time)], ["Nights + weekends", display(data.working_conditions.nights_weekends)],
       ["Travel", display(data.working_conditions.travel_comfort)], ["Transportation", display(working.transportation)],
+      ["5-ton driving", working.driver_5_ton ? display(working.driver_5_ton) : null], ["Personal vehicle for runs", working.personal_vehicle ? display(working.personal_vehicle) : null],
       ["Desired hourly rate", data.compensation.desired],
       ["Minimum call", working.minimum_call], ["Certifications", working.certifications.join(" · "), true],
-      ["Essential requirements", display(working.essential_requirements)], ["Booking essentials", data.decision_factors.say_yes, true],
+      ["50 lb shift task", working.lift_50 ? display(working.lift_50) : null], ["Hand-tool proficiency", working.hand_tool_proficiency ? display(working.hand_tool_proficiency) : null],
+      ["Hand tools", working.hand_tools_detail, true], ["Essential requirements", display(working.essential_requirements)], ["Booking essentials", data.decision_factors.say_yes, true],
       ["Additional context", data.decision_factors.additional_context, true]
     ].filter(([, value]) => value);
     review.innerHTML = entries.map(([label, value, wide]) => `<div class="detail-item ${wide ? "detail-item-wide" : ""}"><span>${escapeHtml(label)}</span><p>${escapeHtml(value)}</p></div>`).join("");
@@ -196,6 +217,7 @@
 
   form.addEventListener("input", (event) => { fieldError(event.target, ""); saveDraftComplete(); });
   form.addEventListener("change", (event) => {
+    if (event.target.name === "crew_roles") syncConditionalQuestions();
     if (event.target.name === "certifications" && event.target.checked) {
       form.querySelectorAll('input[name="certifications"]').forEach((field) => {
         if (event.target.value === "None listed" ? field !== event.target : field.value === "None listed") field.checked = false;
@@ -207,5 +229,5 @@
   form.querySelectorAll("[data-crew-next]").forEach((button) => button.addEventListener("click", () => { if (!validateStep(currentStep)) return; currentStep = Math.min(currentStep + 1, steps.length - 1); updateProgress(); saveDraftComplete(); }));
   form.querySelectorAll("[data-crew-back]").forEach((button) => button.addEventListener("click", () => { currentStep = Math.max(currentStep - 1, 0); updateProgress(); }));
   const today = new Date().toISOString().slice(0, 10); form.elements.namedItem("start_date").min = today;
-  restoreDraft(); updateProgress();
+  restoreDraft(); syncConditionalQuestions(); updateProgress();
 })();

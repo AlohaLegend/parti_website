@@ -9,7 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/parti-favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261014e">
+  <link rel="stylesheet" href="styles.css?v=20260903a"><link rel="stylesheet" href="portal.css?v=20261020a">
 </head>
 <body>
   <div class="portal-shell" data-portal-shell data-theme="light">
@@ -24,7 +24,6 @@
         <p class="portal-eyebrow">Event crew</p>
         <h1>Make the moment happen.</h1>
         <p class="portal-lead" style="margin-top:24px">A shorter intake for shift-based event work. Tell us what you can do, when you are available, and the rate that works for you.</p>
-        <div class="intake-note"><strong>Important</strong><p>This is not a job offer, shift assignment, employment agreement, benefit guarantee, or waiver. PARTI confirms the role, rate, location, schedule, payroll setup, and any eligibility details before a shift. Do not enter medical, tax, banking, identity, or criminal-history information here.</p></div>
         <div class="inquiry-progress" aria-label="Event crew intake progress">
           <div class="inquiry-progress-item is-active" data-crew-progress="0"><span>1</span>Contact + roles</div>
           <div class="inquiry-progress-item" data-crew-progress="1"><span>2</span>Experience + availability</div>
@@ -55,6 +54,13 @@
             <label class="choice-card"><input type="checkbox" name="crew_roles" value="Photo and video support"><span><strong>Photo + video support</strong><small>Capture support, media handling, or content assistance.</small></span></label>
             <label class="choice-card"><input type="checkbox" name="crew_roles" value="Other"><span><strong>Other</strong><small>Tell us about another event-ready skill below.</small></span></label>
           </div><small class="field-error" data-group-error="crew_roles"></small></fieldset>
+          <section class="conditional-panel form-section-gap" data-driver-details hidden>
+            <div class="conditional-panel-head"><p class="portal-label">Runner + driver details</p><h3>What can we plan around?</h3><p>These answers help PARTI match drivers to the right vehicle and run. Selecting “no” does not remove you from other crew roles.</p></div>
+            <div class="form-grid">
+              <label class="form-field"><span>Comfortable driving a 5-ton box truck? *</span><select name="driver_5_ton" data-required><option value="">Select one</option><option value="experienced">Yes, I have relevant experience</option><option value="training_needed">Potentially, with orientation or training</option><option value="no">No</option></select><small class="field-error"></small></label>
+              <label class="form-field"><span>Personal vehicle available for local runs? *</span><select name="personal_vehicle" data-required><option value="">Select one</option><option value="yes">Yes</option><option value="no">No</option><option value="sometimes">Sometimes, depending on the run</option></select><small class="field-error"></small></label>
+            </div>
+          </section>
           <div class="form-grid form-section-gap">
             <label class="form-field"><span>Other crew skill</span><input name="other_role" maxlength="300"><small class="field-error"></small></label>
             <label class="form-field"><span>Have you worked with PARTI before? *</span><select name="worked_with_parti" required><option value="">Select one</option><option value="yes">Yes</option><option value="no">No</option></select><small class="field-error"></small></label>
@@ -85,6 +91,14 @@
             <label class="form-field"><span>Reliable transportation for local shifts? *</span><select name="transportation" required><option value="">Select one</option><option value="yes">Yes</option><option value="no">No</option><option value="discuss">Depends on the location</option></select><small class="field-error"></small></label>
             <label class="form-field form-field-wide"><span>Scheduling, travel, or parking notes</span><textarea name="rate_notes" maxlength="1800" placeholder="Anything PARTI should confirm before you accept a shift."></textarea><small class="field-error"></small></label>
           </div>
+          <section class="conditional-panel form-section-gap" data-build-readiness hidden>
+            <div class="conditional-panel-head"><p class="portal-label">Load-in + build readiness</p><h3>What can you safely support?</h3><p>These questions apply only to load-in, strike, fabrication, or install work. PARTI still confirms the actual tasks and safety plan for every shift.</p></div>
+            <div class="form-grid">
+              <label class="form-field"><span>Some shifts require repeatedly lifting or carrying items up to 50 lb. Can you perform that specific shift task? *</span><select name="lift_50" data-required><option value="">Select one</option><option value="yes">Yes</option><option value="task_details">I need the specific task details before answering</option><option value="no">No</option></select><small class="field-error"></small></label>
+              <label class="form-field"><span>Hand-tool proficiency *</span><select name="hand_tool_proficiency" data-required><option value="">Select one</option><option value="none">No regular hand-tool experience</option><option value="basic">Basic: supervised use</option><option value="tool_comfortable">Comfortable: common install tools</option><option value="advanced">Advanced: independent build and install work</option></select><small class="field-error"></small></label>
+              <label class="form-field form-field-wide"><span>Hand tools you can use confidently</span><input name="hand_tools_detail" maxlength="800" placeholder="Example: drill, impact driver, socket set, utility knife, staple gun"><small class="field-error"></small></label>
+            </div>
+          </section>
           <fieldset class="form-field form-field-wide fieldset-reset form-section-gap"><legend class="form-legend">Current certifications or useful credentials</legend><div class="choice-grid compact-choice-grid">
             <label class="choice-card"><input type="checkbox" name="certifications" value="First aid or CPR"><span><strong>First aid / CPR</strong></span></label>
             <label class="choice-card"><input type="checkbox" name="certifications" value="OSHA 10 or 30"><span><strong>OSHA 10 / 30</strong></span></label>
@@ -94,11 +108,12 @@
             <label class="choice-card"><input type="checkbox" name="certifications" value="None listed"><span><strong>None listed</strong></span></label>
           </div></fieldset>
           <div class="form-grid form-section-gap">
-            <label class="form-field form-field-wide"><span>Can you perform the essential requirements of the crew work you selected, with or without reasonable accommodation? *</span><select name="essential_requirements" required><option value="">Select one</option><option value="yes">Yes</option><option value="discuss">I need to discuss the specific requirements</option></select><small class="field-help">Do not describe a medical condition here. PARTI can discuss a reasonable accommodation separately.</small><small class="field-error"></small></label>
+            <label class="form-field form-field-wide"><span>Can you perform the crew tasks you selected after PARTI confirms the actual shift scope and safety plan? *</span><select name="essential_requirements" required><option value="">Select one</option><option value="yes">Yes</option><option value="role_details">I need the specific shift details before answering</option></select><small class="field-help">Do not include medical information here. For an accommodation during the application process, contact hello@letsparti.co privately.</small><small class="field-error"></small></label>
             <label class="form-field"><span>Tools, equipment, or workwear you regularly use</span><textarea name="equipment" maxlength="1500" placeholder="Do not assume you must provide required safety equipment."></textarea><small class="field-error"></small></label>
             <label class="form-field"><span>What makes a crew booking workable for you? *</span><textarea name="say_yes" required minlength="20" maxlength="1800" placeholder="Rate, notice, schedule, travel, role clarity, or other essentials."></textarea><small class="field-error"></small></label>
             <label class="form-field"><span>What would make you decline a shift?</span><textarea name="decline_reasons" maxlength="1800"></textarea><small class="field-error"></small></label>
             <label class="form-field"><span>Anything else PARTI should know?</span><textarea name="additional_context" maxlength="1800"></textarea><small class="field-error"></small></label>
+            <p class="field-help form-field-wide medical-boundary-note">Food allergies, medical information, and accommodation details are not collected in this pre-shift profile. After a shift is confirmed, PARTI will provide a private way to share assignment-specific dietary or accommodation needs.</p>
           </div>
           <div class="form-actions"><button class="portal-button" type="button" data-crew-back>Back</button><button class="portal-button portal-button-primary" type="button" data-crew-next>Review intake</button></div>
         </section>
@@ -106,9 +121,9 @@
         <section class="form-step" data-crew-step="3">
           <div class="form-step-head"><p class="portal-label">04 / Review</p><h2>One clear crew profile.</h2><p>Review the information PARTI will use to consider you for future event shifts.</p></div>
           <div class="detail-grid" id="event-crew-review"></div>
-          <details class="notice-panel" open><summary>Crew intake notice</summary><div><p>PARTI collects the contact, experience, availability, rate expectation, travel, transportation, work-readiness, and scheduling information entered here to evaluate possible event crew work and communicate about potential shifts.</p><p>This intake does not promise employment, hours, a shift, a particular rate, or benefits. A specific assignment exists only after PARTI confirms its scope, rate, schedule, location, payroll details, and other required information. Contact <a href="mailto:hello@letsparti.co">hello@letsparti.co</a> with a privacy request.</p></div></details>
+          <details class="notice-panel"><summary>Privacy + crew intake notice</summary><div><p>PARTI collects the contact, experience, availability, rate expectation, transportation, driving, work-readiness, certification, and scheduling information entered here to evaluate possible event crew work, communicate about shifts, plan staffing and safety, and maintain business records. PARTI does not sell this information or share it for cross-context behavioral advertising.</p><p>This intake does not promise employment, hours, a shift, a particular rate, or benefits. A specific assignment exists only after PARTI confirms its scope, rate, schedule, location, payroll details, and other required information. Contact <a href="mailto:hello@letsparti.co">hello@letsparti.co</a> with a privacy request.</p></div></details>
           <label class="choice-card acknowledgement-card"><input type="checkbox" name="accuracy_consent" required><span><strong>I confirm that my responses are accurate.</strong><small>I understand PARTI may contact me about possible crew work.</small></span></label>
-          <label class="choice-card acknowledgement-card"><input type="checkbox" name="notice_consent" required><span><strong>I reviewed the notice above.</strong><small>I understand this intake is not an offer, guaranteed shift, agreement, benefit guarantee, or waiver.</small></span></label>
+          <label class="choice-card acknowledgement-card"><input type="checkbox" name="notice_consent" required><span><strong>I reviewed the privacy + crew notice.</strong><small>I understand this intake is not an offer or guaranteed shift.</small></span></label>
           <small class="field-error" data-consent-error></small>
           <p class="form-status" id="event-crew-status" role="status" aria-live="polite"></p>
           <div class="form-actions"><button class="portal-button" type="button" data-crew-back>Back</button><button class="portal-button portal-button-accent" type="submit">Send crew profile to PARTI</button></div>
@@ -119,6 +134,6 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="supabase-config.js?v=20260528b"></script><script src="supabase-client.js?v=20260603a"></script>
-  <script src="portal-shell.js?v=20260826a"></script><script src="event-crew-intake.js?v=20261014a"></script>
+  <script src="portal-shell.js?v=20260826a"></script><script src="event-crew-intake.js?v=20261020a"></script>
 </body>
 </html>
